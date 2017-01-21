@@ -1,0 +1,50 @@
+article {
+	background-image:url(../img/bg.png);
+	color:#000000;
+	padding-top: 20px;
+	padding-bottom: 10px;
+}
+
+
+
+.SectionHeader {
+	background-color: #666666;
+	width:700px;
+	margin: auto;
+	color: #ffffff;
+	font-size: 1.2em;
+	margin-bottom: 20px;
+}
+
+.linkDiscript {
+	background-color: #cccccc;
+	width:700px;
+	margin: auto;
+	margin-bottom:20px;
+}
+
+img.banner {
+	margin-left:15px;	
+}
+
+.annotation {
+	font-size:0.8em;
+	margin-top: auto;
+	margin-left: 15px;
+	padding-bottom: 10px;
+}
+
+.linkContainer {
+	margin: auto;
+	margin-bottom: 10px;
+	width:700px;
+}
+
+.linkContainer > .box:nth-of-type(1) {
+	margin-left: 10px;
+	min-width: 210px;
+}
+.linkContainer > .box:nth-of-type(2) {
+	font-weight: bold;
+	padding-top: 8px;
+}

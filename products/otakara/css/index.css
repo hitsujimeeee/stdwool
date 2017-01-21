@@ -1,0 +1,69 @@
+.topGraphDiv {
+	line-height: 0px;
+}
+
+img.topGraph {
+	width: 800px;
+	height: 400px;
+}
+
+.news > header {
+	height: 30px;
+	width: 284px;
+	font-size: 1.5em;
+	padding-left: 10px;
+	background-color: #723A00;
+	-webkit-background-size: 15px 15px;
+	-moz-background-size: 15px 15px;
+	background-size: 15px 15px;
+	background-position: 0 0, 7.5px 7.5px;
+	background-image: -webkit-linear-gradient(45deg,  #A06C30 25%, #A06C30 25%, transparent 25%, transparent 75%, #A06C30 75%, #A06C30 75%),
+					  -webkit-linear-gradient(-135deg, #A06C30 25%, #A06C30 25%, transparent 25%, transparent 75%, #A06C30 75%, #A06C30 75%);
+	background-image: -moz-linear-gradient(45deg,  #A06C30 25%, #A06C30 25%, transparent 25%, transparent 75%, #A06C30 75%, #A06C30 75%),
+					  -moz-linear-gradient(-135deg, #A06C30 25%, #A06C30 25%, transparent 25%, transparent 75%, #A06C30 75%, #A06C30 75%);
+	background-image: -ms-linear-gradient(45deg,  #A06C30 25%, #A06C30 25%, transparent 25%, transparent 75%, #A06C30 75%, #A06C30 75%),
+					  -ms-linear-gradient(-135deg, #A06C30 25%, #A06C30 25%, transparent 25%, transparent 75%, #A06C30 75%, #A06C30 75%);
+	background-image: -o-linear-gradient(45deg,  #A06C30 25%, #A06C30 25%, transparent 25%, transparent 75%, #A06C30 75%, #A06C30 75%),
+					  -o-linear-gradient(-135deg, #A06C30 25%, #A06C30 25%, transparent 25%, transparent 75%, #A06C30 75%, #A06C30 75%);
+	background-image: linear-gradient(45deg,  #A06C30 25%, #A06C30 25%, transparent 25%, transparent 75%, #A06C30 75%, #A06C30 75%),
+					  linear-gradient(-135deg, #A06C30 25%, #A06C30 25%, transparent 25%, transparent 75%, #A06C30 75%, #A06C30 75%);
+}
+
+.news,
+.topics {
+	background-color: #ffffff;
+}
+
+
+.news > div {
+	margin: 0px;
+	width: 294px;
+	height: 294px;
+	color:#000000;
+	font-size:0.9em;
+}
+
+.topics {
+	width: 494px;
+	height: 324px;
+}
+
+dl.newsList {
+	margin: 0px;
+}
+
+
+dl.newsList dt {
+	padding-left:5px;
+	width:120px;
+	/* 左寄せ */
+	  float : left;
+	/* float解除 */
+	  clear : both;
+}
+ 
+dl.newsList dd{
+/* dtの幅分の設定 */
+  margin-left : 125px;
+}
+

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="robots" content="" />
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<title>SW Ⅱ Character Sheet</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<link rel="stylesheet" href="css.css" />
+	<script src="plugin/mt.js"></script>
+	<script src="js.js"></script>
+</head>
+
+<body>
+	<div data-role="page">
+		<!-- ヘッダー -->
+		<div data-role="header" data-theme="b">
+			<h1>SW Ⅱ Character Sheet</h1>
+			<a href="" class="ui-btn ui-btn-a ui-btn-right" data-role="button">保存</a>
+		</div>
+
+
+		<!-- コンテンツ -->
+		<div data-role="content">
+
+
+			<!-- 基本情報部 -->
+			<div data-role="collapsible" data-collapsed="false" class="valvePanel">
+				<h2>基本情報</h2>
+				<div class="ui-field-contain">
+					<fieldset data-role="controlgroup" data-type="horizontal">
+						<legend>名前：</legend>
+						<span class="inline-input"><input type="text" id="name" class="inline-input" style="width:180px;"></span>
+					</fieldset>
+				</div>
+				<div class="ui-field-contain">
+					<fieldset data-role="controlgroup" data-type="horizontal">
+						<legend>性別：</legend>
+						<select id="gender" data-native-menu="false" data-inline="true">
+							<option>性別選択</option>
+							<option value="0">男</option>
+							<option value="1">女</option>
+						</select>
+					</fieldset>
+				</div>
+				<div class="ui-field-contain">
+					<fieldset data-role="controlgroup" data-type="horizontal">
+						<legend>年齢：</legend>
+						<span class="inline-input"><input type="text" id="age" class="inline-input" style="width:50px;"></span>
+					</fieldset>
+				</div>
+				<div class="ui-field-contain">
+					<fieldset data-role="controlgroup" data-type="horizontal">
+						<legend>種族：</legend>
+						<select id="charaType" data-native-menu="false" data-inline="true" onchange="Util.changeCharaType(this)">
+							<option>種族選択</option>
+							<option value="人間">人間</option>
+							<option value="エルフ">エルフ</option>
+							<option value="ドワーフ">ドワーフ</option>
+							<option value="タビット">タビット</option>
+							<option value="ルーンフォーク">ルーンフォーク</option>
+							<option value="ナイトメア">ナイトメア</option>
+							<option value="シャドウ">シャドウ</option>
+						</select>
+					</fieldset>
+				</div>
+				<div class="ui-field-contain">
+					<fieldset data-role="controlgroup" data-type="horizontal">
+						<legend>生まれ：</legend>
+						<div>
+							<div>
+								<select id="carrer" data-native-menu="false" onchange="Util.changeCarrer(this);">
+									<option>生まれ選択</option>
+								</select>
+							</div>
+							<div>
+								技：<span id="baseTech">　</span> 体：<span id="basePhysical">　</span> 心：<span id="baseMental">　</span>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+				<div class="ui-field-contain">
+					<fieldset data-role="controlgroup" data-type="horizontal">
+						<legend>ダイス：</legend>
+						<div>
+							<table border="1" class="diceTable modern">
+								<tbody>
+									<tr>
+										<th>A</th>
+										<th>B</th>
+										<th>C</th>
+									</tr>
+									<tr>
+										<td style="width:95px;">
+											<select data-inline="true" name="dice">
+												<option disabled selected>2d</option>
+												<script>
+													document.write(Util.getDiceNumberListString());
+												</script>
+											</select>
+										</td>
+										<td style="width:95px;">
+											<select data-inline="true" name="dice">
+												<option disabled selected>2d</option>
+												<script>
+													document.write(Util.getDiceNumberListString());
+												</script>
+											</select>
+										</td>
+										<td style="width:95px;">
+											<select data-inline="true" name="dice">
+												<option disabled selected>2d</option>
+												<script>
+													document.write(Util.getDiceNumberListString());
+												</script>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>D</th>
+										<th>E</th>
+										<th>F</th>
+									</tr>
+									<tr>
+										<td>
+											<select data-inline="true" name="dice">
+												<option disabled selected>2d</option>
+												<script>
+													document.write(Util.getDiceNumberListString());
+												</script>
+											</select>
+										</td>
+										<td>
+											<select data-inline="true" name="dice">
+												<option disabled selected>2d</option>
+												<script>
+													document.write(Util.getDiceNumberListString());
+												</script>
+											</select>
+										</td>
+										<td>
+											<select data-inline="true" name="dice">
+												<option disabled selected>2d</option>
+												<script>
+													document.write(Util.getDiceNumberListString());
+												</script>
+											</select>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<button data-inline="true" class="ui-btn ui-corner-all" onclick="Util.setRandomDice()">ランダム</button>
+						</div>
+					</fieldset>
+				</div>
+				<div class="ui-field-contain">
+					<fieldset data-role="controlgroup" data-type="horizontal">
+						<legend>能力値：</legend>
+						<div>
+							<table border="1" class="statusTable modern">
+								<tr>
+									<th>名称</th>
+									<th>式</th>
+									<th>合計</th>
+									<th>ボナ</th>
+								</tr>
+								<tr>
+									<th>器用度</th>
+									<td>技+A</td>
+									<td><span name="statusPoint"></span></td>
+									<td><span name="statusBonus" class="statusBonus"></span></td>
+								</tr>
+								<tr>
+									<th>敏捷度</th>
+									<td>技+B</td>
+									<td><span name="statusPoint"></span></td>
+									<td><span name="statusBonus" class="statusBonus"></span></td>
+								</tr>
+								<tr>
+									<th>筋力</th>
+									<td>体+C</td>
+									<td><span name="statusPoint"></span></td>
+									<td><span name="statusBonus" class="statusBonus"></span></td>
+								</tr>
+								<tr>
+									<th>生命力</th>
+									<td>体+D</td>
+									<td><span name="statusPoint"></span></td>
+									<td><span name="statusBonus" class="statusBonus"></span></td>
+								</tr>
+								<tr>
+									<th>知力</th>
+									<td>心+E</td>
+									<td><span name="statusPoint"></span></td>
+									<td><span name="statusBonus" class="statusBonus"></span></td>
+								</tr>
+								<tr>
+									<th>精神力</th>
+									<td>心+F</td>
+									<td><span name="statusPoint"></span></td>
+									<td><span name="statusBonus" class="statusBonus"></span></td>
+								</tr>
+							</table>
+						</div>
+						<div>
+							<table border="1" class="modern">
+								<tr>
+									<th>Lv</th>
+									<td><span id="lvForm"></span></td>
+								</tr>
+								<tr>
+									<th>HP</th>
+									<td><span id="hpForm"></span></td>
+								</tr>
+								<tr>
+									<th>MP</th>
+									<td><span id="mpForm"></span></td>
+								</tr>
+								<tr>
+									<th>生命抵抗力</th>
+									<td><span id="lifeForm"></span></td>
+								</tr>
+								<tr>
+									<th>精神抵抗力</th>
+									<td><span id="mentalForm"></span></td>
+								</tr>
+							</table>							
+						</div>
+					</fieldset>
+				</div>
+				<div class="ui-field-contain">
+					<fieldset data-role="controlgroup" data-type="horizontal">
+						<legend>種族特徴：</legend>
+						<div id="characteristic" class="characteristic"></div>
+					</fieldset>
+				</div>
+
+
+
+				<!-- 基本情報部終わり-->
+			</div>
+
+
+			<!-- 技能部-->
+			<div data-role="collapsible" data-collapsed="false">
+				<h2>技能</h2>
+				<div>■初期所有技能</div>
+				<table border="1" class="modern" id="defaultSkillTable">
+					<tr>
+						<th>技能</th>
+						<th>Lv</th>
+					</tr>
+					<script>
+						document.write(Util.makeSkillListTable(1, true));
+					</script>
+				</table>
+
+				<div>■取得技能</div>
+				<table border="1" class="modern" id="learnedSkillTable">
+					<tr>
+						<th>技能</th>
+						<th>Lv</th>
+					</tr>
+					<script>
+						document.write(Util.makeSkillListTable(9, false));
+					</script>
+				</table>
+				<div>■残り経験値</div>
+				<div id="restExp"></div>
+			</div>
+
+			<!-- 習得言語部-->
+			<div data-role="collapsible" data-collapsed="false">
+				<h2>習得言語</h2>
+				<table border="1" class="modern" id="learnedSkillTable">
+					<tr>
+						<th>言語</th>
+						<th>会話</th>
+						<th>読文</th>
+					</tr>
+					<script>
+						document.write(Language.makeLanguageListTable(9));
+					</script>
+				</table>
+			</div>
+
+			<!-- 戦闘特技部-->
+			<div data-role="collapsible" data-collapsed="false">
+				<h2>戦闘特技</h2>
+				<table border="1" class="modern" id="combatFeatsTable">
+					<script>document.write(CombatFeats.getTableRowDOMString(10));</script>
+				</table>
+				<div>
+					<a href="combatFeats.html">戦闘特技詳細</a>
+				</div>
+			</div>
+
+			<!-- 装備品部-->
+			<div data-role="collapsible" data-collapsed="false">
+				<h2>装備品</h2>
+
+			</div>
+			<!-- 自由入力欄-->
+			<div data-role="collapsible" data-collapsed="false">
+				<h2>自由入力欄</h2>
+				<textarea style="width:100%;height:120px;"></textarea>
+
+			</div>
+		</div>
+
+		<!-- フッター -->
+		<div class="footer" data-role="footer" data-theme="b">
+			Copyright © 2016 Studio Wool All Rights Reserved.
+		</div>
+</body>
+
+</html>

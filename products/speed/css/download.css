@@ -1,0 +1,31 @@
+.pageHeader {
+	text-align: center;
+	margin-bottom: 30px;
+}
+
+section > p {
+	width:500px;
+	margin: 10px auto 10px auto;
+}
+
+section {
+	padding-bottom: 20px;
+}
+
+.trialSpeedSec {
+	text-align: center;
+}
+
+p.imgPara {
+	margin: auto;
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 0px;
+}
+
+.downloadLink {
+	margin-top: 0px;
+	text-align: center;
+	font-size:1.4em;
+	margin-bottom: 10px;
+}

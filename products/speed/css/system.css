@@ -1,0 +1,41 @@
+.systemSection {
+	margin-bottom: 20px;
+}
+
+.systemSection > p {
+	max-width: 550px;
+	margin: auto;
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+.systemSection > p:not(.imgPara):before {
+	content: "　"
+}
+
+p.imgPara {
+	margin: auto;
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 0px;
+}
+
+p.imgPara > img {
+	width: 400px;
+}
+
+
+.imgAnnotation{
+	margin-top: 0px;
+	text-align: center;
+	font-size:0.7em;
+}
+
+span.red {
+	color:#ff0000;
+}
+
+
+span.blue {
+	color:#0000ff;
+}

@@ -1,0 +1,145 @@
+body {
+	text-align: center;
+	margin: 0px;
+	background-color: #333333;
+	color: #ffffff;
+	font-family: 'Meiryo UI'
+}
+
+body > header,
+body > main,
+body > footer {
+	width: 800px;
+	margin: 0 auto;
+	text-align: left;
+	/*	background-color: #ffffed;*/
+}
+
+div.siteHeader {
+	width: 800px;
+	min-height: 30px;
+	background: -webkit-radial-gradient(0% 57%, circle, #000, #ffffff);
+	background: radial-gradient(0% 57%, circle, #000, #ffffff);
+}
+
+div.siteHeader > a {
+	display: block;
+	text-decoration: none;
+	text-align: right;
+	width:800px;
+	min-height:30px;
+}
+
+div.siteHeader span {
+	margin-right:10px;
+	color:#000000;
+	font-size: 2em;
+	font-family: 'HGP明朝B';
+	font-style: italic;
+}
+
+nav {
+	padding: 0px;
+	margin: 0px;
+	height: 40px;
+	background-color: #222222;
+	font-size:0.9em;
+}
+
+nav> ul {
+	width: 800px;
+	height:40px;
+	padding-left: 0;
+	list-style-type: none;
+	margin: 0px;
+}
+
+nav> ul> li {
+	width: 160px;
+	height:40px;
+}
+
+nav> ul> li> a {
+	display: block;
+	height:37px;
+	padding-top: 3px;
+	/*	border-right:1px solid #cccccc;*/
+	text-align: center;
+	color: #ffffff;
+	text-decoration: none;
+	font-size: 1.5em;
+}
+
+nav> ul> li> a:hover {
+	background: -webkit-radial-gradient(100% 50%, circle, #222 0%, #777 55%, #222 100%);
+	background: radial-gradient(100% 50%, circle, #222 0%, #777 55%, #222 100%);
+}
+
+body > main {
+	padding-top: 0px;
+}
+
+
+/*フッター領域*/
+
+body > footer {
+	text-align: center;
+	font-style: italic;
+	font-size: 0.7em;
+}
+
+body > footer a:link,
+body > footer a:visited,
+body > footer a:active,
+body > footer a:hover {
+	color:#ffffff;
+}
+
+
+/* 横並び用 */
+nav> ul> li,
+.box{
+	float: left;
+}
+
+nav> ul,
+.boxContainer {
+	overflow: hidden;
+}
+
+nav> ul: before,
+nav> ul: after,
+.boxContainer:before,
+.boxContainer:after{
+	content: "";
+	display: table;
+}
+
+nav> ul: after,
+.boxContainer:after {
+	clear: both;
+}
+
+
+.pageHeader {
+	background: -webkit-radial-gradient(0% 42%, circle, #969696, #000);
+	background: radial-gradient(0% 42%, circle, #969696, #000);
+	font-size: 1.7em;
+}
+
+
+.pageHeader div {
+	float:right;
+	font-family: 'Comic Sans MS';
+	font-size: 0.8em;
+	font-style:italic;
+	padding-right: 5px;
+}
+
+.pageHeader div: after {
+	clear: both;
+}
+
+a img {
+    border-style:none;
+}

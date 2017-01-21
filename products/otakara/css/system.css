@@ -1,0 +1,22 @@
+.pageHeader {
+	text-align: left;
+	padding-left: 10px;
+}
+
+.systemSection > p {
+	max-width: 600px;
+	margin: auto;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	font-size: 1.1em;
+}
+
+.systemSection > p.imgPara {
+	margin: auto;
+	text-align: center;
+	margin-top: 20px;
+}
+
+.systemSection {
+	margin-bottom: 20px;
+}

@@ -1,0 +1,175 @@
+article {
+	text-align: center;
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
+
+.charaTable {
+	margin: auto;
+	border: 2px solid #000000;
+	border-collapse:collapse;
+}
+
+.charaTable td {
+	border-spacing: 0px;
+	padding: 5px;
+	margin: 0px;
+	border: 2px solid #000000;
+}
+
+.charaBox {
+	background-size: 240px;
+	width: 120px;
+	height:360px;
+	position: relative;
+}
+
+.charaBox:hover {
+	background-position: -120px 0px;
+}
+
+.charaBox > a {
+	display: block;
+	text-decoration: none;
+	width: 120px;
+	height:360px;
+}
+
+.charaBox span {
+	color:#fff;
+	font-size: 1.6em;
+	font-family: 'HGP創英角ﾎﾟｯﾌﾟ体';
+	text-shadow:
+		0px -2px #000,
+		-2px -2px #000,
+		2px 0px #000,
+		0px 2px #000,
+		-2px 2px #000,
+		3px 3px #000;
+	letter-spacing: 3px;
+	opacity: 0;
+	writing-mode: vertical-rl;
+	-ms-writing-mode: tb-rl;
+	-webkit-writing-mode:vertical-rl;
+	position: absolute;
+	bottom: 10px;
+	left: 5px;
+}
+
+.charaBox a:hover span{
+	opacity: 1;
+}
+
+.charaTable img{
+	width: 120px;
+}
+
+
+.nagisa {
+	background-image: url(../img/nagisa_tate.jpg);
+}
+
+.mei {
+	background-image: url(../img/mei_tate.jpg);
+}
+
+.rin {
+	background-image: url(../img/rin_tate.jpg);
+}
+
+.nene {
+	background-image: url(../img/nene_tate.jpg);
+}
+
+.ayame {
+	background-image: url(../img/ayame_tate.jpg);
+}
+
+
+dl.charaList {
+	margin-left: 10px;
+}
+
+
+dl.charaList dt {
+	width:50px;
+	height:50px;
+	border: 1px solid #000;
+	/* 左寄せ */
+	float : left;
+	/* float解除 */
+	clear : both;
+}
+
+dl.charaList dt:not(:last-of-type) {
+	border-bottom: none;
+}
+
+dl.charaList dd{
+	/* dtの幅分の設定 */
+	margin-left : 50px;
+	height:35px;
+	border: 1px solid #000;
+	border-left: none;
+	padding: 15px 5px 0px 5px;
+
+}
+
+dl.charaList dd:not(:last-of-type) {
+	border-bottom: none;
+}
+
+dl.charaList img {
+	width: 50px;
+}
+
+div.charaDiscript {
+	width:380px;
+	height:520px;
+	text-align: left;
+}
+
+div.charaDiscript h2 {
+	padding-left: 30px;
+	margin: 0px;
+	font-size:3.2em;
+	font-family: 'HGP明朝B';
+}
+
+div.alphaName {
+	padding-left: 40px;
+	font-size:1.4em;
+	color:#555;
+}
+
+div.lines {
+	margin-top: 20px;
+	padding-left: 30px;
+	font-size: 1.4em;
+	font-family: 'HGP明朝E';
+	font-style: italic;
+}
+
+div.discription {
+	margin-top: 40px;
+	padding-left: 30px;
+	font-family: 'HGSｺﾞｼｯｸE';
+}
+
+div.discription > p:before {
+}
+
+
+div.charaGraphBox {
+	width:250px;
+	height:520px;
+	position: relative;
+}
+
+img.charaGraph {
+	position: absolute;
+	width:235px;
+	right: 5px;
+	bottom:0px;
+	filter: drop-shadow(-15px 0px 0 #444)
+}

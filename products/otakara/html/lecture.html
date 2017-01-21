@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="robots" content="noindex">
+	<meta name="description" content="アイテム収集型マインスイーパー おたからスイーパー 紹介ページ">
+	<title>おたからスイーパー | 同人ゲームサークル Studio Wool</title>
+	<link rel="stylesheet" href="../css/common.css">
+	<link rel="stylesheet" href="../css/lecture.css">
+</head>
+<!-- ヘッダー -->
+	
+<body>
+	<header>
+		<div class="headerImage">
+			<a href="../"><span>おたから</span><span>スイーパー</span></a>
+		</div>
+		<nav>
+			<ul>
+				<li><a href="../">トップ</a></li>
+				<li><a href="./story.html">ストーリー</a></li>
+				<li><a href="./chara.html">キャラクター</a></li>
+				<li><a href="./system.html">システム</a></li>
+				<li><a href="./download.html">ダウンロード</a></li>
+				<li><a href="http://www38.atpages.jp/hitsujimeeee/otakara/index.html" target="_blank">ランキング</a></li>
+				<li><a href="./etc.html">オマケ</a></li>
+			</ul>
+		</nav>
+	</header>
+
+	<main>
+		
+		<article class="flameBorder">
+			<section>
+				<header class="pageHeader" id="1_1">■1.1　消去法１</header>
+				<div>
+					<p>　地雷があるマスを想定した結果、余ったマスは安全という考え方。</p>
+					<p class="imgPara"><img src="../img/lecture001_001a.jpg"></p>
+					<p>
+					　上の画像で、右端に接してる１から、Ａのどちらかに地雷があるのがわかる。<br>
+					　さらに隣の１を見ると、Ａのどちらかに地雷があるのだから、消去法でＢの部分には地雷が無い事がわかる。
+					</p>
+					<p class="imgPara"><img src="../img/lecture001_001b.jpg"></p>
+				</div>
+			</section>
+			
+			<section>
+				<header class="pageHeader" id="1_2">■1.2　消去法２</header>
+				<div>
+					<p>　消去法１と逆の考え。地雷があるマスを想定した結果、余ったマスは地雷という考え方。</p>
+					<p class="imgPara"><img src="../img/lecture001_002a.jpg"></p>
+					<p>
+						　上の画像で、旗の左にある２から、Ａのどちらかに地雷があると考えられる。<br />
+						　それを踏まえて隣の２を見ると、Ａのどちらかに地雷が１つしかないのだから、Ｂの部分には地雷が無くてはいけない。よって、Ｂは地雷である。
+					</p>
+					<p class="imgPara"><img src="../img/lecture001_002b.jpg"></p>
+				</div>
+			</section>
+
+			<section>
+				<header class="pageHeader" id="1_3">■1.3　消去法３</header>
+				<div>
+					<p>　消去法１をもう少し発展させる。</p>
+					<p class="imgPara"><img src="../img/lecture001_003a.jpg"></p>
+					<p>
+						　上の画像で、右端に接してる１から、Ａのどちらかに地雷があると考えられる。また、上端に接してる１から、Ｂのどちらかにも地雷があると考えられる。<br />
+						　ここで、中央の２は、ＡのエリアもＢのエリアもカバーしており、さらにこのＡとＢの４つの内どこか２つが地雷である事が確定している。<br />
+						　この事から、Ｃの部分には地雷が無く、安全に開けられる事がわかる。
+					</p>
+					<p class="imgPara"><img src="../img/lecture001_003b.jpg"></p>
+				</div>
+			</section>
+
+			<section>
+				<header class="pageHeader" id="2_1">■2.1　１・２の法則</header>
+				<div>
+					<p>　開けた場所にある２とその隣にある１から、開けられるマスが確定する法則。</p>
+					<p class="imgPara"><img src="../img/lecture002_001a.jpg"></p>
+					<p>
+						　上の画像のような開けた場所に1.2がある場合を考える。<br />
+						　まず、ここでＣの前の２から想定される地雷の配置パターンを考えてみる。<br /><br />
+					</p>
+					<div class="boxContainer lineImage">
+						<div class="box">
+							<div>Ⅰ</div>
+							<div><img src="../img/lecture002_001b.jpg"></div>
+						</div>
+						<div class="box">
+							<div>Ⅱ</div>
+							<div><img src="../img/lecture002_001c.jpg"></div>
+						</div>
+						<div class="box">
+							<div>Ⅲ</div>
+							<div><img src="../img/lecture002_001d.jpg"></div>
+						</div>
+					</div>
+					<p>
+						　ここで、Ⅰの配置は、2の隣にある１の条件に矛盾する。すなわち、考えられる地雷配置パターンはⅡ、Ⅲのどちらか。<br />
+						　また、Ⅱ、Ⅲの配置では「Ｄが地雷」、「Ａが安全マス」という事が共通している。<br />
+						　この事から、Ｄには地雷があり、Ａは開けられる。<br /><br />
+					</p>
+					<p class="imgPara"><img src="../img/lecture002_001e.jpg"></p>
+					<p>
+						　つまり１・２の法則は、１・２が開けた場所で接している場合、２の斜め前（１とは反対方面）のマスが地雷で、１の斜め前（２とは反対方面）のマスが安全になるという法則である。<br />
+						　また下のように１が開けた場所に無い場合でも、２が開けた場所にあれば１・２の法則は適用できる。<br /><br />
+					</p>
+					<p class="imgPara"><img src="../img/lecture002_001f.jpg"></p>
+					<p class="imgPara"><img src="../img/lecture002_001g.jpg"></p>
+					<p>
+						　１・２の法則で旗のある場所が確定する。この時、右側中央の２からＡのマスのどちらかに地雷がある事がわかる。<br />
+						　それを踏まえてその上の１を見ると、消去法を使ってＢの部分には地雷が無い事がわかる。<br /><br />
+					</p>
+					<p class="imgPara"><img src="../img/lecture002_001h.jpg"></p>
+				</div>
+			</section>
+			
+
+			<section>
+				<header class="pageHeader" id="2_2">■2.2　１・２・１の法則</header>
+				<div>
+					<p>　１・２の法則の発展型。１・２の法則をマスターしていいれば覚えなくても導ける。</p>
+					<p class="imgPara"><img src="../img/lecture002_002a.jpg"></p>
+					<p>上の画像で中央の２を軸に、左右の１で「１・２」、「２・１」の形で１・２の法則を適用し、地雷の位置を割り出す。</p>
+					<p class="imgPara"><img src="../img/lecture002_002b.jpg"></p>
+					<p class="imgPara"><img src="../img/lecture002_002c.jpg"></p>
+					<p>開けられる部分を開ける。</p>
+					<p class="imgPara"><img src="../img/lecture002_002d.jpg"></p>
+					<p>このように１・２・１と並んでいる場合、１の前が地雷で、２の前は安全という形が出来あがる。</p>
+				</div>
+			</section>
+
+			<section>
+				<header class="pageHeader" id="2_3">■2.3　１・２・２・１の法則</header>
+				<div>
+					<p>　１・２の法則の発展型。１・２の法則をマスターしていいれば覚えなくても導ける。</p>
+					<p class="imgPara"><img src="../img/lecture002_003a.jpg"></p>
+					<p>　上の画像で中央の「１・２」と並んでる部分と「２・１」と並んでいる部分にそれぞれ１・２の法則を使って地雷の位置を割り出しせる。</p>
+					<p class="imgPara"><img src="../img/lecture002_003b.jpg"></p>
+					<p>開けられる部分を開ける。</p>
+					<p class="imgPara"><img src="../img/lecture002_003c.jpg"></p>
+					<p>このように１・２・２・１と並んでいる場合、２の前が地雷で、１の前は安全という形が出来あがる。</p>
+				</div>
+			</section>
+
+		</article>
+			
+	</main>
+
+	<!-- フッター -->
+	<footer>
+		Copyright (C) 2009-2012 <a href="http://studiowool.web.fc2.com/">Studio Wool</a> All Rights Reserved.
+	</footer>
+
+</body>
+
+
+</html>

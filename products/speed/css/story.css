@@ -1,0 +1,22 @@
+article {
+	background-image: url(../img/story.jpg);
+	font-size: 1.3em;
+	color: #000000;
+	text-shadow:
+		0px -2px #fff,
+		-2px -2px #fff,
+		2px 0px #fff,
+		0px 2px #fff,
+		-2px 2px #fff;
+	padding-top: 20px;
+	padding-bottom: 10px;
+	font-weight: bold;
+}
+
+article > p {
+	margin: 5px 0px 5px 5px;
+}
+
+p.br {
+	margin-bottom: 1em;
+}

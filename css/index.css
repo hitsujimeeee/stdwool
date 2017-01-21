@@ -1,0 +1,33 @@
+main > div {
+	text-align: center;
+}
+.siteName {
+	margin: auto;
+	margin-top: 100px;
+	font-size: 1.4em;
+}
+
+.mascot {
+	margin-top: 20px;
+}
+
+.mascot img {
+	border-style: none;
+	width:260px;
+}
+
+.enterLink {
+	margin-top: 10px;
+	font-size: 3em;
+	margin-bottom: 30px;
+}
+
+.enterLink a {
+	color: #aaaaaa;
+	font-family: serif;
+	letter-spacing: 5px;
+}
+
+.enterLink a:hover {
+	color: #ffffff;
+}

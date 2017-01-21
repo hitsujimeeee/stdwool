@@ -1,0 +1,59 @@
+.topGraphDiv {
+	line-height: 0px;
+}
+
+
+.leftContents {
+	width: 320px;
+	height: 300px;
+	font-size: 0.9em;
+	background-color: #666666;
+}
+
+.rightContents {
+	width: 470px;
+	padding-left:10px;
+	height: 300px;
+}
+
+
+header.news {
+	background: -webkit-radial-gradient(100% 50%, circle, #222 0%, #777 55%, #222 100%);
+	background: radial-gradient(100% 50%, circle, #222 0%, #777 55%, #222 100%);
+	font-size:1.8em;
+}
+
+dl.newsList {
+	margin-top: 5px;
+}
+
+
+dl.newsList dt {
+	padding-left:5px;
+	width:130px;
+	/* 左寄せ */
+	  float : left;
+	/* float解除 */
+	  clear : both;
+}
+ 
+dl.newsList dd{
+/* dtの幅分の設定 */
+  margin-left : 135px;
+}
+
+.topic {
+	color:#000000;
+	font-weight: bold;
+	background-image:url(../img/bg.png);
+}
+
+.banner_item {
+	width:320px;
+	margin-left: 10px;
+	border: 0px;
+}
+
+.topic > p {
+	margin-bottom: 5px;
+}

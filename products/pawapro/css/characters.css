@@ -1,0 +1,63 @@
+table td, table th{
+	min-width: 2.5em;
+	text-align: center;
+}
+
+.modern {
+}
+
+section {
+	margin: 1.5em 3em;
+}
+
+h2 {
+	text-align: center;
+}
+
+
+section div {
+	display: float;
+}
+
+.userForm > div {
+	line-height: 2.2em;
+	display: inline;
+	margin-right: 0.5em;
+	white-space: nowrap;
+}
+
+
+.userForm > div * {
+	line-height: 1.5em;
+}
+
+input {
+	width:8em;
+}
+
+.rankGraph {
+	width:2em;
+}
+
+
+div.remodalMsg {
+	margin-bottom: 2em;
+}
+
+section > header {
+	font-size:1.2em;
+}
+
+i {
+	margin-right: .2em;
+}
+
+.charaFaceCell {
+	width:4em;
+	height:4em;
+}
+
+.charaFace {
+	width:4em;
+	border: none;
+}

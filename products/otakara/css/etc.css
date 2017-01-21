@@ -1,0 +1,33 @@
+.lecturePara {
+	width: 600px;
+	margin: auto;
+	padding-top: 20px;
+}
+
+dl {
+	margin: auto;
+	max-width: 300px;
+	border: 1px solid #000;
+}
+
+dt {
+	background-color: #000;
+	color: #ffffff;
+}
+
+dd {
+	margin-bottom: 3px;
+	margin-top: 3px;
+}
+
+.torisetsuDiv {
+	text-align: center;
+	padding-top: 60px;
+	padding-bottom: 40px;
+	font-size: 2em;	
+}
+
+section {
+	padding-bottom: 20px;
+}
+

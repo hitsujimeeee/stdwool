@@ -1,0 +1,55 @@
+.productSectionHeader {
+	background-color: #666666;
+	width:700px;
+	margin: auto;
+	color: #ffffff;
+	font-size: 1.2em;
+	margin-bottom:20px;
+}
+
+.productSectionHeader a:link,
+.productSectionHeader a:visited,
+.productSectionHeader a:active,
+.productSectionHeader a:hover {
+	color: #ffffff;
+}
+
+
+article {
+	background-image:url(../img/bg.png);
+	color:#000000;
+	padding-top: 20px;
+}
+
+.productContainer {
+	margin: auto;
+	width:650px;
+}
+
+.itemGraph {
+	width:300px;
+	margin-right: 50px;
+}
+
+.itemLink {
+	width:300px;
+	height:220px;
+	background-color: #cccccc;
+}
+
+.itemLink > div {
+	font-size: 2em;
+	margin: auto;
+	margin-top: 60px;
+	text-align: center;
+}
+
+section {
+	padding-bottom: 40px;
+}
+
+ul.speed_try_disc {
+	font-size:0.9em;
+	margin: 5px;
+
+}

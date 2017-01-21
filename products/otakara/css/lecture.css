@@ -1,0 +1,27 @@
+section > div > p {
+	max-width: 600px;
+	margin: auto;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	font-size: 1.1em;
+}
+
+section > div > p.imgPara {
+	margin: auto;
+	text-align: center;
+	margin-top: 20px;
+}
+
+section > div {
+	margin-bottom: 20px;
+}
+
+.lineImage {
+	width: 560px;
+	margin: auto;
+}
+
+.lineImage > .box {
+	margin-left: 5px;
+	margin-right: 5px;
+}

@@ -1,0 +1,74 @@
+.topGraphDiv {
+	line-height: 0px;
+	position: relative;
+}
+
+.topGraphDiv > div {
+	position: absolute;
+	right: 20px;
+	bottom: 0px;
+	height: 100%;
+	width: 218px;
+}
+
+img.topGraph {
+	width: 800px;
+}
+
+.news > header {
+	height: 30px;
+	width: 284px;
+	font-size: 1.5em;
+	padding-left: 10px;
+	background-color: #723A00;
+	-webkit-background-size: 4px 4px;
+	background-size: 4px 4px;
+	background-color: #0cc;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(.5, #66eeee), color-stop(.5, transparent), to(transparent));
+	background-image: linear-gradient(#66eeee 50%, transparent 50%, transparent);	
+	text-shadow:
+		0px -1px #fff,
+		-1px -1px #fff,
+		1px 0px #fff,
+		0px 1px #fff,
+		-1px 1px #fff;
+}
+
+.news,
+.topics {
+	background-color: #ffffff;
+}
+
+
+.news > div {
+	margin: 0px;
+	width: 294px;
+	height: 294px;
+	color:#000000;
+	font-size:0.9em;
+}
+
+.topics {
+	width: 494px;
+	height: 324px;
+}
+
+dl.newsList {
+	margin: 0px;
+}
+
+
+dl.newsList dt {
+	padding-left:5px;
+	width:120px;
+	/* 左寄せ */
+	  float : left;
+	/* float解除 */
+	  clear : both;
+}
+ 
+dl.newsList dd{
+/* dtの幅分の設定 */
+  margin-left : 125px;
+}
+

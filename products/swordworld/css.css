@@ -1,0 +1,72 @@
+body {
+	font-family: "Meiryo UI"
+	
+}
+
+div.header {
+	font-size: 32px;
+}
+
+div.footer {
+	font-family: "Times New Roman";
+	font-style: italic;
+	font-size: 12px;
+	text-align: center;
+	padding: 3px 0px;
+}
+
+div.baseInfo-line {
+	margin-bottom: 10px;
+}
+span.inline-input div, input.inline-input, inline-select{
+	display: inline;
+}
+
+
+table.modern {
+	border: 2px #000000 solid;
+	margin-bottom: 10px;
+}
+
+table.modern th {
+	background-color: #000000;
+	font-weight:normal;
+	padding:0px;
+	color: #ffffff;
+}
+
+table.modern td, table.diceTable th{
+	padding:0px;
+}
+
+table.statusTable td {
+	min-width:40px;
+	
+}
+
+
+div.valvePanel {
+	margin-bottom: 15px;
+}
+
+div.characteristic {
+	padding-top: 10px;
+	font-weight:bold;
+}
+
+
+span.statusBonus {
+ 	font-weight:bold;
+}
+
+option.pholder {
+	
+}
+
+tr.showCol {
+	display: block;
+}
+
+tr.hideCol {
+	display: none;
+}
