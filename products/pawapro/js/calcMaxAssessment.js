@@ -88,7 +88,7 @@ var calcMaxAssessmentModule = (function() {
 					ability:charaData.getAbilityList(0)
 				};
 				data = commonModule.getAsyncData('getMaxAssessmentStatus', JSON.stringify(data));
-				commonModule.finishCalcMaxAssessment(data);
+				calcMaxAssessmentModule.finishCalcMaxAssessment(data);
 				return;
 			}
 
@@ -145,7 +145,7 @@ var calcMaxAssessmentModule = (function() {
 		getRealAssessmentPoint: function(array, baseNowAssessment, abNowAssessment){
 			var newbaseNowAssessment = baseNowAssessment + array[0];
 			var newabNowAssessment = abNowAssessment + array[1];
-			return newbaseNowAssessment + 7.84 * Math.round(newbaseNowAssessment/47.04) + newabNowAssessment;
+			return newbaseNowAssessment + 7.84 * Math.round(newbaseNowAssessment/47.04) + 11.27 + newabNowAssessment;
 		},
 
 
@@ -186,7 +186,44 @@ var calcMaxAssessmentModule = (function() {
 				sum += point[i];
 			}
 			return sum;
-		}
+		},
+
+
+		finishCalcMaxAssessment: function(data) {
+			var obj = $('#tab2 .basePointInput');
+
+			//基礎能力
+			for(var i = 0; i < data.baseAbility.length; i++) {
+				obj.eq(i).val(data.baseAbility[i]);
+			}
+
+			//特能
+			for (var i = 0; i < data.ability.length; i++) {
+				charaData.setAbilityList(1, i, data.ability[i]);
+			}
+
+			for (var i = 0; i < charaData.getSubPosition(1).length; i++) {
+				charaData.setSubPosition(1, i, charaData.getSubPosition(0, i));
+			}
+
+			//サブポジキャッチャー
+			if(!commonModule.isCatcher() && charaData.getAbilityList(1, 6) !== null) {
+				charaData.setSubPosition(1, 0, {id:"1", name:"捕手", color:"0"});
+				$('#tab2 .subPositionList a').eq(0).addClass('selectedSubPosition');
+			}
+
+
+			commonModule.calcExpPoint();
+			$.unblockUI();
+			clearTimeout(timer);
+		},
+
+		ErrorCalcMaxAssessment: function (data) {
+			$('#errorMsg').html('エラーが発生しました。管理者にお問い合わせください。');
+			setTimeout($.unblockUI, 3000);
+			clearTimeout(timer);
+		},
+
 
 
 	};

@@ -128,7 +128,7 @@ var module = (function() {
 				}
 			}
 
-			basePoint = basePoint + 7.84 * Math.round(basePoint/47.04);
+			basePoint = basePoint + 7.84 * Math.round(basePoint/47.04) + 11.27;
 
 			var list = charaData.getAbilityList().filter(function (elt) {
 				return elt;

@@ -262,7 +262,7 @@
 						<p>【基礎能力】<span id="baseAbilityCharaData"></span></p>
 						<p>【特殊能力】</p>
 						<div><ul id="abilityCharaData"></ul></div>
-						<p>【査定】<span id="assessmentPointCharaData"></span><meter value="0" min="0" max="10" low="10" high="10" optimum="12" id="assessmentPointMeter"></meter></p>
+						<p>【査定】<span id="assessmentPointCharaData"></span><meter value="0" min="0" max="10" low="11" high="12" optimum="11" id="assessmentPointMeter"></meter></p>
 					</div>
 
 					<p>---------------------</p>

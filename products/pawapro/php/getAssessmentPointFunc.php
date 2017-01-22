@@ -22,7 +22,7 @@ function getAssessmentPointOfBaseAbility($dbh, $basePointAim) {
 		$point += $row['ASSESSMENT'];
 		$sth = null;
 	}
-	$point = $point + 7.84 * round($point / 47.04);
+	$point = $point + 7.84 * round($point / 47.04) + 11.27;
 	return $point;
 }
 

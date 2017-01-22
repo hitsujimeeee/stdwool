@@ -39,12 +39,12 @@ $(function() {
 		commonModule.setPreviewImage(e);
 	});
 
-	$('.floatMenu').on('click', function() {
-		var iList = ["fa-list-alt", "fa-repeat"],
-			mode = (+$('.floatMenu').attr('mode') + 1)%2;
-			$('.floatMenu').attr('mode', mode);
-		$('.floatMenu i').removeClass(iList.join(' ')).addClass(iList[mode]);
-	});
+//	$('.floatMenu').on('click', function() {
+//		var iList = ["fa-list-alt", "fa-repeat"],
+//			mode = (+$('.floatMenu').attr('mode') + 1)%2;
+//			$('.floatMenu').attr('mode', mode);
+//		$('.floatMenu i').removeClass(iList.join(' ')).addClass(iList[mode]);
+//	});
 
 
 	charaData.init();
@@ -341,7 +341,6 @@ var commonModule = (function() {
 			var obj = $('#tab' + tabType + ' ul.abilityDisplay li');
 
 			commonModule.refreshAbilityList();
-			$('.floatMenu').removeClass('hiddenDisplay');
 			$.remodal.lookup[$('[data-remodal-id=modal]').data('remodal')].open();
 		},
 
@@ -412,7 +411,6 @@ var commonModule = (function() {
 			modalMode = typeof(mode) === 'undefined' ? 1 : mode;
 			selectAbility = id;
 			selectedDisplayIndex = displayIndex;
-			$('.floatMenu').addClass('hiddenDisplay');
 
 
 			//ラジオボタンにクリック処理を加える
@@ -521,7 +519,6 @@ var commonModule = (function() {
 
 					commonModule.refreshDisplayAbility();
 					$.remodal.lookup[$('[data-remodal-id=modal]').data('remodal')].close();
-					$('.floatMenu').addClass('hiddenDisplay');
 					break;
 				case 1:
 				case 2:
@@ -560,7 +557,6 @@ var commonModule = (function() {
 					} else {
 						this.switchModalScreen(0);
 						$('.remodal-wrapper').scrollTop(scrollHeight);
-						$('.floatMenu').addClass('hiddenDisplay');
 					}
 					modalMode = 0;
 					break;
@@ -573,14 +569,12 @@ var commonModule = (function() {
 				case 0:
 					commonModule.refreshDisplayAbility();
 					$.remodal.lookup[$('[data-remodal-id=modal]').data('remodal')].close();
-					$('.floatMenu').addClass('hiddenDisplay');
 					break;
 				case 1:
 					this.switchModalScreen(0);
 					modalMode = 0;
 					$('.remodal-wrapper').scrollTop(scrollHeight);
 					$("input[name=abilityGroup]").prop('checked', false);
-					$('.floatMenu').removeClass('hiddenDisplay');
 					break;
 				case 2:
 					$.remodal.lookup[$('[data-remodal-id=modal]').data('remodal')].close();
@@ -895,64 +889,7 @@ var commonModule = (function() {
 
 		},
 
-		calcMaxAssessment: function () {
-			var basePointNow = [],
-				dataAbilityNow = [],
-				trickLevel = [],
-				StrickLevel = [],
-				baseTrickLevel = [],
-				ability = [],
-				expPoint = [],
-				obj = $('#tab1 .basePointInput');
-
-			commonModule.showBlockMessage('<i class="fa fa-spinner fa-pulse"></i> <span id="blockMessage">処理中...</span><div id="errorMsg"></div>');
-
-
-
-			for (var i = 0; i < obj.length; i++) {
-				basePointNow[i] = Number(obj.eq(i).val());
-			}
-
-			var abNow = charaData.getAbilityList(0);
-
-			for (var i = 0; i < abNow.length; i++) {
-				ability[i] = {
-					"id":abNow[i] ? abNow[i].id: null,
-					"trickLevel":charaData.getTrickLevel(i),
-					"StrickLevel":charaData.getSTrickLevel(i),
-				};
-			}
-
-			obj = $('.baseTrickSlider');
-			for (var i = 0; i < obj.length; i++) {
-				baseTrickLevel[i] = Number(obj.eq(i).labeledslider("value"));
-			}
-
-
-			obj = $('.pointInput');
-			for (var i = 0; i < obj.length; i++) {
-				expPoint[i] = Number(obj.eq(i).val());
-			}
-
-
-			var data = {
-				"basePoint":basePointNow,
-				"ability":ability,
-				"baseTrickLevel": baseTrickLevel,
-				"sense": charaData.getSensePer(),
-				"expPoint": expPoint,
-				"isCather":commonModule.isCatcher(),
-				"nonCatcher":$('#nonCatcher').prop("checked")
-			};
-
-			data = commonModule.getAsyncData('calcMaxAssessment', JSON.stringify(data), commonModule.finishCalcMaxAssessment, commonModule.ErrorCalcMaxAssessment);
-			timer = setTimeout(commonModule.ErrorCalcMaxAssessment, 30000);
-
-		},
-
-
 		finishCalcMaxAssessment: function(data) {
-//			console.log(data.targetList);
 			var obj = $('#tab2 .basePointInput');
 
 			//基礎能力
@@ -982,7 +919,6 @@ var commonModule = (function() {
 		},
 
 		ErrorCalcMaxAssessment: function (data) {
-//			console.log(data.responseText);
 			$('#errorMsg').html('エラーが発生しました。管理者にお問い合わせください。');
 			setTimeout($.unblockUI, 3000);
 			clearTimeout(timer);
