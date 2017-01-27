@@ -78,7 +78,7 @@
 				</section>
 
 				<section class="abilitySection">
-					<p>■特殊能力<button onclick="commonModule.openModalWindow(0);" class="addAbility"><i class="fa fa-sign-in"></i>追加</button></p>
+					<p>■特殊能力<button onclick="commonModule.openModalWindow(0);" class="addAbility"><i class="fa fa-sign-in"></i>追加</button><span class="abilityCount">0個</span></p>
 					<div class="displayAbility"></div>
 				</section>
 
@@ -150,7 +150,7 @@
 				</section>
 
 				<section class="abilitySection">
-					<p>■特殊能力<button onclick="commonModule.openModalWindow(1);" class="addAbility"><i class="fa fa-sign-in"></i>追加</button></p>
+					<p>■特殊能力<button onclick="commonModule.openModalWindow(1);" class="addAbility"><i class="fa fa-sign-in"></i>追加</button><span class="abilityCount">0個</span></p>
 					<div class="displayAbility"></div>
 				</section>
 

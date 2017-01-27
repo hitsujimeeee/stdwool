@@ -59,7 +59,7 @@
 				</section>
 
 				<section class="abilitySection">
-					<p>■特殊能力<button onclick="commonModule.openModalWindow(0);" class="addAbility"><i class="fa fa-sign-in"></i>追加</button></p>
+					<p>■特殊能力<button onclick="commonModule.openModalWindow(0);" class="addAbility"><i class="fa fa-sign-in"></i>追加</button><span class="abilityCount">0個</span></p>
 					<div class="displayAbility"></div>
 				</section>
 
@@ -113,7 +113,7 @@
 				</section>
 
 				<section class="abilitySection">
-					<p>■特殊能力<button onclick="commonModule.openModalWindow(1);" class="addAbility"><i class="fa fa-sign-in"></i>追加</button></p>
+					<p>■特殊能力<button onclick="commonModule.openModalWindow(1);" class="addAbility"><i class="fa fa-sign-in"></i>追加</button><span class="abilityCount">0個</span></p>
 					<div class="displayAbility"></div>
 				</section>
 
@@ -241,6 +241,7 @@
 						</tr>
 
 					</table>
+					<p class="optionChkArea"><input type="checkbox" id="nonAssessment">査定値を表示しない</p>
 				</section>
 
 
@@ -287,7 +288,7 @@
 							<td class="ownPointTotal"></td>
 						</tr>
 					</table>
-					<p><input type="checkbox" id="nonCatcher">キャッチャー○を取得しない</p>
+					<p class="optionChkArea"><input type="checkbox" id="nonCatcher">キャッチャー○を取得しない</p>
 
 
 				</section>
@@ -296,8 +297,8 @@
 					<div class="userForm">
 						<div><span>ユーザー名:<input id="userName" type="text" maxlength="20"></span></div>
 						<div><span>パスワード:<input id="userPassword" type="text" maxlength="20"></span></div>
+						<p><button class="exec save"onclick="commonModule.saveCharaData(0)">保存</button></p>
 					</div>
-					<p><button class="exec save"onclick="commonModule.saveCharaData(0)">保存</button></p>
 				</section>
 			</div>
 

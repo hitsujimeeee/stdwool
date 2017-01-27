@@ -670,6 +670,7 @@ var commonModule = (function() {
 			}
 			var abilityList = charaData.getAbilityList(idx);
 			var str = '<ul class="abilityDisplay">';
+			var count = 0;
 			for (var i = 0; i < abilityList.length; i++) {
 				var ability = abilityList[i];
 				if (ability) {
@@ -678,11 +679,13 @@ var commonModule = (function() {
 						changeTypeStr = charaData.getAbilityList(0, i) === null ? '<span>new</span>' : (ability.id === charaData.getAbilityList(0, i).id ? '' : '<span><i class="fa fa-level-up changeIcon" aria-hidden="true"></i><i class="fa fa-level-up changeIcon" aria-hidden="true"></i></span>');
 					}
 					str += '<li class="' + abTypeClass[Number(ability.type)] + '"><a onclick="javascript:commonModule.openAbilityDetailDirect(\'' + i +'\')">' + ability.name + changeTypeStr + '</a></li>';
+					count++;
 				}
 			}
 			str += '</ul>';
 
 			$('#tab' + (idx + 1) +' .displayAbility').html(str);
+			$('#tab' + (idx + 1) +' .abilityCount').html(count + '個');
 
 		},
 
@@ -926,6 +929,16 @@ var commonModule = (function() {
 
 
 		updateAssessmentPoint: function () {
+			var chk = $('#nonAssessment').prop("checked");
+			localStorage.setItem('nonAssessment', JSON.stringify(chk));
+
+			if (chk) {
+				$('#assessmentPointCharaData').html('');
+				$('#assessmentPointMeter').val(0);
+				return;
+			}
+
+
 			var obj = $('#tab2 .basePointInput'),
 				basePoint = [];
 			for (var i = 0; i < obj.length; i++) {

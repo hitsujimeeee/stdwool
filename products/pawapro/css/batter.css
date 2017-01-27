@@ -58,6 +58,10 @@ nav> ul: after,
 	box-sizing: border-box;
 }
 
+table.maxAssessment {
+	margin-left: 0.5em;
+}
+
 .maxAssessment td:last-child {
 	width:3em;
 }
@@ -614,7 +618,7 @@ ul#abilityCharaData:after {
 
 
 .needExp {
-	margin-left:10px;
+	margin-left:0.5em;
 }
 .needExp td {
 	height: 1.5em;
@@ -637,8 +641,9 @@ select#mainPosition {
 	margin-left: 10px;
 }
 
-.userForm > div {
+.userForm > div, .userForm > p {
 	margin-bottom: 0.5em;
+	margin-left: 0.5em;
 }
 
 .userForm input {
@@ -776,3 +781,19 @@ div#abilityModal div.groupHeader{
 	font-family: FontAwesome;
 }
 
+.abilityCount {
+	padding-left: 1em;
+	width:3em;
+	font-size: 1.5em;
+	font-style: italic;
+	color:#fff03b;
+	text-shadow:
+		-1px 0px #000,
+		0px -1px #000,
+		1px 0px #000,
+		0px 1px #000;
+}
+
+.optionChkArea {
+	padding-left: 0.5em;
+}
