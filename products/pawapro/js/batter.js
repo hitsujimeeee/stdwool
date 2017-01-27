@@ -8,6 +8,11 @@ $(function () {
 		};
 	commonModule.getAsyncData('abilityGroupList', JSON.stringify({pageType:0}), loadSuccess, loadError);
 
+	//ローカルストレージから査定地を表示しないフラグを取得
+	var chk = localStorage.getItem('nonAssessment');
+	$('#nonAssessment').prop('checked', chk !== null ? JSON.parse(chk) : false);
+
+
 	$('.tabMenu').click(function () {
 		var idx = $('.tabMenu').index(this);
 		if (commonModule.getTabType() === idx) return;
