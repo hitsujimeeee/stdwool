@@ -28,11 +28,16 @@ $(function() {
 
 var IndividModule = (function() {
 	var makingType = 1;
+	var makingStr = 'pitcher';
 
 	return {
 
 		getMakingType: function () {
 			return makingType;
+		},
+
+		getMakingStr: function () {
+			return makingStr;
 		},
 
 		updateBaseAbilityRank : function () {

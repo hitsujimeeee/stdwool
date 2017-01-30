@@ -765,7 +765,6 @@ div#abilityModal div.groupHeader{
 	position: fixed;
 	background-color: rgba(0, 0, 0, 0.5);
 	color: #fff;
-	z-index: 100000;
 	right: 0;
 	bottom: 0;
 }
@@ -796,4 +795,23 @@ div#abilityModal div.groupHeader{
 
 .optionChkArea {
 	padding-left: 0.5em;
+}
+
+.templateOption{
+	display: flex;
+	width: 80%;
+	max-width: 360px;
+	flex-direction: column;
+	margin: auto;
+
+}
+
+.templateOption > div {
+	margin-bottom: 1em;
+	text-align: center;
+}
+
+.templateOption button {
+	border-radius: 4px;
+	padding: 0.2em; 0.5em;
 }

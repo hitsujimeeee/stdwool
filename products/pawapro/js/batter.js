@@ -49,6 +49,7 @@ $(function () {
 
 var IndividModule = (function () {
 	var makingType = 0;
+	var makingStr = 'batter';
 
 	return {
 
@@ -56,6 +57,11 @@ var IndividModule = (function () {
 		getMakingType: function () {
 			return makingType;
 		},
+
+		getMakingStr: function () {
+			return makingStr;
+		},
+
 
 		updateBaseAbilityRank: function () {
 			var array = $('#tab' + (commonModule.getTabType() + 1) + ' .basePointInput');

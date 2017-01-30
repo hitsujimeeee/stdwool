@@ -1,5 +1,5 @@
 /*jslint browser: true*/
-/*global $, jQuery, alert, IndividModule*/
+/*global $, jQuery, alert, IndividModule, commonModule, charaData */
 /*jslint shadow:true*/
 
 var calcMaxAssessmentModule = (function() {
@@ -53,6 +53,7 @@ var calcMaxAssessmentModule = (function() {
 				"sense": charaData.getSensePer(),
 				"expPoint": expPoint,
 				"isCather":commonModule.isCatcher(),
+				"nonMoody":$('#nonMoody').prop("checked"),
 				"nonCatcher":$('#nonCatcher').prop("checked")
 			};
 
@@ -215,13 +216,11 @@ var calcMaxAssessmentModule = (function() {
 
 			commonModule.calcExpPoint();
 			$.unblockUI();
-			clearTimeout(timer);
 		},
 
 		ErrorCalcMaxAssessment: function (data) {
 			$('#errorMsg').html('エラーが発生しました。管理者にお問い合わせください。');
 			setTimeout($.unblockUI, 3000);
-			clearTimeout(timer);
 		},
 
 

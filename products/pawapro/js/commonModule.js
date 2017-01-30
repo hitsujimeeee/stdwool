@@ -318,7 +318,6 @@ var commonModule = (function() {
 		selectAbility = 0,
 		selectedDisplayIndex = 0,
 		scrollHeight = 0,
-		timer,
 		abTypeClass = ['selectedAbility', 'selectedSAbility', 'selectedBAbility', 'selectedPAbility', 'selectedHAbility', 'selectedGAbility'],
 		subposTypeClass = ['catcher', 'infield', 'outfield', 'pitcher'],
 		abilityGroupList = null;
@@ -892,42 +891,6 @@ var commonModule = (function() {
 
 		},
 
-		finishCalcMaxAssessment: function(data) {
-			var obj = $('#tab2 .basePointInput');
-
-			//基礎能力
-			for(var i = 0; i < data.baseAbility.length; i++) {
-				obj.eq(i).val(data.baseAbility[i]);
-			}
-
-			//特能
-			for (var i = 0; i < data.ability.length; i++) {
-				charaData.setAbilityList(1, i, data.ability[i]);
-			}
-
-			for (var i = 0; i < charaData.getSubPosition(1).length; i++) {
-				charaData.setSubPosition(1, i, charaData.getSubPosition(0, i));
-			}
-
-			//サブポジキャッチャー
-			if(!commonModule.isCatcher() && charaData.getAbilityList(1, 6) !== null) {
-				charaData.setSubPosition(1, 0, {id:"1", name:"捕手", color:"0"});
-				$('#tab2 .subPositionList a').eq(0).addClass('selectedSubPosition');
-			}
-
-
-			commonModule.calcExpPoint();
-			$.unblockUI();
-			clearTimeout(timer);
-		},
-
-		ErrorCalcMaxAssessment: function (data) {
-			$('#errorMsg').html('エラーが発生しました。管理者にお問い合わせください。');
-			setTimeout($.unblockUI, 3000);
-			clearTimeout(timer);
-		},
-
-
 		updateAssessmentPoint: function () {
 			var chk = $('#nonAssessment').prop("checked");
 			localStorage.setItem('nonAssessment', JSON.stringify(chk));
@@ -1123,6 +1086,51 @@ var commonModule = (function() {
 				};
 			})(file);
 			reader.readAsDataURL(file);
+		},
+
+
+		saveAbilityTemplate: function () {
+			//後で makingStr = IndividModule.getMakingStr()に変更
+			var makingStr = (['batter', 'pitcher'])[IndividModule.getMakingType()];
+
+			var ability = charaData.getAbilityList(0).map(function (el) {
+				return el ? el.id : null;
+			});
+
+			localStorage.setItem(makingStr + 'AbilityTemplate', JSON.stringify(ability));
+			$.remodal.lookup[$('[data-remodal-id=doneTemplateModal]').data('remodal')].open();
+		},
+
+		setAbilityTemplate: function () {
+			//後で makingStr = IndividModule.getMakingStr()に変更
+			var makingStr = (['batter', 'pitcher'])[IndividModule.getMakingType()];
+			var template = localStorage.getItem(makingStr + 'AbilityTemplate');
+			if (template === null) {
+				alert('テンプレートが保存されていません');
+				return;
+			}
+
+			template = [JSON.parse(template)];
+			var count = charaData.getAbilityList(0).length;
+			for (var i = 0; i < count; i++) {
+				charaData.setAbilityList(0, i, null);
+				charaData.setAbilityList(1, i, null);
+			}
+
+			var abData = commonModule.getAsyncData('convertSaveAbility', JSON.stringify({ability:template}));
+			for (var i = 0; i < abData[0].length; i++) {
+				charaData.setAbilityList(0, i, abData[0][i]);
+				charaData.setAbilityList(1, i, abData[0][i]);
+			}
+
+			var ability = charaData.getAbilityList(0).map(function (el) {
+				return el ? el.id : null;
+			});
+			if(commonModule.getTabType() !== 2) {
+				commonModule.refreshDisplayAbility(commonModule.getTabType());
+			}
+			$.remodal.lookup[$('[data-remodal-id=optionModal]').data('remodal')].close();
+
 		}
 
 	};

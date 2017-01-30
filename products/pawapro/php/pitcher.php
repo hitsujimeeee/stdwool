@@ -460,6 +460,46 @@
 			</div>
 		</div>
 
+
+		<!-- フロートメニュー -->
+		<div class="floatMenu" mode="0" onclick="$.remodal.lookup[$('[data-remodal-id=optionModal]').data('remodal')].open();">
+			<i class="fa fa-cog fa-3x" aria-hidden="true"></i>
+		</div>
+
+		<!--オプション用モーダルウインドウ-->
+		<div id="optionModal" class="remodal" data-remodal-id="optionModal" data-remodal-options="hashTracking:false">
+			<button data-remodal-action="close" class="remodal-close"></button>
+			<div style="text-align:left;">
+				<h4><i class="fa fa-wrench" aria-hidden="true"></i>テンプレート設定</h4>
+				<hr class="abHr">
+				<div class="templateOption">
+					<div>
+						<button onclick="commonModule.setAbilityTemplate();">テンプレートを画面に反映</button>
+					</div>
+					<div>
+						<button onclick="$.remodal.lookup[$('[data-remodal-id=confirmTamplateModal]').data('remodal')].open();">入力内容をテンプレートに設定</button>
+					</div>
+				</div>
+			</div>
+			<div class="modalButton">
+				<button data-remodal-action="confirm" class="remodal-confirm">ClOSE</button>
+			</div>
+		</div>
+
+		<div id="confirmTamplateModal" class="remodal" data-remodal-id="confirmTamplateModal" data-remodal-options="hashTracking:false">
+			<p><i class="fa fa-info-circle" aria-hidden="true" style="color:#0ff"></i>現在値タブの特能設定値を<br>テンプレートに保存します。</p>
+			<div class="modalButton">
+				<button class="remodal-confirm" onclick="commonModule.saveAbilityTemplate();">OK</button>
+				<button data-remodal-action="cancel" class="remodal-cancel">Cancel</button>
+			</div>
+		</div>
+
+		<div id="doneTemplateModal" class="remodal" data-remodal-id="doneTemplateModal" data-remodal-options="hashTracking:false">
+			<p>テンプレートを保存しました。</p>
+			<div class="modalButton">
+				<button data-remodal-action="confirm" class="remodal-confirm">OK</button>
+			</div>
+		</div>
 	</main>
 	<?php include('../html/footer.html'); ?>
 </body>

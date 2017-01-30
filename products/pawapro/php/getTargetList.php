@@ -12,6 +12,7 @@ $abilityNow = $post['ability'];
 $baseTrickLevel = $post['baseTrickLevel'];
 $isCatcher = $post['isCather'];
 $nonCatcher = $post['nonCatcher'];
+$nonMoody = isset($post['nonMoody']) ? $post['nonMoody'] : 0;
 $expPoint = $post['expPoint'];
 array_splice($expPoint, 3, 1);
 $sense_per= $post['sense'];
@@ -172,6 +173,12 @@ try{
 		if($abilityGroup[$i]['flag'] === 0 || ($abilityGroup[$i]['id'] === 6 && $nonCatcher)) {
 			continue;
 		}
+
+		//気分屋除外
+		if($nonMoody && $abilityGroup[$i]['id'] === 38) {
+			continue;
+		}
+
 		$sql = '
 			SELECT D.ID,
 			--D.NAME,
