@@ -1,5 +1,5 @@
 /*jslint browser: true*/
-/*global $, alert, IndividModule, ga*/
+/*global $, alert, IndividModule, ga, abilityCount */
 /*jslint shadow:true*/
 
 var abilityData = null;
@@ -101,7 +101,7 @@ var charaData = (function() {
 
 		//配列初期化
 		init: function () {
-			var size = commonModule.getAsyncDataValue('getAbilityCount', null);
+			var size = abilityCount;
 
 			for (var i = 0; i < size; i++) {
 				abilityList[0][i] = null;

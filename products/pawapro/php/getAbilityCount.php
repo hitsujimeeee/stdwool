@@ -1,5 +1,5 @@
 <?php
-require 'global.php';
+require_once 'global.php';
 
 $count = 0;
 
@@ -19,7 +19,6 @@ try{
 }
 
 $dbh = null;
-header('Content-Type: application/json');
 echo (int)$count;
 
 ?>

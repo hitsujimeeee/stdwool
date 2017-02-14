@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="../css/pitcher.css">
 	<script src="../js/pitcher.js"></script>
 	<script src="../js/commonModule.js"></script>
+	<script>var abilityCount = <?php include('../php/getAbilityCount.php'); ?>;</script>
 </head>
 
 <body>
