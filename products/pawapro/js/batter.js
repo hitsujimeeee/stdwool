@@ -1,12 +1,5 @@
 /*global $, jQuery, alert, encodingParam, commonModule*/
 $(function () {
-	var loadSuccess = function(data) {
-		abilityData = JSON.parse(data);
-	},
-		loadError = function(res) {
-			alert("エラーが発生しました。ページを再読み込みしてください");
-		};
-	commonModule.getAsyncData('abilityGroupList', JSON.stringify({pageType:0}), loadSuccess, loadError);
 
 	//ローカルストレージから査定地を表示しないフラグを取得
 	var chk = localStorage.getItem('nonAssessment');

@@ -2,14 +2,6 @@
 /*jslint shadow:true*/
 
 $(function() {
-	var loadSuccess = function(data) {
-		abilityData = JSON.parse(data);
-	},
-		loadError = function(res) {
-			alert("エラーが発生しました。ページを再読み込みしてください");
-		};
-
-	commonModule.getAsyncData('abilityGroupList', JSON.stringify({pageType:1}), loadSuccess, loadError);
 
 	$('.changeBallInput').on('change', IndividModule.updateChangeBallRank);
 	$('.tabMenu').click(function() {

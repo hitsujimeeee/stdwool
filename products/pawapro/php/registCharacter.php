@@ -1,16 +1,14 @@
 <?php
 require_once 'global.php';
 require_once 'userCommonModule.php';
-require_once './lib/password.php';
-
 
 $json = file_get_contents('php://input');
 $post = json_decode($json, true);
 $name = $post['name'];
 $password = $post['password'];
 $charaId = $post['charaId'];
-$result = array('status'=>0, 'msg'=>'');
 $data = $post['data'];
+$result = array('status'=>0, 'msg'=>'');
 
 if($data === null) {
 	$result = array('status'=>-1, 'msg'=>'不正な登録値です。登録は失敗しました。');
@@ -28,10 +26,8 @@ if($data === null) {
 		$dbh = DB::connect();
 		$userId = getID($dbh, $name, $password);
 
-		//既に登録済みのユーザー
-		if($userId !== null) {
-		} else {
-			//未登録ユーザーの場合はユーザーを新規作成
+		//未登録ユーザーの場合はユーザーを新規作成
+		if($userId === null) {
 			$hashpass = password_hash($password, PASSWORD_DEFAULT);
 
 			$sql = 'INSERT INTO M_USER (NAME, PASSWORD) VALUES (:name, :password)';
@@ -42,27 +38,23 @@ if($data === null) {
 			$userId = getID($dbh, $name, $password);
 		}
 
-
+		$actStr = ''; //「更新」or「登録」
 		if(isExistCharacter($dbh, $charaId, $userId)) {
 			//既に選手データが存在している場合
 			$sql = 'UPDATE M_CHARACTER SET DATA = :data, UPDATE_DATE = NOW() WHERE ID = :id AND USER_ID = :userId';
-			$stmt = $dbh->prepare($sql);
-			$stmt -> bindParam('data', $data);
-			$stmt -> bindParam('id', $charaId);
-			$stmt -> bindParam('userId', $userId);
-			$stmt->execute();
-			$result = array('status'=>1, 'userId'=>$userId, 'charaId'=>$charaId, 'msg'=>'選手情報の更新を行いました。');
+			$actStr = '更新';
 		} else {
 			//選手データが存在していない場合
 			$charaId = makeCharacterId();
 			$sql = 'INSERT INTO M_CHARACTER (ID, USER_ID, DATA) VALUES (:id, :userId, :data)';
-			$stmt = $dbh->prepare($sql);
-			$stmt -> bindParam('id', $charaId);
-			$stmt -> bindParam('userId', $userId);
-			$stmt -> bindParam('data', $data);
-			$stmt->execute();
-			$result = array('status'=>1, 'userId'=>$userId, 'charaId'=>$charaId, 'msg'=>'選手情報の登録を行いました。');
+			$actStr = '登録';
 		}
+		$stmt = $dbh->prepare($sql);
+		$stmt -> bindParam('data', $data);
+		$stmt -> bindParam('id', $charaId);
+		$stmt -> bindParam('userId', $userId);
+		$stmt->execute();
+		$result = array('status'=>1, 'userId'=>$userId, 'charaId'=>$charaId, 'msg'=>'選手情報の' . $actStr . 'を行いました。');
 
 	}catch (PDOException $e){
 		die();
@@ -76,11 +68,11 @@ echo json_encode($result);
 exit;
 
 
-
-function isExistCharacter($dbh, $id, $userId) {
-	$sql = "SELECT COUNT(*) C FROM M_CHARACTER WHERE ID = :id AND USER_ID = :userId";
+//DB上に選手情報が存在するかチェック
+function isExistCharacter($dbh, $charaId, $userId) {
+	$sql = "SELECT COUNT(*) C FROM M_CHARACTER WHERE ID = :charaId AND USER_ID = :userId";
 	$stmt = $dbh->prepare($sql);
-	$stmt -> bindParam('id', $id);
+	$stmt -> bindParam('charaId', $charaId);
 	$stmt -> bindParam('userId', $userId);
 	$stmt->execute();
 	$row = $stmt->fetch(PDO::FETCH_ASSOC);

@@ -15,6 +15,7 @@ if(basename(realpath("./")) === 'pawapro') {
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
+				</button>
 			</div>
 			<div class="collapse navbar-collapse" id="nav_target">
 				<ul class="nav navbar-nav">

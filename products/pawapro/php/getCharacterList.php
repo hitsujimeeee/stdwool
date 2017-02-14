@@ -1,14 +1,13 @@
 <?php
 require_once 'global.php';
 require_once 'userCommonModule.php';
-require_once './lib/password.php';
-//
+
 $json = file_get_contents('php://input');
 $post = json_decode($json, true);
 $name = $post['name'];
 $password = $post['password'];
 $charaList = array();
-$temp = 'aaa';
+
 try{
 	$dbh = DB::connect();
 	$userId = getID($dbh, $name, $password);

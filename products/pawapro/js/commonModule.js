@@ -1,5 +1,5 @@
 /*jslint browser: true*/
-/*global $, jQuery, alert, IndividModule*/
+/*global $, alert, IndividModule, ga*/
 /*jslint shadow:true*/
 
 var abilityData = null;
@@ -39,13 +39,17 @@ $(function() {
 		commonModule.setPreviewImage(e);
 	});
 
-//	$('.floatMenu').on('click', function() {
-//		var iList = ["fa-list-alt", "fa-repeat"],
-//			mode = (+$('.floatMenu').attr('mode') + 1)%2;
-//			$('.floatMenu').attr('mode', mode);
-//		$('.floatMenu i').removeClass(iList.join(' ')).addClass(iList[mode]);
-//	});
-
+	//特能一覧取得
+	commonModule.getAsyncData(
+		'abilityGroupList',
+		JSON.stringify({pageType:IndividModule.getMakingType()}),
+		function(data) {
+			abilityData = JSON.parse(data);
+		},
+		function() {
+			alert("エラーが発生しました。ページを再読み込みしてください");
+		}
+	);
 
 	charaData.init();
 
@@ -208,7 +212,7 @@ var charaData = (function() {
 			return list;
 		},
 
-		fetchChangeBallTrickLevel: function (type) {
+		fetchChangeBallTrickLevel: function() {
 			var obj = $('.changeBallTrickSlider'),
 				list = [];
 			for (var i = 0; i < obj.length; i++) {
@@ -337,7 +341,6 @@ var commonModule = (function() {
 			modalMode = 0;
 			tabType = type;
 			this.switchModalScreen(0);
-			var obj = $('#tab' + tabType + ' ul.abilityDisplay li');
 
 			commonModule.refreshAbilityList();
 			$.remodal.lookup[$('[data-remodal-id=modal]').data('remodal')].open();
@@ -429,7 +432,9 @@ var commonModule = (function() {
 		},
 
 		openAbilityDetailDirect: function (id) {
-			if(abilityData === null) return;
+			if(abilityData === null) {
+				return;
+			}
 			commonModule.openAbilityDetail(-1, Number(id), 2);
 			$.remodal.lookup[$('[data-remodal-id=modal]').data('remodal')].open();
 		},
@@ -437,7 +442,6 @@ var commonModule = (function() {
 
 		setAbilityPointValue: function () {
 			var point = [0, 0, 0, 0, 0];
-			var val = checkVal;
 			var index = $('input[name=abilityGroup]').index($('input[name=abilityGroup][value='+checkVal+']'));
 			var trickMagList = [1, 0.7, 0.5, 0.4, 0.3, 0.2];
 			if (index !== -1) {
@@ -475,7 +479,9 @@ var commonModule = (function() {
 
 			function getAbility(list, id) {
 				for(var i = 0; i < list.length; i++) {
-					if(list[i].id === id) return list[i];
+					if(list[i].id === id){
+						return list[i];
+					}
 				}
 				return null;
 			}

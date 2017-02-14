@@ -1,32 +1,32 @@
 /*jslint browser: true*/
-/*global $, jQuery, alert, IndividModule, commonModule, charaData */
+/*global $, commonModule, charaData */
 /*jslint shadow:true*/
 
 var calcMaxAssessmentModule = (function() {
-	var MAP_MAX_SIZE = 12000,
-		CUT_FREQ = 10;
+	var MAP_MAX_SIZE = 15000,
+		CUT_FREQ = 12;
 	return {
 
+		//査定最大化
 		calcMaxAssessment: function() {
-			var basePointNow = [],
-				dataAbilityNow = [],
-				trickLevel = [],
-				StrickLevel = [],
-				baseTrickLevel = [],
-				ability = [],
-				expPoint = [],
-				obj = $('#tab1 .basePointInput');
+			var ability = [],
+				expPoint = [];
 
 			commonModule.showBlockMessage('<i class="fa fa-spinner fa-pulse"></i> <span id="blockMessage">処理中...</span><div id="errorMsg"></div>');
 
+			//基礎能力
+			var basePointNow = Array.prototype.map.call(document.querySelectorAll('#tab1 .basePointInput'), function(elt){
+				return Number(elt.value);
+			});
 
 
-			for (var i = 0; i < obj.length; i++) {
-				basePointNow[i] = Number(obj.eq(i).val());
-			}
+			//基礎能力コツ
+			var baseTrickLevel = Array.prototype.map.call(document.querySelectorAll('.baseTrickSlider'), function(elt){
+				return Number($(elt).labeledslider("value"));
+			});
 
+			//特能
 			var abNow = charaData.getAbilityList(0);
-
 			for (var i = 0; i < abNow.length; i++) {
 				ability[i] = {
 					"id":abNow[i] ? abNow[i].id: null,
@@ -35,16 +35,10 @@ var calcMaxAssessmentModule = (function() {
 				};
 			}
 
-			obj = $('.baseTrickSlider');
-			for (var i = 0; i < obj.length; i++) {
-				baseTrickLevel[i] = Number(obj.eq(i).labeledslider("value"));
-			}
-
-
-			obj = $('.pointInput');
-			for (var i = 0; i < obj.length; i++) {
-				expPoint[i] = Number(obj.eq(i).val());
-			}
+			//経験点
+			var expPoint = Array.prototype.map.call(document.querySelectorAll('.pointInput'), function(elt){
+				return Number(elt.value);
+			});
 
 			var data = {
 				"basePoint":basePointNow,
@@ -57,10 +51,18 @@ var calcMaxAssessmentModule = (function() {
 				"nonCatcher":$('#nonCatcher').prop("checked")
 			};
 
-			data = commonModule.getAsyncData('getTargetList', JSON.stringify(data));
-			var map = [[[0, 0, 0, 0], [0, 0], []]];
-			expPoint.splice(3, 1);
-			this.RecallMaxAssessment(map, data.targetList, 0, expPoint, data.greedyMaxPoint, data.backetList, data.baseNowAssessment, data.abNowAssessment);
+			$.ajax({
+				type:"POST",
+				url:'./getTargetList.php',
+				timeout: 10000,
+				data: JSON.stringify(data)
+			}).done(function(data){
+				var map = [[[0, 0, 0, 0], [0, 0], []]];
+				expPoint.splice(3, 1);
+				calcMaxAssessmentModule.RecallMaxAssessment(map, data.targetList, 0, expPoint, data.greedyMaxPoint, data.backetList, data.baseNowAssessment, data.abNowAssessment);
+			}).fail(function(){
+				calcMaxAssessmentModule.ErrorCalcMaxAssessment();
+			});
 		},
 
 
@@ -68,14 +70,11 @@ var calcMaxAssessmentModule = (function() {
 		RecallMaxAssessment: function(map, targetList, depth, expPoint, greedyMaxPoint, backetList, baseNowAssessment, abNowAssessment) {
 			//最後の階層の場合
 			if(depth == targetList.length) {
-				var maxIndex = 0;
-
 
 				map.sort(function (m1, m2) {
 					return calcMaxAssessmentModule.getRealAssessmentPoint(m2[1], baseNowAssessment, abNowAssessment) - calcMaxAssessmentModule.getRealAssessmentPoint(m1[1], baseNowAssessment, abNowAssessment);
 				});
 
-				var maxDisplayValue = 0;
 				var basePointNow = [];
 				var obj = $('#tab1 .basePointInput');
 
@@ -88,8 +87,18 @@ var calcMaxAssessmentModule = (function() {
 					basePoint:basePointNow,
 					ability:charaData.getAbilityList(0)
 				};
-				data = commonModule.getAsyncData('getMaxAssessmentStatus', JSON.stringify(data));
-				calcMaxAssessmentModule.finishCalcMaxAssessment(data);
+
+				//終了時処理
+				$.ajax({
+					type:"POST",
+					url:'./getMaxAssessmentStatus.php',
+					timeout: 10000,
+					data: JSON.stringify(data)
+				}).done(function(data){
+					calcMaxAssessmentModule.finishCalcMaxAssessment(data);
+				}).fail(function(){
+					calcMaxAssessmentModule.ErrorCalcMaxAssessment();
+				});
 				return;
 			}
 
@@ -218,12 +227,11 @@ var calcMaxAssessmentModule = (function() {
 			$.unblockUI();
 		},
 
-		ErrorCalcMaxAssessment: function (data) {
-			$('#errorMsg').html('エラーが発生しました。管理者にお問い合わせください。');
-			setTimeout($.unblockUI, 3000);
+		ErrorCalcMaxAssessment: function () {
+			$('#blockMessage').html('エラーが発生しました。');
+			$('.blockOverlay').click($.unblockUI).on('click', $.unblockUI);
+			setTimeout($.unblockUI, 2000);
 		},
-
-
 
 	};
 })();

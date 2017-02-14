@@ -1,5 +1,4 @@
 <?php
-require_once './lib/password.php';
 
 function getID($dbh, $name, $password) {
 
