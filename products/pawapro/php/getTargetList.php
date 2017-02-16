@@ -22,6 +22,7 @@ $abilityList = array();
 $pairList = array();
 
 $baseTypeStr = array('DA', 'ME', 'PO', 'SP', 'SH', 'DE', 'CA');
+$expPointStr = ['POWER', 'SPEED', 'TECH', 'MENTAL'];
 
 try{
 	$dbh = DB::connect();
@@ -32,83 +33,64 @@ try{
 			continue;
 		}
 
-		$mag = 1 - $baseTrickLevel[$i] * 0.02;
+		$mag = (1 - $baseTrickLevel[$i] * 0.02) * $sense_per;
+		$nowAssessment = null;
+		$set = array();
+		$point = [0, 0, 0, 0];
 
 		$sql = '
-				SELECT ASSESSMENT
-				FROM BASE_POINT_VIEW
-				WHERE TYPE = :type
-				AND POINT = :nowPoint
+				SELECT
+					POINT,
+					POWER,
+					SPEED,
+					TECH,
+					MENTAL,
+					ASSESSMENT
+				FROM
+					BASE_POINT_VIEW
+				WHERE
+					TYPE = :type
+				AND
+					POINT >= :nowPoint
 		';
 		$sth = $dbh->prepare($sql);
-
-
 		$sth->bindValue('type', $i, PDO::PARAM_INT);
 		$sth->bindValue('nowPoint', $basePoint[$i], PDO::PARAM_INT);
 		$sth->execute();
+
+		//現在の査定値を取得
 		$row = $sth->fetch(PDO::FETCH_ASSOC);
-		$sth = null;
-		$nowAssessment = (double)$row['ASSESSMENT'];
-		$sql = "SELECT
-					V.TYPE,
-					V.POINT,
-					(SELECT SUM(IF(POWER = 0, 0, GREATEST(FLOOR(POWER * {$sense_per} * {$mag}), 1))) FROM BASE_POINT_VIEW WHERE TYPE = :type AND POINT > :nowPoint AND POINT <= V.POINT LIMIT 1) POWER,
-					(SELECT SUM(IF(SPEED = 0, 0, GREATEST(FLOOR(SPEED * {$sense_per} * {$mag}), 1))) FROM BASE_POINT_VIEW WHERE TYPE = :type AND POINT > :nowPoint AND POINT <= V.POINT LIMIT 1) SPEED,
-					(SELECT SUM(IF(TECH = 0, 0, GREATEST(FLOOR(TECH * {$sense_per} * {$mag}), 1))) FROM BASE_POINT_VIEW WHERE TYPE = :type AND POINT > :nowPoint AND POINT <= V.POINT LIMIT 1) TECH,
-					(SELECT SUM(IF(MENTAL = 0, 0, GREATEST(FLOOR(MENTAL * {$sense_per} * {$mag}), 1))) FROM BASE_POINT_VIEW WHERE TYPE = :type AND POINT > :nowPoint AND POINT <= V.POINT LIMIT 1) MENTAL,
-					V.ASSESSMENT
-				FROM BASE_POINT_VIEW V
-				INNER JOIN (
-				SELECT
-					TYPE, POINT
-				FROM
-					BASE_POINT_HEADER H
-				WHERE
-					EXISTS (
-						SELECT
-							TYPE, MIN(POINT), ASSESSMENT
-						FROM
-							BASE_POINT_HEADER
-						WHERE
-							TYPE = H.TYPE
-						GROUP BY
-							TYPE, ASSESSMENT
-						HAVING
-							MIN(POINT) = H.POINT
-					)
-				) A
-				ON V.TYPE = A.TYPE
-				AND V.POINT = A.POINT
-				WHERE V.TYPE = :type
-				AND V.POINT > :nowPoint
-				GROUP BY V.TYPE, V.POINT
-			";
-		$sth = $dbh->prepare($sql);
-
-
-		$sth->bindValue('type', $i, PDO::PARAM_INT);
-		$sth->bindValue('nowPoint', $basePoint[$i], PDO::PARAM_INT);
-
-		// SQL の実行
-		$sth->execute();
-		$set = array();
+		if ($row) {
+			$nowAssessment = (double)$row['ASSESSMENT'];
+			$assessment = $nowAssessment;
+		}
 		while($row = $sth->fetch(PDO::FETCH_ASSOC)) {
-			if((int)$row['POWER'] > (int)$expPoint[0] || (int)$row['SPEED'] > (int)$expPoint[1] || (int)$row['TECH'] > (int)$expPoint[2] || (int)$row['MENTAL'] > (int)$expPoint[3]) {
+			$breakFlag = false;
+			for ($j = 0; $j < 4; $j++) {
+				$point[$j] += (int)$row[$expPointStr[$j]] === 0 ? 0 : (int)(max(bcmul((int)$row[$expPointStr[$j]], $mag, 1), 1));
+				if ($point[$j] > $expPoint[$j]) {
+					$breakFlag = true;
+					break;
+				}
+			}
+
+			if($breakFlag) {
 				break;
 			}
-			$total = (int)$row['POWER'] + (int)$row['SPEED'] + (int)$row['TECH'] + (int)$row['MENTAL'];
-			if($total === 0) {
-				continue;
+
+			if((double)$row['ASSESSMENT'] > $assessment) {
+				$total = $point[0] + $point[1] + $point[2] + $point[3];
+				$set[] = array(
+					'id'=>$baseTypeStr[$i] . $row['POINT'],
+					'type'=>0,
+					'point'=>$point,
+					'val'=>(double)$row['ASSESSMENT']-$nowAssessment,
+					'eff'=>((double)$row['ASSESSMENT']-$nowAssessment)/(double)$total,
+					'total'=>$total
+				);
+				$assessment = (double)$row['ASSESSMENT'];
 			}
-			$set[] = array(
-				//				'idx'=>(int)$row['TYPE'],
-				'id'=>$baseTypeStr[(int)$row['TYPE']] . $row['POINT'],
-				'type'=>0,
-				'point'=>array((int)$row['POWER'], (int)$row['SPEED'], (int)$row['TECH'], (int)$row['MENTAL']),
-				'val'=>(double)$row['ASSESSMENT']-$nowAssessment,
-				'eff'=>((double)$row['ASSESSMENT']-$nowAssessment)/(double)$total,
-				'total'=>$total
-			);
+
 		}
 		if(count($set) > 0) {
 			usort($set, "compAssessmentEfficiency");
@@ -393,8 +375,6 @@ function getStartAbility($list) {
 	}
 }
 
-
-
 //査定効率でソート用
 function compAssessmentEfficiency($v1, $v2) {
 	return $v2['val']/$v2['total'] >= $v1['val']/$v1['total'] ? 1 : -1;
@@ -405,13 +385,6 @@ function compAssessmentEfficiency($v1, $v2) {
 function compAssessmentEfficiencyAll($v1, $v2) {
 	return $v2[0]['val']/$v2[0]['total'] >= $v1[0]['val']/$v1[0]['total'] ? 1 : -1;
 }
-
-
-//mapの査定値の降順でソート
-function compMapAssessment($m1, $m2) {
-	return $m2[1] >= $m1[1] ? 1 : -1;
-}
-
 
 //バケットリスト作成
 function makeBacketList($list) {
