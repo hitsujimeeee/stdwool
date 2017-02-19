@@ -1,0 +1,59 @@
+.container {
+	margin-bottom: 2em;
+}
+
+h2 {
+	margin-bottom: 1em;
+}
+
+.linkBox {
+	border-radius: 5px;
+	height: 2.5em;
+	width: 80%;
+	margin: auto;
+	margin-bottom: 1em;
+	cursor: pointer;
+	font-size: 2em;
+	position: relative;
+}
+
+.linkBox > a > div {
+	width: 100%;
+	height: 100%;
+	padding-left: 0.5em;
+}
+
+.linkBox .linkText {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	height:1.5em;
+	margin: auto;
+	letter-spacing: 0.3em;
+}
+
+.searchBox {
+	background-color: #4fc0ea;
+}
+
+
+.editBox {
+	background-color: #4ad876;
+}
+
+.link a {
+	display: block;
+	width:100%;
+	height: 100%;
+}
+
+.linkBox a,
+.linkBox a:hover,
+.linkBox a:link,
+.linkBox a:visited,
+.linkBox a:active
+
+{
+	color:#000;
+	text-decoration: none;
+}
