@@ -53,13 +53,6 @@ $(function() {
 
 	charaData.init();
 
-	var userData = localStorage.getItem('userData');
-	if (userData) {
-		userData = JSON.parse(userData);
-		$('#userName').val(userData.name);
-		$('#userPassword').val(userData.password);
-	}
-
 	var param = commonModule.GetQueryString();
 	if(param.userId && param.charaId) {
 		var data = {'userId':Number(param.userId), 'charaId':param.charaId};
@@ -75,6 +68,7 @@ $(function() {
 				commonModule.refreshDisplayAbility(0);
 				commonModule.refreshDisplaySubPosition();
 				commonModule.calcExpPoint();
+				$('.shareLinkBody').html(window.location.href);
 			}
 
 		});
@@ -941,23 +935,18 @@ var commonModule = (function() {
 		saveCharaData: function(type) {
 			commonModule.showBlockMessage('<div id="blockMsg"><i class="fa fa-spinner fa-pulse"></i> <span id="blockMessage">処理中...</span><div id="errorMsg"></div></div>');
 			var post = {
-				'name':$('#userName').val(),
-				'password':$('#userPassword').val(),
+				'name':$('#loginUserName').val(),
+				'password':$('#loginPassword').val(),
 				'charaId':$('#characterId').val(),
 				'data':charaData.getSaveData(type)
 			};
-
-			var data = {
-				'name':$('#userName').val(),
-				'password':$('#userPassword').val()
-			};
-			localStorage.setItem('userData', JSON.stringify(data));
 
 			commonModule.getAsyncData('registCharacter', JSON.stringify(post), function (res) {
 				if(res.status !== -1) {
 					var newUrl = setParameter({'userId':res.userId, charaId:res.charaId});
 					$('#characterId').val(res.charaId);
 					history.replaceState('','',newUrl);
+					$('.shareLinkBody').html(window.location.href);
 					commonModule.uploadImage(res.charaId, '<i class="fa fa-check" aria-hidden="true" style="color:#008000"></i>' + res.msg);
 				} else {
 					res.msg = '<i class="fa fa-times" aria-hidden="true" style="color:#ff0000"></i>' + res.msg;
@@ -1024,8 +1013,8 @@ var commonModule = (function() {
 
 			ga('send', 'event', 'action', 'click', 'uploadImage');
 			fd.append('charaId', param.charaId || "");
-			fd.append('userName', $('#userName').val());
-			fd.append('password', $('#userPassword').val());
+			fd.append('userName', $('#loginUserName').val());
+			fd.append('password', $('#loginPassword').val());
 			$.ajax({
 				url: "./uploadImage.php",
 				type: "POST",

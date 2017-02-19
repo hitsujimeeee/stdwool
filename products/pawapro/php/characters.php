@@ -15,12 +15,9 @@
 	<?php include('../php/header.php'); ?>
 
 	<main>
-		<h2>作成選手一覧</h2>
-		<section class="userForm">
-			<div>ユーザー名:<input id="userName" type="text"></div>
-			<div>パスワード:<input id="userPassword" type="text"></div>
-			<div><button onclick="getCharacterList()"><i class="fa fa-search fa-fw" aria-hidden="true"></i>データ取得</button></div>
-		</section>
+		<header>
+			<h2 class="pageHeader"><i class="fa fa-address-book-o" aria-hidden="true"></i>作成選手一覧</h2>
+		</header>
 
 		<section id="batterSection">
 			<header><img class="iconGraph" src="../img/icon/bat.png">野手</header>
@@ -77,8 +74,10 @@
 			<button data-remodal-action="confirm" class="remodal-confirm">OK</button>
 			<button data-remodal-action="cancel" class="remodal-cancel">Cancel</button>
 		</div>
-
 	</main>
+
+	<?php include('./optionMenu.php'); ?>
+
 
 	<?php include('../html/footer.html'); ?>
 </body>

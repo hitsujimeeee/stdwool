@@ -201,11 +201,6 @@ tr.baseRank > td.trajectory4 {
 	display: inline;
 }
 
-
-.hiddenDisplay {
-	display: none;
-}
-
 .slider {
 	margin-bottom: 20px;
 }
@@ -473,11 +468,6 @@ ul.abilityDisplay li a, ul.subPositionList li a {
 	display: inline;
 }
 
-
-.abHr {
-	border-color: #aaaaaa;
-	margin: 5px 0px 15px 0px;
-}
 
 .trickTitle {
 	width:20%;
@@ -760,26 +750,6 @@ div#abilityModal div.groupHeader{
 	margin-top: 1em;
 }
 
-
-.floatMenu {
-	position: fixed;
-	background-color: rgba(0, 0, 0, 0.5);
-	color: #fff;
-	right: 0;
-	bottom: 0;
-}
-
-.floatMenu[mode="0"] {
-	content: '\f022';
-	font-family: FontAwesome;
-}
-
-
-.floatMenu[mode="1"] {
-	content: 'f25a';
-	font-family: FontAwesome;
-}
-
 .abilityCount {
 	padding-left: 1em;
 	width:3em;
@@ -797,21 +767,10 @@ div#abilityModal div.groupHeader{
 	padding-left: 0.5em;
 }
 
-.templateOption{
-	display: flex;
-	width: 80%;
-	max-width: 360px;
-	flex-direction: column;
-	margin: auto;
-
+.shareLinkHeader {
+	margin-left: 0.5em;
 }
 
-.templateOption > div {
-	margin-bottom: 1em;
-	text-align: center;
-}
-
-.templateOption button {
-	border-radius: 4px;
-	padding: 0.2em; 0.5em;
+.shareLinkBody {
+	margin-left: 1em;
 }

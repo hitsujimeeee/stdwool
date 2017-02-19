@@ -80,16 +80,6 @@ table {
 	text-align: center;
 }
 
-.abHr {
-	border-color: #aaaaaa;
-	margin: 5px 10px 15px 0px;
-}
-
-.hiddenDisplay {
-	display: none;
-}
-
-
 /*ラジオボタン*/
 .abilityDetailList {
 	padding:0;

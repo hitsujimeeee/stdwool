@@ -3,17 +3,13 @@ table td, table th{
 	text-align: center;
 }
 
-.modern {
+header {
+	margin: 0.5em 0.2em 0 0;
 }
 
 section {
-	margin: 1.5em 3em;
+	margin: 1.5em 1em;
 }
-
-h2 {
-	text-align: center;
-}
-
 
 section div {
 	display: float;
@@ -48,7 +44,7 @@ section > header {
 	font-size:1.2em;
 }
 
-i {
+.pageHeader i {
 	margin-right: .2em;
 }
 

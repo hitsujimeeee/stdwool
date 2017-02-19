@@ -17,6 +17,7 @@ if(basename(realpath("./")) === 'pawapro') {
 <link rel="stylesheet" href="<?php echo $urlPadding ?>css/lib/remodal.css">
 <link rel="stylesheet" href="<?php echo $urlPadding ?>css/lib/remodal-default-theme.css">
 <link rel="stylesheet" href="<?php echo $urlPadding ?>css/common.css">
+<link rel="stylesheet" href="<?php echo $urlPadding ?>css/optionMenu.css">
 <link rel="stylesheet" href="<?php echo $urlPadding ?>css/bootstrap_custom.css">
 <script src="<?php echo $urlPadding ?>js/plugin/jquery-3.1.1.min.js"></script>
 <script src="<?php echo $urlPadding ?>js/plugin/jquery-ui.min.js"></script>
@@ -24,3 +25,4 @@ if(basename(realpath("./")) === 'pawapro') {
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="<?php echo $urlPadding ?>js/plugin/remodal.min.js"></script>
 <script src="<?php echo $urlPadding ?>js/plugin/jquery.blockUI.js"></script>
+<script src="<?php echo $urlPadding ?>js/optionMenu.js"></script>

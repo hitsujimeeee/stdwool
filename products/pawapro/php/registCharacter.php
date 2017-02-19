@@ -12,12 +12,12 @@ $result = array('status'=>0, 'msg'=>'');
 
 if($data === null) {
 	$result = array('status'=>-1, 'msg'=>'不正な登録値です。登録は失敗しました。');
-} else if (!ctype_alnum($name) || !ctype_alnum($password)){
-	$result = array('status'=>-1, 'msg'=>'ユーザー名、パスワードは半角英数字で入力してください。');
 } else if (strlen($name) < 8 || strlen($password) < 8) {
 	$result = array('status'=>-1, 'msg'=>'ユーザー名、パスワードは8文字以上にしてください。');
 } else if(strlen($name) > 20 || strlen($password) > 20){
 	$result = array('status'=>-1, 'msg'=>'ユーザー名、パスワードは20文字以内にしてください。');
+} else if (!ctype_alnum($name) || !ctype_alnum($password)){
+	$result = array('status'=>-1, 'msg'=>'ユーザー名、パスワードは半角英数字で入力してください。');
 } else {
 	$data = json_encode($data);
 	$data = gzdeflate($data);
@@ -28,14 +28,7 @@ if($data === null) {
 
 		//未登録ユーザーの場合はユーザーを新規作成
 		if($userId === null) {
-			$hashpass = password_hash($password, PASSWORD_DEFAULT);
-
-			$sql = 'INSERT INTO M_USER (NAME, PASSWORD) VALUES (:name, :password)';
-			$stmt = $dbh->prepare($sql);
-			$stmt -> bindParam('name', $name);
-			$stmt -> bindParam('password', $hashpass);
-			$stmt->execute();
-			$userId = getID($dbh, $name, $password);
+			$userId = makeNewUser($dbh, $name, $password);
 		}
 
 		$actStr = ''; //「更新」or「登録」

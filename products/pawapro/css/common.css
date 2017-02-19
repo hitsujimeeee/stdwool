@@ -64,4 +64,11 @@ i.iconGraph {
 	text-align: center;
 }
 
+.abHr {
+	border-color: #aaaaaa;
+	margin: 5px 0px 15px 0px;
+}
 
+.hiddenDisplay {
+	display: none;
+}

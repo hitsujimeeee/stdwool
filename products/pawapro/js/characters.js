@@ -1,17 +1,10 @@
-/*jslint browser: true*/
-/*global $, jQuery, alert*/
+/*jslint browser: true, jquery: true*/
 /*jslint shadow:true*/
 
 var deleteId = '';
 
 $(function() {
-	var userData = localStorage.getItem('userData');
-	if (userData) {
-		userData = JSON.parse(userData);
-		$('#userName').val(userData.name);
-		$('#userPassword').val(userData.password);
-		getCharacterList();
-	}
+	getCharacterList();
 
 	$(document).on('confirmation', '#confirmModal', function () {
 		doDeleteCharacter();
@@ -51,13 +44,22 @@ function getAsyncData(method, data, callBackSuccess, callBackError) {
 
 function getCharacterList() {
 	var data = {
-		'name':$('#userName').val(),
-		'password':$('#userPassword').val()
+		'name':$('#loginUserName').val(),
+		'password':$('#loginPassword').val()
 	};
-	if($('#userName').val() === '' || $('#userPassword').val() === ''){
+	if(!data.name || !data.password){
 		return;
 	}
-	localStorage.setItem('userData', JSON.stringify(data));
+
+	$('#batterTable').append('<tr style="height:3em;"><td colspan="13" class="waitMessage"></td></tr>');
+	$('#pitcherTable').append('<tr style="height:3em;"><td colspan="14" class="waitMessage"></td></tr>');
+
+	$('.waitMessage').block({
+		message: '読み込み中……',
+	});
+
+
+
 	getAsyncData('getCharacterList', JSON.stringify(data), function (res) {
 		if (res.state == 1) {
 			updateCharacterList(res.data);
@@ -165,8 +167,8 @@ function deleteCharacter(charaId) {
 
 function doDeleteCharacter() {
 	var data = {
-		'name':$('#userName').val(),
-		'password':$('#userPassword').val(),
+		'name':$('#loginUserName').val(),
+		'password':$('#loginPassword').val(),
 		'charaId':deleteId
 	};
 

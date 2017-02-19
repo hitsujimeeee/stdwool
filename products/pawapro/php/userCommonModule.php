@@ -25,4 +25,25 @@ function getID($dbh, $name, $password) {
 	return $id;
 }
 
+
+function makeNewUser ($dbh, $name, $password) {
+
+	$hashpass = password_hash($password, PASSWORD_DEFAULT);
+	$sql = 'INSERT INTO M_USER (NAME, PASSWORD) VALUES (:name, :password)';
+	$stmt = $dbh->prepare($sql);
+	$stmt -> bindParam('name', $name);
+	$stmt -> bindParam('password', $hashpass);
+	$stmt->execute();
+
+	return getID($dbh, $name, $password);
+}
+
+
+function makeUniqueId() {
+	//乱数3桁+uniqid13桁の計15桁の文字列を作成
+	$str = substr(str_pad(mt_rand(), 3, 0) . uniqid(), -16);
+
+	return $str;
+}
+
 ?>
