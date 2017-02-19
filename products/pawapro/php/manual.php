@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 	<?php
-	$title = 'パワプロアプリ育成シミュレーター 使い方';
+	$title = 'パワプロアプリ育成シミュレーター | 使い方';
 	$description = 'パワプロアプリの育成シミュレーターです。目標選手の育成に必要な経験点を計算してくれます。';
 	require_once './headInclude.php';
 	?>
@@ -98,24 +98,51 @@
 			</section>
 			<section id="saveSection">
 				<h3 class="sectionHeader"><i class="fa fa-floppy-o"></i>保存機能</h3>
-				<p>入力した選手情報を保存することができます。保存した選手情報は作成選手一覧画面から参照することができます。</p>
-				<div><img src="../img/manual/014.jpg"></div>
+				<h4>●入力した選手情報を保存する</h4>
 				<p>
-					確認画面タブ下部の「選手データ保存」欄にユーザー名とパスワードを入力します。<br>
+					画面右下の「<i class="fa fa-gear"></i>設定」ボタンをクリックし、設定ウインドウを開きます。<br>
+				</p>
+				<div><img src="../img/manual/06-01.jpg"></div>
+				<p>
+					ユーザー名、パスワードを入力し「OK」ボタンをクリックします。<br>
 					<span style="color:#ff0000;">※ユーザー登録の必要はありません。ユーザー名とパスワードの組み合わせに紐づけて選手データが保存されます。<br>　他の人と被る事が無いようなる複雑なパスワードを設定してください。</span><br>
 					ユーザー名、パスワードはともに半角英数字で8～20文字にしてください。<br>
-					ユーザー名、パスワードを入力し終えたら、「保存」ボタンを押します。
 				</p>
-				<div><img src="../img/manual/015.jpg"></div>
-				<p>作成した選手のデータが保存されます。</p>
-				<div><img src="../img/manual/016.jpg"></div>
-				<p>トップ画面に戻り、作成選手一覧のリンクをクリックします。</p>
-				<div><img src="../img/manual/017.jpg"></div>
+				<div><img src="../img/manual/06-02.jpg"></div>
 				<p>
-					保存時に入力したユーザー名、パスワードを入力し、データ取得ボタンを押すと、登録した選手データの一覧が表示されます。<br>
-					編集ボタンを押すと選手情報の変更画面へと遷移します。
+					確認画面タブ最下部の「保存」ボタンをクリックします。
+				</p>
+				<div><img src="../img/manual/06-03.jpg"></div>
+				<p>作成した選手のデータが保存されます。</p>
+				<div><img src="../img/manual/06-04.jpg"></div>
+				<h4>●保存した選手情報を表示する</h4>
+				<p>トップ画面で「作成選手一覧」リンクをクリックします。</p>
+				<div><img src="../img/manual/06-05.jpg"></div>
+				<div><img src="../img/manual/06-06.jpg"></div>
+				<p>
+					「<i class="fa fa-gear"></i>設定」ウインドウに入力済みのユーザー名、パスワードで登録した選手情報の一覧で表示されます。<br>
+					編集ボタンを押すと選手情報の編集画面へと遷移します。
 				</p>
 			</section>
+
+			<section>
+				<h3 class="sectionHeader"><i class="fa fa-link"></i>選手画像のアップロード</h3>
+				<p>
+					登録した選手にお好みの画像を設定できます。<br><br>
+					「確認画面」タブ内の選手情報にある画像の部分をクリックします。
+				</p>
+				<div><img src="../img/manual/07-01.jpg"></div>
+				<p>
+					PC(スマフォ)内の画像を選択します
+				</p>
+				<div><img src="../img/manual/07-02.jpg"></div>
+				<p>
+					選択した画像が選手の画像として使用されます。<br>
+					「保存」ボタンを押すと登録が完了し、次回以降も選択した画像で表示されます。
+				</p>
+				<div><img src="../img/manual/07-03.jpg"></div>
+			</section>
+
 			<section>
 				<h3 class="sectionHeader"><i class="fa fa-link"></i>選手情報の共有</h3>
 				<div><img src="../img/manual/018.jpg"></div>
