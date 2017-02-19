@@ -13,15 +13,6 @@ $(function() {
 });
 
 
-function calcAssessmentPoint(chara) {
-
-	var ability = chara.ability[1].filter(function (elem){
-		return elem !== null;
-	});
-	return getAsyncData('getAssessmentPoint', JSON.stringify({"basePoint":chara.basePoint[1], "ability":ability}));
-
-}
-
 function getAsyncData(method, data, callBackSuccess, callBackError) {
 	if (typeof(callBackSuccess) !== 'undefined') {
 		$.ajax({
@@ -80,69 +71,73 @@ function updateCharacterList(data) {
 		['捕手', '一塁手', '二塁手', '三塁手', '遊撃手', '外野手'],
 		['先発', '中継ぎ', '抑え']
 	];
+	var str;
 
+	str = '';
 	$('#batterTable').find("tr:gt(0)").remove();
+
 	for (var i = 0; i < data.charaList.length; i++) {
 		var chara = data.charaList[i].data,
-			imgURL = data.charaList[i].imgURL;
+			imgURL = data.charaList[i].imgURL,
+			point = data.charaList[i].assessment;
 		if (chara.charaType === 0) {
-			var target = $('#batterTable');
-			var str = '<tr>' +
+			str += '<tr>' +
 				'<td class="charaFaceCell"><a href="./batter.php?userId=' + data.userId + '&charaId=' + data.charaList[i].id + '"><img class="charaFace" src="' + imgURL + '"></a></td>' +
 				'<td>' + escapeHtml(chara.name) + '</td>' +
 				'<td>' + posNameList[0][chara.mainPosition] + '</td>';
 
-				for (var j = 0; j < chara.basePoint[1].length; j++) {
-					str += '<td>';
-					if(chara.basePoint[1][j] !== 0) {
-						str += '<img class="rankGraph" src="../img/';
-						if(j === 0) {
-							str+= 'trajectory' + chara.basePoint[1][j];
-						} else {
-							str+= 'rank' + getRankString(chara.basePoint[1][j]);
-						}
-						str += '.png">';
+			for (var j = 0; j < chara.basePoint[1].length; j++) {
+				str += '<td>';
+				if(chara.basePoint[1][j] !== 0) {
+					str += '<img class="rankGraph" src="../img/';
+					if(j === 0) {
+						str+= 'trajectory' + chara.basePoint[1][j];
+					} else {
+						str+= 'rank' + getRankString(chara.basePoint[1][j]);
 					}
-					str += '</td>';
+					str += '.png">';
 				}
-				str += '<td>' + calcAssessmentPoint(chara).point + '</td>' +
+				str += '</td>';
+			}
+			str += '<td>' + point + '</td>' +
 				'<td><a href="./batter.php?userId=' + data.userId + '&charaId=' + data.charaList[i].id + '">編集</a></td>' +
 				'<td><a href="javascript:deleteCharacter(\'' + data.charaList[i].id + '\')">削除</a></td>' +
 				'</tr>';
-			target.append(str);
 		}
 	}
+	document.querySelector('#batterTable').insertAdjacentHTML('beforeend', str);
 
+	str = '';
 	$('#pitcherTable').find("tr:gt(0)").remove();
+
 	for (var i = 0; i < data.charaList.length; i++) {
 		var chara = data.charaList[i].data,
 			imgURL = data.charaList[i].imgURL;
 		if (chara.charaType === 1) {
-			var target = $('#pitcherTable');
-			var str = '<tr>' +
+			str += '<tr>' +
 				'<td class="charaFaceCell"><a href="./pitcher.php?userId=' + data.userId + '&charaId=' + data.charaList[i].id + '"><img class="charaFace" src="' + imgURL + '"></a></td>' +
 				'<td>' + escapeHtml(chara.name) + '</td>' +
 				'<td>' + posNameList[1][chara.mainPosition] + '</td>';
-				for (var j = 0; j < chara.basePoint[1].length; j++) {
-					str += '<td>';
-					if(chara.basePoint[1][j] !== 0) {
-						if(j === 0) {
-							str+= '' + chara.basePoint[1][j];
-						} else {
-							str+= '<img class="rankGraph" src="../img/rank' + getRankString(chara.basePoint[1][j]) + '.png">';
-						}
+			for (var j = 0; j < chara.basePoint[1].length; j++) {
+				str += '<td>';
+				if(chara.basePoint[1][j] !== 0) {
+					if(j === 0) {
+						str+= '' + chara.basePoint[1][j];
+					} else {
+						str+= '<img class="rankGraph" src="../img/rank' + getRankString(chara.basePoint[1][j]) + '.png">';
 					}
-					str += '</td>';
 				}
-				for (var j = 0; j < chara.changeBall[1].length; j++) {
-					str += '<td>' + (chara.changeBall[1][j] ? chara.changeBall[1][j].value : '0') + '</td>';
-				}
-				str += '<td><a href="./pitcher.php?userId=' + data.userId + '&charaId=' + data.charaList[i].id + '">編集</a></td>' +
+				str += '</td>';
+			}
+			for (var j = 0; j < chara.changeBall[1].length; j++) {
+				str += '<td>' + (chara.changeBall[1][j] ? chara.changeBall[1][j].value : '0') + '</td>';
+			}
+			str += '<td><a href="./pitcher.php?userId=' + data.userId + '&charaId=' + data.charaList[i].id + '">編集</a></td>' +
 				'<td><a href="javascript:deleteCharacter(\'' + data.charaList[i].id + '\')">削除</a></td>' +
 				'</tr>';
-			target.append(str);
 		}
 	}
+	document.querySelector('#pitcherTable').insertAdjacentHTML('beforeend', str);
 
 
 
