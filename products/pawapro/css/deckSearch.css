@@ -121,7 +121,7 @@ li.deckList {
 
 
 
-.viewDeckType, div.viewBonusPoint, .viewSchoolType {
+.viewDeckType, div.viewBonusPoint, .viewSchoolType, .viewFavCount {
 	position: relative;
 	border-radius: 5px;
 	padding: 0.2em 0.5em;
@@ -140,6 +140,10 @@ li.deckList {
 
 .viewBonusPoint {
 	background-color: rgb(255, 104, 104);
+}
+
+.viewFavCount i {
+	color:#ff6add;
 }
 
 li.deckList a,
