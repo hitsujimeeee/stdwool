@@ -43,7 +43,8 @@ try{
 		P.NAME TYPE,
 		S.NAME SCHOOL,
 		D.AUTHOR,
-		D.TWITTER_ID
+		D.TWITTER_ID,
+		IFNULL(FAV_T.C, 0) FAV_COUNT
 	FROM
 		DECK D
 	INNER JOIN
@@ -208,6 +209,7 @@ try{
 			'twitterId'=>htmlspecialchars($row['TWITTER_ID']),
 			'targetType'=>$row['TYPE'],
 			'school'=>$row['SCHOOL'],
+			'favCount'=>$row['FAV_COUNT'],
 			'training'=>[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 		);
 	}
