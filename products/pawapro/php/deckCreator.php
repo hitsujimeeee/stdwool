@@ -396,7 +396,9 @@ function getDeckEventDetail($dbh, $charaList) {
 		<!-- ユーザー情報欄 -->
 		<section>
 			<?php if ($mode === 3) { ?>
-			<div><button id="favButton" onclick="deckCreator.setFavarite();">お気に入り</button></div>
+			<div>
+				<button id="favButton" class="favButton" data-fav-status="0" onclick="deckCreator.setFavarite();">お気に入り</button>
+			</div>
 			<?php } else { ?>
 			<div><button onclick="deckCreator.save();">保存</button></div>
 			<?php } ?>

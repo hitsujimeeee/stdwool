@@ -64,30 +64,23 @@ $(function () {
 
 	})();
 
-	var userName = localStorage.getItem('userName');
-	var password = localStorage.getItem('password');
-
-	$('#userName').val(userName);
-	$('#password').val(password);
-
-
-
 	$.ajax({
 		url:'./logic/getFavoriteList.php',
 		type:'POST',
 		data:{
-			userName: userName,
-			password: password
+			userName: $('#loginUserName').val(),
+			password: $('#loginPassword').val()
 		}
 	}).done(function(res) {
 		var list = localStorage.getItem('favoriteList');
 		list = list ? JSON.parse(list) : [];
 		if(res) {
-			list = list.concat(res);
+			Array.prototype.push.apply(list, res.filter(function(elt){
+				return list.indexOf(elt) === -1;
+			}));
 		}
-		if(list.indexOf($('#deckId').val()) >= 0) {
-			$('#favButton').attr('disabled', true).html('お気に入り済み');
-		}
+		localStorage.setItem('favoriteList', JSON.stringify(list));
+		$('#favButton').attr('data-fav-status', list.indexOf($('#deckId').val()) >= 0 ? 1 : 0);
 	}).fail(function(res) {
 		console.log(res);
 	});
@@ -302,16 +295,15 @@ var deckCreator = {
 	},
 
 	setFavarite: function () {
-
-		localStorage.setItem('userName', $('#userName').val());
-		localStorage.setItem('password', $('#password').val());
+		var actFlag = Number($('#favButton').attr('data-fav-status'));
+		var method = ['setFavorite', 'deleteFavorite'][actFlag];
 
 		$.ajax({
-			url: '../php/logic/setFavorite.php',
+			url: '../php/logic/' + method + '.php',
 			type: 'POST',
 			data: {
-				userName: $('#userName').val(),
-				password: $('#password').val(),
+				userName: $('#loginUserName').val(),
+				password: $('#loginPassword').val(),
 				deckUserId: $('#userId').val(),
 				deckId: $('#deckId').val()
 			}
@@ -319,15 +311,23 @@ var deckCreator = {
 			console.log(res);
 			var listStr = localStorage.getItem('favoriteList');
 			var list = listStr ? JSON.parse(listStr) : [];
+			var deckId = $('#deckId').val();
 			switch(res.status) {
 				case 0:	//既にお気に入り済み
 				case 1: //登録成功
-					var deckId = $('#deckId').val();
-					if (list.indexOf(deckId) == -1) {
-						list.push(deckId);
+					if (actFlag === 0) {
+						if (list.indexOf(deckId) == -1) {
+							list.push(deckId);
+						}
+						$('#favButton').attr('data-fav-status', '1');
+					} else {
+						var idx = list.indexOf(deckId);
+						if (idx >= 0) {
+							list.splice(idx, 1);
+						}
+						$('#favButton').attr('data-fav-status', '0');
 					}
 					localStorage.setItem('favoriteList', JSON.stringify(list));
-					$('#favButton').attr('disabled', true).text('お気に入り済み');
 					alert(res.msg);
 					break;
 				case -1: //エラー失敗

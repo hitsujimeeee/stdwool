@@ -1,59 +1,75 @@
-.container {
-	margin-bottom: 2em;
+.menuContainer {
+	display: flex;
+	widows: 100%;
+	max-width: 800px;
+	margin: auto;
+	justify-content: space-around;
 }
 
-h2 {
-	margin-bottom: 1em;
+
+.linkBoxWrapper {
+	position: relative;
+	width: 45%;
+	max-width: 240px;
+	text-align: center;
+	border: 3px solid #ddd;
+	border-radius: 4px;
+}
+
+.linkBoxWrapper:before {
+	content: "";
+	display: block;
+	padding-top: 100%;
+}
+
+.linkBoxWrapper a {
+	color: #000;
+	text-decoration: none;
+}
+
+#deckSearch {
+	background: linear-gradient(#8af9ff, #0a94ff);
+}
+
+#deckList {
+	background: linear-gradient(#d1ff9e, #47ff74);
 }
 
 .linkBox {
-	border-radius: 5px;
-	height: 2.5em;
-	width: 80%;
-	margin: auto;
-	margin-bottom: 1em;
-	cursor: pointer;
-	font-size: 2em;
-	position: relative;
-}
-
-.linkBox > a > div {
-	width: 100%;
-	height: 100%;
-	padding-left: 0.5em;
-}
-
-.linkBox .linkText {
 	position: absolute;
+	background-repeat: no-repeat;
+	background-size: 80%;
+	background-position: center center;
 	top: 0;
+	left: 0;
 	bottom: 0;
-	height:1.5em;
-	margin: auto;
-	letter-spacing: 0.3em;
+	right: 0;
 }
 
-.searchBox {
-	background-color: #4fc0ea;
+#deckSearch .linkBox {
+	background-image: url(../img/icon/search.png);
 }
 
-
-.editBox {
-	background-color: #4ad876;
+#deckList .linkBox {
+	background-image: url(../img/icon/wrench.png);
 }
 
-.link a {
-	display: block;
-	width:100%;
-	height: 100%;
+.linkText {
+	position: absolute;
+	bottom: 0;
+	right: 2vw;
+	font-size: 12vw;
+	text-shadow:
+		1px 0px #fff,
+		0px 1px #fff,
+		-1px 0px #fff,
+		0px -1px #fff;
+	font-weight: bold;
 }
 
-.linkBox a,
-.linkBox a:hover,
-.linkBox a:link,
-.linkBox a:visited,
-.linkBox a:active
-
-{
-	color:#000;
-	text-decoration: none;
+@media screen and (min-width:550px) {
+	.linkText {
+		right: 1vw;
+		font-size: calc(400%);
+	}
 }

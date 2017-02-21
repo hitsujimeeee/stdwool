@@ -346,3 +346,12 @@ div.eventType > div:nth-of-type(2) {
 	padding: 0.3em 0;
 }
 
+
+.favButton {
+	border-radius: 3px;
+}
+
+
+.favButton[data-fav-status="1"] {
+	background-color: #faff86;
+}

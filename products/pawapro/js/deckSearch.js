@@ -132,6 +132,7 @@ var deckSearch = {
 			str += '<div class="deckOption">';
 			str += '<span class="viewDeckType">' + d.targetType + '</span>';
 			str += '<span class="viewSchoolType">' + d.school + '</span>';
+			str += Number(d.favCount) > 0 ? '<span class="viewFavCount"><i class="fa fa-heart"></i>' + d.favCount + '</span>' : '';
 			str += '</div>';
 			str += '</a></li>';
 		}

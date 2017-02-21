@@ -3,7 +3,7 @@
 
 <head>
 	<?php
-	$title = 'パワプロアプリ　デッキシミュレーター';
+	$title = 'パワプロアプリ　デッキシェア';
 	$description = 'パワプロアプリの育成シミュレーターです。目標能力までに必要な経験点を計算できます。';
 	require_once './headInclude.php';
 	?>
@@ -14,28 +14,23 @@
 	<?php include('../php/header.php'); ?>
 
 	<main>
-		<h2>デッキシミュレーター</h2>
-		<section class="linkBox searchBox">
-			<a href="./deckSearch.php">
-				<div>
-					<div class="linkText">
-						<i class="fa fa-search" aria-hidden="true"></i>デッキを探す
+		<h2>デッキシェア</h2>
+		<section class="menuContainer">
+			<div class="linkBoxWrapper" id="deckSearch">
+				<a href="./deckSearch.php">
+					<div class="linkBox">
+						<div class="linkText">探す</div>
 					</div>
-				</div>
-			</a>
-		</section>
-
-		<section class="linkBox editBox">
-			<a href="./deckList.php">
-				<div>
-					<div class="linkText">
-						<i class="fa fa-wrench" aria-hidden="true"></i>デッキを作る
+				</a>
+			</div>
+			<div class="linkBoxWrapper" id="deckList">
+				<a href="./deckList.php">
+					<div class="linkBox">
+						<div class="linkText">作る</div>
 					</div>
-				</div>
-			</a>
+				</a>
+			</div>
 		</section>
-
-
 	</main>
 
 	<?php include('../html/footer.html'); ?>

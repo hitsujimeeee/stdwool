@@ -1,3 +1,7 @@
+section {
+	margin-bottom: 1em;
+}
+
 #deckList{
 	width:95%;
 	max-width: 480px;
@@ -19,6 +23,7 @@
 
 #deckList li {
 	list-style-type: none;
+	cursor: pointer;
 }
 
 .deckHeader {
@@ -98,15 +103,38 @@ li.deckList {
 }
 
 
-#acordionHeader {
-	background-color: aqua;
-	font-size: 1.5em;
-	margin-top: 0.5em;
+.acordionHeader {
+	background-color: aquamarine;
+	font-size: 1.2em;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	position: relative;
+	cursor: pointer;
 }
 
-#acordionHeader .closeIcon {
-	width: 1.5em;
-	height: 1.5em;
+.acordionHeader .closeIcon {
+	position: absolute;
+	right: 0.2em;
+	bottom: 0.1em;
+	font-size: 1.2em;
+}
+
+.acordionHeader header {
+	font-size: 1.4em;
+}
+
+
+.acordionHeader .closeIcon:before {
+	content: "\f139";
+}
+
+.acordionHeader.collapsed .closeIcon:before {
+	content: "\f13a";
+}
+
+.noResult {
+	width: 95%;
+	margin: auto;
 }
 
 .deckHeader h3 {

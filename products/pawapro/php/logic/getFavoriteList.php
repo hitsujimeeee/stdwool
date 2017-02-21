@@ -28,7 +28,9 @@ try{
 				FROM
 					DECK_FAVORITE
 				WHERE
-					FAV_USER_ID = :userId";
+					FAV_USER_ID = :userId
+				AND
+					DELETE_FLAG = 0";
 		$stmt = $dbh->prepare($sql);
 		$stmt -> bindParam('userId', $userId);
 		$stmt->execute();

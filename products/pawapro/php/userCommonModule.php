@@ -38,6 +38,17 @@ function makeNewUser ($dbh, $name, $password) {
 	return getID($dbh, $name, $password);
 }
 
+function validateUserInfo($name, $password) {
+	if (strlen($name) < 8 || strlen($password) < 8) {
+		return array('status'=>-1, 'msg'=>'ユーザー名、パスワードは8文字以上にしてください。');
+	} else if(strlen($name) > 20 || strlen($password) > 20){
+		return array('status'=>-1, 'msg'=>'ユーザー名、パスワードは20文字以内にしてください。');
+	} else if (!ctype_alnum($name) || !ctype_alnum($password)){
+		return array('status'=>-1, 'msg'=>'ユーザー名、パスワードは半角英数字で入力してください。');
+	}
+	return null;
+}
+
 
 function makeUniqueId() {
 	//乱数3桁+uniqid13桁の計15桁の文字列を作成

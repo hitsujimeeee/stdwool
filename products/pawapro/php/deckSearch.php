@@ -46,7 +46,7 @@ foreach ($dbh->query($sql) as $row) {
 		</header>
 
 		<section>
-			<div id="acordionHeader" data-toggle="collapse" data-target="#searchCond">
+			<div class="acordionHeader" data-toggle="collapse" data-target="#searchCond">
 				<header>検索条件<i class="fa closeIcon" aria-hidden="true"></i></header>
 			</div>
 			<div id="searchCond" class="collapse in">

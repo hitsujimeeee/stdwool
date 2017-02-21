@@ -2,29 +2,11 @@
 require_once '../global.php';
 require_once '../userCommonModule.php';
 
-if(isset($_POST['userName'])) {
-	$userName = $_POST['userName'];
-} else {
-	exit();
-}
+$userName = isset($_POST['userName']) ? $_POST['userName'] : null;
+$password = isset($_POST['password']) ? $_POST['password'] : null;
+$deckUserId = isset($_POST['deckUserId']) ? $_POST['deckUserId'] : null;
+$deckId = isset($_POST['deckId']) ? $_POST['deckId'] : null;
 
-if(isset($_POST['password'])) {
-	$password = $_POST['password'];
-} else {
-	exit();
-}
-
-if(isset($_POST['deckUserId'])) {
-	$deckUserId = $_POST['deckUserId'];
-} else {
-	exit();
-}
-
-if(isset($_POST['deckId'])) {
-	$deckId = $_POST['deckId'];
-} else {
-	exit();
-}
 
 $result = null;
 
@@ -43,7 +25,9 @@ try{
 				AND
 					DECK_USER_ID = :deckUserId
 				AND
-					DECK_ID = :deckId";
+					DECK_ID = :deckId
+				AND
+					DELETE_FLAG = 0";
 		$stmt = $dbh->prepare($sql);
 		$stmt -> bindParam('userId', $userId);
 		$stmt -> bindParam('deckUserId', $deckUserId);
@@ -65,7 +49,11 @@ try{
 						:userId,
 						:deckUserId,
 						:deckId
-					)";
+					)
+					ON DUPLICATE KEY
+					UPDATE
+						DELETE_FLAG = 0
+					";
 			$stmt = $dbh->prepare($sql);
 			$stmt -> bindParam('userId', $userId);
 			$stmt -> bindParam('deckUserId', $deckUserId);
