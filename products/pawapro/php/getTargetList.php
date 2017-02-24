@@ -301,22 +301,25 @@ try{
 				$pairExistFlag = false;
 				for($j = 0; $j < count($pairArray); $j++) {
 					if ($pairArray[$j]['pairId'] === (int)$abilityGroup[$i]['pair']) {
-						$set = array_merge($set, $pairArray[$j]['set']);
+						$pairArray[$j]['set'] = array_merge($set, $pairArray[$j]['set']);
 						$pairExistFlag = true;
 						break;
 					}
 				}
 				if(!$pairExistFlag) {
 					$pairArray[] = array('pairId'=>$abilityGroup[$i]['id'], 'set'=>$set);
-				} else {
-					usort($set, "compAssessmentEfficiency");
-					array_push($targetList, $set);
 				}
 			} else {
 				usort($set, "compAssessmentEfficiency");
 				array_push($targetList, $set);
 			}
 		}
+	}
+
+	foreach($pairArray as $pArray) {
+		$pairSet = $pArray['set'];
+		usort($pairSet, "compAssessmentEfficiency");
+		array_push($targetList, $pairSet);
 	}
 
 	usort($targetList, 'compAssessmentEfficiencyAll');
