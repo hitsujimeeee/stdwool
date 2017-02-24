@@ -175,7 +175,7 @@ function getAbility($data, $id) {
 
 function getPairId($id, $pairList) {
 	for ($i = 0; $i < count($pairList); $i++) {
-		if($pairList[$i]['id'] === $id) {
+		if($pairList[$i]['id'] === (int)$id) {
 			return $pairList[$i]['pair'];
 		}
 	}
