@@ -83,7 +83,7 @@ function updateCharacterList(data) {
 		if (chara.charaType === 0) {
 			str += '<tr>' +
 				'<td class="charaFaceCell"><a href="./batter.php?userId=' + data.userId + '&charaId=' + data.charaList[i].id + '"><img class="charaFace" src="' + imgURL + '"></a></td>' +
-				'<td>' + escapeHtml(chara.name) + '</td>' +
+				'<td>' + chara.name + '</td>' +
 				'<td>' + posNameList[0][chara.mainPosition] + '</td>';
 
 			for (var j = 0; j < chara.basePoint[1].length; j++) {
@@ -116,7 +116,7 @@ function updateCharacterList(data) {
 		if (chara.charaType === 1) {
 			str += '<tr>' +
 				'<td class="charaFaceCell"><a href="./pitcher.php?userId=' + data.userId + '&charaId=' + data.charaList[i].id + '"><img class="charaFace" src="' + imgURL + '"></a></td>' +
-				'<td>' + escapeHtml(chara.name) + '</td>' +
+				'<td>' + chara.name + '</td>' +
 				'<td>' + posNameList[1][chara.mainPosition] + '</td>';
 			for (var j = 0; j < chara.basePoint[1].length; j++) {
 				str += '<td>';
@@ -138,22 +138,8 @@ function updateCharacterList(data) {
 		}
 	}
 	document.querySelector('#pitcherTable').insertAdjacentHTML('beforeend', str);
-
-
-
 }
 
-function escapeHtml(text) {
-	var map = {
-		'&': '&amp;',
-		'<': '&lt;',
-		'>': '&gt;',
-		'"': '&quot;',
-		"'": '&#039;'
-	};
-
-	return text.replace(/[&<>"']/g, function(m) { return map[m]; });
-}
 
 function deleteCharacter(charaId) {
 	$.remodal.lookup[$('[data-remodal-id=confirmModal]').data('remodal')].open();

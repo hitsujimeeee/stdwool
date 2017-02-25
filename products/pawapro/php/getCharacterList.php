@@ -40,6 +40,8 @@ try{
 				$point = (int)(($point+ $abPoint)/14) * 14;
 			}
 
+			$data['name'] = htmlspecialchars($data['name']);
+
 			$charaList[] = array(
 				'id'=>$row['ID'],
 				'imgURL'=>$imgURL,

@@ -11,26 +11,6 @@ section {
 	margin: 1.5em 1em;
 }
 
-section div {
-	display: float;
-}
-
-.userForm > div {
-	line-height: 2.2em;
-	display: inline;
-	margin-right: 0.5em;
-	white-space: nowrap;
-}
-
-
-.userForm > div * {
-	line-height: 1.5em;
-}
-
-input {
-	width:8em;
-}
-
 .rankGraph {
 	width:2em;
 }
