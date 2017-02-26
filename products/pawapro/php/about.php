@@ -17,7 +17,9 @@ $dbh = DB::connect();
 
 <body>
 	<?php include('../php/header.php'); ?>
-	<h2 class="pageHeader"><i class="fa fa-home"></i>このサイトについて</h2>
+	<header class="pageHeader">
+		<h2><i class="fa fa-home"></i>このサイトについて</h2>
+	</header>
 	<section>
 		<p class="secHeader"><i class="fa fa-window-maximize"></i>ページ紹介</p>
 		<hr class="abHr">

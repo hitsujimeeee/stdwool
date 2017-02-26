@@ -12,7 +12,9 @@
 	<?php include('./header.php'); ?>
 
 	<main>
-		<h2 id="title" class="pageHeader"><i class="fa fa-book"></i>パワプロアプリ育成シミュレーター 使い方</h2>
+		<header class="pageHeader">
+			<h2 id="title"><i class="fa fa-home"></i>パワプロアプリ育成シミュレーター 使い方</h2>
+		</header>
 
 		<section>
 			<h3>■育成シミュレーターの使い方</h3>

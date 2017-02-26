@@ -15,8 +15,8 @@
 	<?php include('../php/header.php'); ?>
 
 	<main>
-		<header>
-			<h2 class="pageHeader"><i class="fa fa-address-book-o" aria-hidden="true"></i>作成選手一覧</h2>
+		<header class="pageHeader">
+			<h2><i class="fa fa-address-book-o" aria-hidden="true"></i>作成選手一覧</h2>
 		</header>
 
 		<section id="batterSection">

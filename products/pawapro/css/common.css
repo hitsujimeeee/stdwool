@@ -10,7 +10,16 @@ footer {
 	color:#ffffff;
 }
 
-h2.pageHeader {
+header.pageHeader h2 {
+	margin-top: 0.4em;
+}
+
+
+header.pageHeader i {
+	margin-right: .2em;
+}
+
+header.pageHeader > h2 {
 	margin-left: 0.2em;
 }
 

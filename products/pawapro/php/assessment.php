@@ -87,7 +87,9 @@ $dbh = DB::connect();
 	<?php include('../php/header.php'); ?>
 
 	<main>
-		<h2 class="pageHeader"><i class="fa fa-calculator"></i>査定計算機</h2>
+		<header class="pageHeader">
+			<h2><i class="fa fa-calculator"></i>査定計算機</h2>
+		</header>
 		<section class="basePointSection">
 			<p>■基礎能力</p>
 			<table class="basePoint modern">
