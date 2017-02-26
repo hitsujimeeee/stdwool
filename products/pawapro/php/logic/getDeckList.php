@@ -28,9 +28,40 @@ try{
 			D.CHARA3_ID,
 			D.CHARA4_ID,
 			D.CHARA5_ID,
-			D.CHARA6_ID
-        FROM
+			D.CHARA6_ID,
+			D.CHARA1_RARE,
+			D.CHARA2_RARE,
+			D.CHARA3_RARE,
+			D.CHARA4_RARE,
+			D.CHARA5_RARE,
+			D.CHARA6_RARE,
+			P.NAME TYPE,
+			S.NAME SCHOOL,
+			IFNULL(FAV_T.C, 0) FAV_COUNT
+		FROM
 			DECK D
+		LEFT JOIN (
+			SELECT
+				DECK_USER_ID, DECK_ID, COUNT(*) C
+			FROM
+				DECK_FAVORITE
+			WHERE
+				DELETE_FLAG = 0
+			GROUP BY
+				DECK_USER_ID, DECK_ID
+		) FAV_T
+		ON
+			D.ID = FAV_T.DECK_ID
+		AND
+			D.USER_ID = FAV_T.DECK_USER_ID
+		LEFT JOIN
+			SCHOOL S
+		ON
+			D.SCHOOL = S.ID
+		LEFT JOIN
+			DECK_PLAYER_TYPE P
+		ON
+			D.TYPE = P.ID
         WHERE
 			USER_ID = :userId
         ";
@@ -43,15 +74,26 @@ try{
 			$list[] = array(
 				'id'=>$row['ID'],
 				'userId'=>$row['USER_ID'],
-				'name'=>$row['NAME'],
+				'name'=>htmlspecialchars($row['NAME']),
 				'chara'=>array(
-				$row['CHARA1_ID'],
-				$row['CHARA2_ID'],
-				$row['CHARA3_ID'],
-				$row['CHARA4_ID'],
-				$row['CHARA5_ID'],
-				$row['CHARA6_ID']
-			),
+					$row['CHARA1_ID'],
+					$row['CHARA2_ID'],
+					$row['CHARA3_ID'],
+					$row['CHARA4_ID'],
+					$row['CHARA5_ID'],
+					$row['CHARA6_ID']
+				),
+				'rare'=>array(
+					$row['CHARA1_RARE'],
+					$row['CHARA2_RARE'],
+					$row['CHARA3_RARE'],
+					$row['CHARA4_RARE'],
+					$row['CHARA5_RARE'],
+					$row['CHARA6_RARE']
+				),
+				'targetType'=>$row['TYPE'],
+				'school'=>$row['SCHOOL'],
+				'favCount'=>$row['FAV_COUNT'],
 				'training'=>[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 			);
 		}

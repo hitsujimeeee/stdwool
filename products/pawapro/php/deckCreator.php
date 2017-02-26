@@ -6,7 +6,8 @@ $userName = null;
 $password = null;
 $userId = null;
 $deckId = null;
-$rarelityList = ['', 'PSR', 'SR', 'PR', 'R', 'PN', 'N'];
+$rarelityList = ['', 'PSR', 'SR', 'PR', 'R'];
+$rarelityGraphList = ['SR', 'SR', 'SR', 'R', 'R'];
 
 $targetTypeList = [];
 $schoolList = [];
@@ -86,6 +87,10 @@ if ($mode === 0) {
 if($mode === 2 || $mode === 3) {
 	require_once './logic/getDeck.php';
 	$deckData = getDeck($dbUserId, $deckId);
+	if(!$deckData) {
+		echo 'このページは表示できません。';
+		exit;
+	}
 	$Parsedown = new Parsedown();
 	$summary = $Parsedown->setMarkupEscaped(true)->setBreaksEnabled(true)->text($deckData['summary']);
 	$totalBonusPoint = getTotalBonusPoint($deckData['lv'], $deckData['rare']);
@@ -193,11 +198,26 @@ function getDeckEventDetail($dbh, $charaList) {
 					}
 					$str .= '{id:\'' . $deckData['chara'][$i] . '\', lv:' . ($deckData['lv'][$i] ? $deckData['lv'][$i] : 'null') . ', rare:' . ($deckData['rare'][$i] ? $deckData['rare'][$i] : 'null') . '}, ';
 				}
-				substr($str, 0, strlen($str)-2);
+				$str = substr($str, 0, strlen($str)-2);
 				echo $str;
 			}
 			?>
 		];
+		var savedMakedCharaList = [
+			<?php
+			$str = '';
+			if(isset($deckData['makedChara'])) {
+				foreach ($deckData['makedChara'] as $r) {
+					if($r) {
+						$str .= '\'' . $r . '\',';
+					}
+				}
+				$str = substr($str, 0, strlen($str)-1);
+			}
+			echo $str;
+			?>];
+		var mode = <?= $mode ?>;
+
 	</script>
 </head>
 
@@ -213,6 +233,7 @@ function getDeckEventDetail($dbh, $charaList) {
 			<h2><i class="fa fa-wrench" aria-hidden="true"></i>デッキ編集</h2>
 			<?php } ?>
 		</header>
+		<hr class="abHr" />
 
 		<!-- デッキ名 -->
 		<section>
@@ -227,16 +248,21 @@ function getDeckEventDetail($dbh, $charaList) {
 					<span><?= htmlspecialchars($schoolList[$deckData['school']])?></span>
 					<p class="arrow_box">対象とする高校です</p>
 				</div>
+				<div class="viewfavCount">
+					<span><?= (int)$deckData['favCount'] > 0 ? '<i class="fa fa-heart" style="color:#ff6add"></i>' . htmlspecialchars($deckData['favCount']) : '' ?></span>
+				</div>
+<!--
 				<?php if ($totalBonusPoint > 0) { ?>
 				<div class="viewBonusPoint">
-					<span>↑<?= $totalBonusPoint ?>%</span>
+					<span>↑<?php //$totalBonusPoint ?>%</span>
 					<p class="arrow_box">上限開放ボーナスの合計値です</p>
 				</div>
 				<?php } ?>
+-->
 			</div>
 			<?php } else { ?>
-			<header>■デッキ名(30文字まで)</header>
-			<p><input type="text" id="deckName" value="<?= htmlspecialchars(isset($deckData) ? $deckData['name'] : '')?>"></p>
+			<header><i class="fa fa-book"></i>デッキ名(30文字まで)</header>
+			<p><input type="text" id="deckName" data-form-name="デッキ名" maxlength="30" value="<?= htmlspecialchars(isset($deckData) ? $deckData['name'] : '')?>" required></p>
 			<?php } ?>
 			<input type="hidden" id="userId" value="<?= $userId ?>">
 			<input type="hidden" id="deckId" value="<?= $deckId ?>">
@@ -250,9 +276,9 @@ function getDeckEventDetail($dbh, $charaList) {
 					<?php for ($i = 0; $i < count($deckData['chara']); $i++) {?>
 					<li class="eveCharaImg">
 						<div class="relative">
-							<img src="../img/eventChara/<?= $deckData['chara'][$i] ? $deckData['chara'][$i] . '.jpg' : 'noimage.jpg' ?>">
+							<img onerror="this.src='../img/noface.jpg';" src="../img/eventChara/<?= $deckData['chara'][$i] ? $rarelityGraphList[$deckData['rare'][$i]] . '/' . $deckData['chara'][$i] . '.jpg' : 'noimage.jpg' ?>">
 							<div class="lvText"><?= $deckData['lv'][$i] ? 'Lv' . $deckData['lv'][$i] : '' ?></div>
-							<div class="bonusText"><?= getBonusCount($deckData['lv'][$i], $deckData['rare'][$i]) ?></div>
+							<?php //<div class="bonusText"><?= getBonusCount($deckData['lv'][$i], $deckData['rare'][$i]) </div>?>
 						</div>
 					</li>
 					<?php } ?>
@@ -263,7 +289,6 @@ function getDeckEventDetail($dbh, $charaList) {
 			<div class="deackDetail">
 				<div class="deckTraining">
 					<?php for ($i = 0; $i < count($deckEventDetail['trainingList']); $i++) {?>
-
 					<div class="trainingCell"><img class="summaryTrainingIcon<?= ($deckEventDetail['trainingList'][$i] > 0 ? ' nonOpacity' : '') ?>" src="../img/practice<?= $i ?>.jpg">
 						<?php if ($deckEventDetail['trainingList'][$i] > 1) { ?>
 						<div class="countNum">×<?= $deckEventDetail['trainingList'][$i] ?></div>
@@ -278,22 +303,24 @@ function getDeckEventDetail($dbh, $charaList) {
 			</div>
 
 			<?php } else { ?>
-			<header>■イベキャラ<button onclick="deckCreator.openRemodal();">編集</button></header>
+			<header><i class="fa fa-cube"></i>イベキャラ<button onclick="deckCreator.openRemodal();">編集</button></header>
 			<div class="evCharaContainer">
 				<ul class="contaner">
 					<?php for ($i = 0; $i < 6; $i++) { ?>
 					<li class="eveCharaImg">
 						<div class="eveImageArea" onclick="deckCreator.deleteSelectedEveChara(<?= $i ?>)">
-							<img src="../img/eventChara/<?= isset($deckData) && $deckData['chara'][$i] ? $deckData['chara'][$i] . '.jpg' : 'noimage.jpg' ?>">
+							<img onerror="this.src='../img/noface.jpg';" src="../img/eventChara/<?= isset($deckData) && $deckData['chara'][$i] ? $rarelityGraphList[$deckData['rare'][$i]] . '/' . $deckData['chara'][$i] . '.jpg' : 'noimage.jpg' ?>">
 							<div class="trainingIcon"><img class="trainingIcon hiddenDisplay"></div>
 						</div>
 						<div>
-							<input type="number" class="charaLv" min="1" max="50" value="<?= isset($deckData) && $deckData['lv'][$i] ? $deckData['lv'][$i] : ''?>"<?= !isset($deckData) || !$deckData['chara'][$i] ? ' disabled=true' : '' ?> tabindex="<?= $i+1 ?>">
+							<input type="number" class="charaLv" min="1" max="50" placeholder="Lv" value="<?= isset($deckData) && $deckData['lv'][$i] ? $deckData['lv'][$i] : ''?>"<?= !isset($deckData) || !$deckData['chara'][$i] ? ' disabled=true' : '' ?> tabindex="<?= $i+1 ?>">
 						</div>
 						<div>
-							<select class="rareRank"<?= !isset($deckData) || !$deckData['chara'][$i] ? ' disabled=true' : '' ?> tabindex="<?= $i+7 ?>">
-								<?php for ($j = 0; $j < 6; $j++) { ?>
+							<select class="rareRank"<?= !isset($deckData) || !$deckData['chara'][$i] ? ' disabled=true' : '' ?> tabindex="<?= $i+7 ?>" onclick="deckCreator.updateEveCharaList();">
+								<?php for ($j = 0; $j < count($rarelityList); $j++) { ?>
+								<?php if ($j % 2 == 0) {?>
 								<option value="<?= $j ?>"<?= (isset($deckData) && $deckData['rare'][$i] == $j ? ' selected' : '') ?>><?= $rarelityList[$j] ?></option>
+								<?php } ?>
 								<?php } ?>
 							</select>
 						</div>
@@ -312,7 +339,7 @@ function getDeckEventDetail($dbh, $charaList) {
 		<!-- 育成タイプ -->
 		<?php if ($mode !== 3) { ?>
 		<section>
-			<header><i class="fa fa-building-o" aria-hidden="true"></i>育成タイプ</header>
+			<header><i class="fa fa-cube"></i>育成タイプ</header>
 			<p>
 				<select id="charaType">
 				<?php
@@ -328,7 +355,7 @@ function getDeckEventDetail($dbh, $charaList) {
 		<!-- 対象高校 -->
 		<?php if ($mode !== 3) { ?>
 		<section>
-			<header><i class="fa fa-building-o" aria-hidden="true"></i>対象高校</header>
+			<header><i class="fa fa-building-o"></i>対象高校</header>
 			<p>
 				<select id="school">
 				<?php
@@ -342,23 +369,71 @@ function getDeckEventDetail($dbh, $charaList) {
 		<?php } ?>
 
 		<section>
-			<header>■特徴・コンセプト</header>
+			<header><i class="fa fa-pencil"></i>特徴・コンセプト</header>
 			<?php if ($mode === 3) { ?>
 			<div class="summary"><?= $summary ?></div>
 			<?php } else { ?>
-			<textarea type="text" class="summary" id="summary" maxlength="500"><?= htmlspecialchars(isset($deckData) ? $deckData['summary'] : '') ?></textarea>
+			<textarea type="text" class="summary" id="summary" data-form-name="特徴・コンセプト" maxlength="500"><?= htmlspecialchars(isset($deckData) ? $deckData['summary'] : '') ?></textarea>
 			<p><span id="restTextCount">500</span>/500</p>
 			<?php } ?>
 
 		</section>
 
 		<section>
-			<header>■一覧</header>
-			<input type="text" name="" value="">
+			<header>
+				<i class="fa fa-cube" aria-hidden="true"></i>作成選手一覧
+				<?php if ($mode !== 3) { ?>
+				<button onclick="deckCreator.openMakedCharaList()">編集</button>
+				<?php } ?>
+			</header>
+			<section id="batterMakedDisplay" class="hiddenDisplay">
+				<header><img class="iconGraph" src="../img/icon/bat.png">野手</header>
+				<div class="table-responsive">
+					<table id="batterDisplayTable" class="modern makedCharaTable">
+						<tr>
+							<th></th>
+							<th>選手名</th>
+							<th>守備位置</th>
+							<th>弾道</th>
+							<th>打</th>
+							<th>力</th>
+							<th>走</th>
+							<th>肩</th>
+							<th>守</th>
+							<th>補</th>
+							<th>査定</th>
+							<th></th>
+						</tr>
+					</table>
+				</div>
+			</section>
+
+			<section id="pitcherMakedDisplay" class="hiddenDisplay">
+				<header><img class="iconGraph" src="../img/icon/ball.png">投手</header>
+				<div class="table-responsive">
+					<table id="pitcherDisplayTable" class="modern makedCharaTable">
+						<tr>
+							<th></th>
+							<th>選手名</th>
+							<th>守備位置</th>
+							<th>球速</th>
+							<th>コン</th>
+							<th>スタ</th>
+							<th>↑</th>
+							<th>←</th>
+							<th>↙</th>
+							<th>↓</th>
+							<th>↘</th>
+							<th>→</th>
+							<th></th>
+						</tr>
+					</table>
+				</div>
+			</section>
 		</section>
 
 		<section>
-			<header>■作者情報</header>
+			<header><i class="fa fa-user"></i>作者情報</header>
 			<table class="modern authorInfo">
 				<tr>
 					<th>作者名</th>
@@ -366,7 +441,7 @@ function getDeckEventDetail($dbh, $charaList) {
 						<?php if ($mode === 3) { ?>
 						<?= htmlspecialchars($deckData['author']) ?>
 						<?php } else { ?>
-						<input type="text" id="author" maxlength="20" value="<?= htmlspecialchars(isset($deckData) ? $deckData['author'] : '') ?>">
+						<input type="text" id="author" data-form-name="作者名" maxlength="20" value="<?= htmlspecialchars(isset($deckData) ? $deckData['author'] : '') ?>">
 						<?php } ?>
 					</td>
 				</tr>
@@ -376,7 +451,7 @@ function getDeckEventDetail($dbh, $charaList) {
 						<?php if ($mode === 3) { ?>
 						<?= htmlspecialchars($deckData['gameId']) ?>
 						<?php } else { ?>
-						<input type="text" id="gameId" maxlength="20" value="<?= htmlspecialchars(isset($deckData) ? $deckData['gameId'] : '') ?>">
+						<input type="text" id="gameId" data-form-name="パワプロID" maxlength="10" value="<?= htmlspecialchars(isset($deckData) ? $deckData['gameId'] : '') ?>">
 						<?php } ?>
 					</td>
 				</tr>
@@ -384,9 +459,9 @@ function getDeckEventDetail($dbh, $charaList) {
 					<th>TwitterID</th>
 					<td>
 						<?php if ($mode === 3) { ?>
-						<a href="https://twitter.com/<?= htmlspecialchars(trim($deckData['twitterId'])) ?>"><?= trim($deckData['twitterId']) !== '' ? '@' . htmlspecialchars(trim($deckData['twitterId'])) : '' ?></a>
+						<a onclick="ga('send', 'event', 'link', 'click', 'deckTwitter');" href="https://twitter.com/<?= htmlspecialchars(trim($deckData['twitterId'])) ?>" target="_blank"><?= trim($deckData['twitterId']) !== '' ? '@' . htmlspecialchars(trim($deckData['twitterId'])) : '' ?></a>
 						<?php } else { ?>
-						<input type="text" id="twitterId" maxlength="20" value="<?= htmlspecialchars(isset($deckData) ? $deckData['twitterId'] : '') ?>">
+						<input type="text" id="twitterId" data-form-name="TwitterID" maxlength="15" value="<?= htmlspecialchars(isset($deckData) ? $deckData['twitterId'] : '') ?>">
 						<?php } ?>
 					</td>
 				</tr>
@@ -406,7 +481,7 @@ function getDeckEventDetail($dbh, $charaList) {
 
 	</main>
 
-	<div class="remodal" data-remodal-id="eveCharaRemodal" id="eveCharaRemodal" data-remodal-options="hashTracking:false, closeOnOutsideClick:false, closeOnCancel:false, closeOnConfirm:false">
+	<div class="remodal" data-remodal-id="eveCharaRemodal" id="eveCharaRemodal" data-remodal-options="hashTracking:false">
 		<button data-remodal-action="confirm" class="remodal-close"></button>
 		<div class="eveCharaListCond">
 			<div>
@@ -448,7 +523,7 @@ function getDeckEventDetail($dbh, $charaList) {
 				$src = $item['trainingType'] !== null ? ' src="../img/practice' . $item['trainingType'] . '.jpg"' : '';
 				$selectedClass = isset($deckData) && in_array($item['id'], $deckData['chara']) ? ' selectedItem' : ''; ?>
 			<li class="eveCharaListItem" data-chara-id="<?= $item['id'] ?>" data-chara-name="<?= $item['name'] ?>" data-chara-read="<?= $item['yomi'] ?>" data-training-type="<?= $item['trainingType'] ?>" data-chara-type="<?= $item['charaType'] ?>" data-event-type="<?= $item['eventType'] ?>">
-				<img class="evecharaIcon<?= $selectedClass ?>" src="../img/eventChara/<?= $item['id'] ?>.jpg"><img class="trainingIcon"<?= $src ?>>
+				<img class="evecharaIcon<?= $selectedClass ?>" src="../img/eventChara/SR/<?= $item['id'] ?>.jpg"><img class="trainingIcon"<?= $src ?>>
 				<div class="nameArea"><?= $item['name'] ?></div>
 				<div class="evTypeArea">
 					<span class="<?= $evTypeClass[$item['eventType']] ?>"><?= $evTypeList[$item['eventType']] ?></span>
@@ -459,9 +534,56 @@ function getDeckEventDetail($dbh, $charaList) {
 		<button data-remodal-action="confirm" class="remodal-confirm">OK</button>
 	</div>
 
-	<div class="remodal" data-remodal-id="eveCharaRemodal" id="eveCharaRemodal" data-remodal-options="hashTracking:false, closeOnOutsideClick:false, closeOnCancel:false, closeOnConfirm:false">
+	<div class="remodal" data-remodal-id="makedCharaRemodal" id="makedCharaRemodal" data-remodal-options="hashTracking:false">
 		<button data-remodal-action="close" class="remodal-close"></button>
+		<section id="batterSection">
+			<header><img class="iconGraph" src="../img/icon/bat.png">野手</header>
+			<div class="table-responsive">
+				<table id="batterTable" class="modern makedCharaTable">
+					<tr>
+						<th></th>
+						<th>選手名</th>
+						<th>守備位置</th>
+						<th>弾道</th>
+						<th>打</th>
+						<th>力</th>
+						<th>走</th>
+						<th>肩</th>
+						<th>守</th>
+						<th>補</th>
+						<th>査定</th>
+						<th></th>
+					</tr>
+				</table>
+			</div>
+		</section>
+
+		<section id="pitcherSection">
+			<header><img class="iconGraph" src="../img/icon/ball.png">投手</header>
+			<div class="table-responsive">
+				<table id="pitcherTable" class="modern makedCharaTable">
+					<tr>
+						<th></th>
+						<th>選手名</th>
+						<th>守備位置</th>
+						<th>球速</th>
+						<th>コン</th>
+						<th>スタ</th>
+						<th>↑</th>
+						<th>←</th>
+						<th>↙</th>
+						<th>↓</th>
+						<th>↘</th>
+						<th>→</th>
+						<th></th>
+					</tr>
+				</table>
+			</div>
+		</section>
+		<button data-remodal-action="confirm" class="remodal-confirm">OK</button>
 	</div>
+
+
 	<?php include('./optionMenu.php'); ?>
 
 	<?php include('../html/footer.html'); ?>

@@ -13,10 +13,13 @@ $sortDir = (int)$_POST['sortDir'] === 0 ? 'DESC' : 'ASC';
 $favCheck = json_decode($_POST['favCheck']);
 $userName = $_POST['userName'];
 $password = $_POST['password'];
-
-$data = [];
+$pageNumber = (int)$_POST['pageNum'];
+$DISPLAY_COUNT = 10;
+$offset = (int)($pageNumber*$DISPLAY_COUNT);
 
 $list = array();
+$count = 0;
+
 try{
 
 	$dbh = DB::connect();
@@ -40,6 +43,12 @@ try{
 		D.CHARA4_ID,
 		D.CHARA5_ID,
 		D.CHARA6_ID,
+		D.CHARA1_RARE,
+		D.CHARA2_RARE,
+		D.CHARA3_RARE,
+		D.CHARA4_RARE,
+		D.CHARA5_RARE,
+		D.CHARA6_RARE,
 		P.NAME TYPE,
 		S.NAME SCHOOL,
 		D.AUTHOR,
@@ -71,8 +80,10 @@ try{
 		D.USER_ID = FAV_T.DECK_USER_ID
 	";
 
+	$condStr = '';
+
 	if($favCheck && $userId) {
-		$sql .= "
+		$condStr .= "
 		INNER JOIN (
 			SELECT
 				DECK_USER_ID,
@@ -89,34 +100,34 @@ try{
 		";
 	}
 
-	$sql .= "
+	$condStr .= "
 	WHERE
 		1 = 1";
 
 
 	if (trim($deckName) !== "") {
-		$sql .= "
+		$condStr .= "
 		AND
 			D.NAME LIKE :deckName
 		";
 	}
 
 	if ($targetType !== 0) {
-		$sql .= "
+		$condStr .= "
 		AND
 			D.TYPE = :targetType
 		";
 	}
 
 	if ($school !== 0) {
-		$sql .= "
+		$condStr .= "
 		AND
 			D.SCHOOL = :school
 		";
 	}
 
 	if ($evChara !== '') {
-		$sql .= "
+		$condStr .= "
 		AND
 			(
 				D.CHARA1_ID = :evChara
@@ -135,18 +146,20 @@ try{
 	}
 
 	if (trim($author) !== "") {
-		$sql .= "
+		$condStr .= "
 		AND
 			D.AUTHOR = :author
 		";
 	}
 
 	if (trim($twitter) !== "") {
-		$sql .= "
+		$condStr .= "
 		AND
 			D.TWITTER_ID = :twitter
 		";
 	}
+
+	$sql .= $condStr;
 
 	$sql .= "
 	ORDER BY
@@ -163,48 +176,62 @@ try{
 			break;
 	}
 	$sql .= "
-	LIMIT 50
+	LIMIT {$DISPLAY_COUNT}
+	OFFSET {$offset}
 	";
 
 	$stmt = $dbh->prepare($sql);
 
 	if(trim($deckName) !== "") {
 		$serachDeckName = '%' . $deckName . '%';
-		$stmt -> bindParam('deckName', $serachDeckName);
+		$stmt -> bindValue('deckName', $serachDeckName);
 	}
 	if($targetType !== 0) {
-		$stmt -> bindParam('targetType', $targetType);
+		$stmt -> bindValue('targetType', $targetType);
 	}
 	if($school !== 0) {
-		$stmt -> bindParam('school', $school);
+		$stmt -> bindValue('school', $school);
 	}
 	if($evChara !== '') {
-		$stmt -> bindParam('evChara', $evChara);
+		$stmt -> bindValue('evChara', $evChara);
 	}
 	if(trim($author) !== "") {
-		$stmt -> bindParam('author', $author);
+		$stmt -> bindValue('author', $author);
 	}
 	if(trim($twitter) !== "") {
-		$stmt -> bindParam('twitter', $twitter);
+		$stmt -> bindValue('twitter', $twitter);
 	}
 	if ($favCheck && $userId) {
-		$stmt -> bindParam('favUserId', $userId);
+		$stmt -> bindValue('favUserId', $userId);
 	}
-	//	var_dump($sql);
+
+//	$stmt -> bindValue('offset', $offset);
+//	var_dump($offset);
+
+//	var_dump($sql);
+//	return;
 	$stmt->execute();
 	while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-		$data[] = array(
+		$list[] = array(
 			'id'=>$row['ID'],
 			'userId'=>$row['USER_ID'],
 			'name'=>htmlspecialchars($row['NAME']),
 			'chara'=>array(
-			$row['CHARA1_ID'],
-			$row['CHARA2_ID'],
-			$row['CHARA3_ID'],
-			$row['CHARA4_ID'],
-			$row['CHARA5_ID'],
-			$row['CHARA6_ID']
-		),
+				$row['CHARA1_ID'],
+				$row['CHARA2_ID'],
+				$row['CHARA3_ID'],
+				$row['CHARA4_ID'],
+				$row['CHARA5_ID'],
+				$row['CHARA6_ID']
+			),
+			'rare'=>array(
+				$row['CHARA1_RARE'],
+				$row['CHARA2_RARE'],
+				$row['CHARA3_RARE'],
+				$row['CHARA4_RARE'],
+				$row['CHARA5_RARE'],
+				$row['CHARA6_RARE']
+			),
 			'author'=>htmlspecialchars($row['AUTHOR']),
 			'twitterId'=>htmlspecialchars($row['TWITTER_ID']),
 			'targetType'=>$row['TYPE'],
@@ -214,8 +241,48 @@ try{
 		);
 	}
 
-	for ($i = 0; $i < count($data); $i++) {
-		foreach ($data[$i]['chara'] as $c) {
+
+	$sql = '
+	SELECT
+		COUNT(*) C
+	FROM
+		DECK D
+	';
+
+	$sql .= $condStr;
+
+	$stmt = $dbh->prepare($sql);
+
+	if(trim($deckName) !== "") {
+		$serachDeckName = '%' . $deckName . '%';
+		$stmt -> bindValue('deckName', $serachDeckName);
+	}
+	if($targetType !== 0) {
+		$stmt -> bindValue('targetType', $targetType);
+	}
+	if($school !== 0) {
+		$stmt -> bindValue('school', $school);
+	}
+	if($evChara !== '') {
+		$stmt -> bindValue('evChara', $evChara);
+	}
+	if(trim($author) !== "") {
+		$stmt -> bindValue('author', $author);
+	}
+	if(trim($twitter) !== "") {
+		$stmt -> bindValue('twitter', $twitter);
+	}
+	if ($favCheck && $userId) {
+		$stmt -> bindValue('favUserId', $userId);
+	}
+
+	$stmt->execute();
+	$row = $stmt->fetch(PDO::FETCH_ASSOC);
+	$count = (int)$row['C'];
+
+
+	for ($i = 0; $i < count($list); $i++) {
+		foreach ($list[$i]['chara'] as $c) {
 			if($c === null) continue;
 			$sql = '
 				SELECT
@@ -225,7 +292,7 @@ try{
 				WHERE
 					ID = :id';
 			$stmt = $dbh->prepare($sql);
-			$stmt -> bindParam('id', $c);
+			$stmt -> bindValue('id', $c);
 			$stmt->execute();
 
 			$row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -234,10 +301,10 @@ try{
 				if(strlen($trainingType) > 1) {
 					$split = str_split($trainingType);
 					foreach ($split as $s) {
-						$data[$i]['training'][(int)$s]++;
+						$list[$i]['training'][(int)$s]++;
 					}
 				} else {
-					$data[$i]['training'][(int)$trainingType]++;
+					$list[$i]['training'][(int)$trainingType]++;
 				}
 			}
 		}
@@ -246,6 +313,11 @@ try{
 }catch (PDOException $e){
 	die();
 }
+
+$data = array(
+	'list'=>$list,
+	'count'=>$count
+);
 
 $dbh = null;
 header('Content-type: application/json');

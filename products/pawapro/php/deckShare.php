@@ -4,7 +4,7 @@
 <head>
 	<?php
 	$title = 'パワプロアプリ　デッキシェア';
-	$description = 'パワプロアプリの育成シミュレーターです。目標能力までに必要な経験点を計算できます。';
+	$description = 'パワプロアプリのデッキを他のユーザーに公開したり、他のユーザーのデッキを見たりできます。';
 	require_once './headInclude.php';
 	?>
 	<link rel="stylesheet" href="../css/deckShare.css">
@@ -14,7 +14,9 @@
 	<?php include('../php/header.php'); ?>
 
 	<main>
-		<h2>デッキシェア</h2>
+		<header class="pageHeader">
+			<h2><i class="fa fa-retweet" aria-hidden="true"></i>デッキシェア</h2>
+		</header>
 		<section class="menuContainer">
 			<div class="linkBoxWrapper" id="deckSearch">
 				<a href="./deckSearch.php">

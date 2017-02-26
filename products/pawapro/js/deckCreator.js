@@ -1,17 +1,27 @@
 /*jslint browser: true, jquery: true */
-/* global savedCharaList */
+/* global savedCharaList, savedMakedCharaList, mode */
 /*jslint shadow:true*/
 
 $(function () {
+
+//	$('.js-replace-no-image').error(function() {
+//		$(this).attr({
+//			src: '/img/noface.jpg',
+//			alt: 'no image'
+//		});
+//	});
+
 	$('#ui-tab').tabs();
 
-	$(document).on('confirmation', '#eveCharaRemodal', function () {
+	$(document).on('closing', '#eveCharaRemodal', function () {
 		deckCreator.ConfirmRemodal();
-		console.log();
-	}).on('closeOnOutsideClick', '#eveCharaRemodal', function () {
-		deckCreator.ConfirmRemodal();
-		console.log();
 	});
+
+	$(document).on('closing', '#makedCharaRemodal', function () {
+		deckCreator.setMakedCharacter();
+	});
+
+
 
 	$('.charaLv').on('change', function () {
 		var idx = $('.charaLv').index(this);
@@ -64,6 +74,7 @@ $(function () {
 
 	})();
 
+
 	$.ajax({
 		url:'./logic/getFavoriteList.php',
 		type:'POST',
@@ -82,14 +93,36 @@ $(function () {
 		localStorage.setItem('favoriteList', JSON.stringify(list));
 		$('#favButton').attr('data-fav-status', list.indexOf($('#deckId').val()) >= 0 ? 1 : 0);
 	}).fail(function(res) {
-		console.log(res);
 	});
+
+
+	if(mode === 1) {
+		$('#gameId').val($('#loginPawaproId').val());
+		$('#twitterId').val($('#loginTwitterId').val());
+
+	}
+
+	$.ajax({
+		url:'./getCharacterList.php',
+		type:'POST',
+		data:JSON.stringify({
+			name: $('#loginUserName').val(),
+			password: $('#loginPassword').val()
+		})
+	}).done(function(data) {
+		deckCreator.makedCharaList = data.data.charaList;
+		deckCreator.setMakedCharacterList(data);
+	}).fail(function(res) {
+	});
+
+
 
 });
 
 
 var deckCreator = {
 	selectedCharaList: [],
+	makedCharaList: null,
 
 	init: function () {
 		for (var i = 0; i < savedCharaList.length; i++) {
@@ -108,6 +141,7 @@ var deckCreator = {
 
 	updateEveCharaList : function() {
 		var list = deckCreator.selectedCharaList;
+		var rateGraphList = ['SR', 'SR', 'SR', 'R', 'R'];
 		var f1 = function(){
 			return list[i].id ===  '' + $(this).data('charaId');
 		};
@@ -118,7 +152,6 @@ var deckCreator = {
 		for (var i = 0; i < 6; i++) {
 			var src = '../img/eventChara/';
 			if (i <= list.length - 1) {
-				src += list[i].id + '.jpg';
 				var obj = $('.eveCharaListItem').filter(f1);
 				var trainingType = obj.data('trainingType');
 				var eventType = Number(obj.data('eventType'));
@@ -127,7 +160,8 @@ var deckCreator = {
 				}
 				$('.charaLv').eq(i).val(list[i].lv).attr('disabled', false).addClass(evTypeStr[eventType]);
 				$('.rareRank').eq(i).val(list[i].rare).attr('disabled', false).addClass(evTypeStr[eventType]);
-
+				var rareGraph = $('.rareRank').eq(i).val() != null ? rateGraphList[$('.rareRank').eq(i).val()] : 'SR';
+				src += rareGraph + '/' + list[i].id + '.jpg';
 			} else {
 				src += 'noimage.jpg';
 				$('.eveImageArea img.trainingIcon').eq(i).addClass('hiddenDisplay').attr('src', '');
@@ -254,8 +288,15 @@ var deckCreator = {
 	},
 
 	save: function () {
+		var validate = deckCreator.validateInput();
+		if(validate) {
+			alert(validate);
+			return;
+		}
+
 		var deckData = {};
 		deckData.name = $('#deckName').val();
+
 		deckData.chara = [];
 
 		for (var i = 0; i < 6; i++) {
@@ -264,6 +305,12 @@ var deckCreator = {
 			} else {
 				deckData.chara[i] = null;
 			}
+		}
+
+		deckData.makedChara = [];
+		var obj = $('.selectedMakedCharacter');
+		for (var i = 0; i < obj.length; i++) {
+			deckData.makedChara[deckData.makedChara.length] = obj.eq(i).data('charaid');
 		}
 
 		deckData.type = $('#charaType').val();
@@ -284,6 +331,10 @@ var deckCreator = {
 			}
 		}).done(function (res) {
 			alert(res.msg);
+			if(res.status === -1) {
+				return;
+			}
+			ga('send', 'event', 'action', 'click', 'saveDeck');
 			$('#deckId').val(res.deckId);
 			var newUrl = deckCreator.setParameter({'userId':res.userId, 'deckId':res.deckId});
 			history.replaceState('','',newUrl);
@@ -308,7 +359,6 @@ var deckCreator = {
 				deckId: $('#deckId').val()
 			}
 		}).done(function (res) {
-			console.log(res);
 			var listStr = localStorage.getItem('favoriteList');
 			var list = listStr ? JSON.parse(listStr) : [];
 			var deckId = $('#deckId').val();
@@ -335,9 +385,26 @@ var deckCreator = {
 					break;
 			}
 		}).fail(function (res) {
-			console.log(res);
 		});
 
+
+	},
+
+	validateInput: function() {
+		var validateItem = ['deckName', 'summary', 'author', 'gameId', 'twitterId'];
+		for(var i = 0; i < validateItem.length; i++) {
+			var item = $('#' + validateItem[i]);
+			var max = Number(item.attr('maxlength'));
+			var min = Number(item.attr('minlength'));
+			var v = item.val();
+			if(item.attr('required') != null && v === '') {
+				return item.data('formName') + 'を入力してください。';
+			}
+			if (v !== '' && (v.length > max || v.length < min)) {
+				return item.data('formName') + 'は' + (min ? min + '文字以上' : '') + max + '文字以内にしてください。';
+			}
+		}
+		return null;
 
 	},
 
@@ -387,6 +454,131 @@ var deckCreator = {
 
 		deckCreator.selectedCharaList.splice(idx, 1);
 		deckCreator.updateEveCharaList();
+	},
+
+	openMakedCharaList: function () {
+		$.remodal.lookup[$('[data-remodal-id=makedCharaRemodal]').data('remodal')].open();
+	},
+
+	setMakedCharacterList: function(data) {
+		var posNameList = [
+			['捕手', '一塁手', '二塁手', '三塁手', '遊撃手', '外野手'],
+			['先発', '中継ぎ', '抑え']
+		];
+		var list = data.data.charaList;
+		var str = '';
+		for (var i = 0; i < list.length; i++) {
+			var chara = list[i].data;
+			if (chara.charaType === 0) {
+				str += '<tr data-charaid="' + list[i].id + '"' + (savedMakedCharaList.indexOf(list[i].id) >= 0 ? ' class="selectedMakedCharacter"' : '') + '>' +
+					'<td><img class="charaFace" src="' + list[i].imgURL + '"></td>' +
+					'<td>' + chara.name + '</td>' +
+					'<td>' + posNameList[0][chara.mainPosition] + '</td>';
+
+				for (var j = 0; j < chara.basePoint[1].length; j++) {
+					str += '<td>';
+					if(chara.basePoint[1][j] !== 0) {
+						str += '<img class="rankGraph" src="../img/';
+						if(j === 0) {
+							str+= 'trajectory' + chara.basePoint[1][j];
+						} else {
+							str+= 'rank' + this.getRankString(chara.basePoint[1][j]);
+						}
+						str += '.png">';
+					}
+					str += '</td>';
+				}
+				str += '<td>' + list[i].assessment + '</td>' +
+					'<td><a href="./batter.php?userId=' + data.data.userId + '&charaId=' + list[i].id + '" target="_blank">詳細</a></td>' +
+					'</tr>';
+			}
+		}
+		$('#batterTable').append(str);
+
+		str = '';
+
+		for (var i = 0; i < list.length; i++) {
+			var chara = list[i].data,
+				imgURL = list[i].imgURL;
+			if (chara.charaType === 1) {
+				str += '<tr data-charaid="' + list[i].id + '"' + (savedMakedCharaList.indexOf(list[i].id) >= 0 ? ' class="selectedMakedCharacter"' : '') + '>' +
+					'<td class="charaFaceCell"><img class="charaFace" src="' + imgURL + '"></td>' +
+					'<td>' + chara.name + '</td>' +
+					'<td>' + posNameList[1][chara.mainPosition] + '</td>';
+				for (var j = 0; j < chara.basePoint[1].length; j++) {
+					str += '<td>';
+					if(chara.basePoint[1][j] !== 0) {
+						if(j === 0) {
+							str+= '' + chara.basePoint[1][j];
+						} else {
+							str+= '<img class="rankGraph" src="../img/rank' + this.getRankString(chara.basePoint[1][j]) + '.png">';
+						}
+					}
+					str += '</td>';
+				}
+				for (var j = 0; j < chara.changeBall[1].length; j++) {
+					str += '<td>' + (chara.changeBall[1][j] ? chara.changeBall[1][j].value : '0') + '</td>';
+				}
+				str += '<td><a href="./pitcher.php?userId=' + data.data.userId + '&charaId=' + list[i].id + '" target="_blank">詳細</a></td>' +
+					'</tr>';
+			}
+		}
+		document.querySelector('#pitcherTable').insertAdjacentHTML('beforeend', str);
+
+		$('#batterTable tr:gt(0)').click(deckCreator.markMakedCharacter);
+		$('#pitcherTable tr:gt(0)').click(deckCreator.markMakedCharacter);
+		this.setMakedCharacter();
+	},
+
+	markMakedCharacter: function() {
+		if ($(this).hasClass('selectedMakedCharacter')) {
+			$(this).removeClass('selectedMakedCharacter');
+		} else if($('.selectedMakedCharacter').length < 10) {
+			$(this).addClass('selectedMakedCharacter');
+		}
+	},
+
+	setMakedCharacter: function() {
+		var table = $('#batterDisplayTable');
+		var obj = $('#batterTable tr');
+		var existFlag = false;
+		table.find("tr:gt(0)").remove();
+		for (var i = 0; i < obj.length; i++) {
+			if (obj.eq(i).hasClass('selectedMakedCharacter')) {
+				table.append(obj.eq(i).clone());
+				existFlag = true;
+			}
+		}
+		table.find('.selectedMakedCharacter').removeClass('selectedMakedCharacter');
+		if (existFlag) {
+			$('#batterMakedDisplay').removeClass('hiddenDisplay');
+		} else {
+			$('#batterMakedDisplay').addClass('hiddenDisplay');
+		}
+
+		table = $('#pitcherDisplayTable');
+		obj = $('#pitcherTable tr');
+		existFlag = false;
+		table
+		table.find("tr:gt(0)").remove();
+		for (var i = 0; i < obj.length; i++) {
+			if (obj.eq(i).hasClass('selectedMakedCharacter')) {
+				table.append(obj.eq(i).clone());
+				existFlag = true;
+			}
+		}
+		table.find('.selectedMakedCharacter').removeClass('selectedMakedCharacter');
+		if (existFlag) {
+			$('#pitcherMakedDisplay').removeClass('hiddenDisplay');
+		} else {
+			$('#pitcherMakedDisplay').addClass('hiddenDisplay');
+		}
+	},
+
+
+	getRankString: function(val) {
+		var rank = ['G', 'G', 'F', 'F', 'E', 'D', 'C', 'B', 'A', 'S'];
+		return val === 100 ? 'S' : rank[parseInt(val/10)];
 	}
 
 

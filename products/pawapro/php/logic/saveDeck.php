@@ -1,34 +1,23 @@
 <?php
 require_once '../global.php';
 require_once '../userCommonModule.php';
-$userName = '';
-$password = '';
-$deckId = '';
-$deckData = null;
-$result = null;
 
-if(isset($_POST['userName'])) {
-	$userName = $_POST['userName'];
-} else {
+$userName = isset($_POST['userName']) ? $_POST['userName'] : null;
+$password = isset($_POST['password']) ? $_POST['password'] : null;
+$deckId = isset($_POST['deckId']) ? $_POST['deckId'] : null;
+$deckData = isset($_POST['deckData']) ? $_POST['deckData'] : null;
+
+
+$result = validateUserInfo($userName, $password);
+if($result) {
+	header('Content-type: application/json');
+	echo json_encode($result);
 	exit();
 }
 
-if(isset($_POST['password'])) {
-	$password = $_POST['password'];
-} else {
-	exit();
-}
-
-if(isset($_POST['deckId'])) {
-	$deckId = $_POST['deckId'];
-} else {
-	exit();
-}
-
-
-if(isset($_POST['deckData'])) {
-	$deckData = $_POST['deckData'];
-} else {
+if(!$deckData) {
+	header('Content-type: application/json');
+	echo json_encode(array('status'=>-1, 'msg'=>'エラーが発生しました。'));
 	exit();
 }
 
@@ -129,6 +118,8 @@ try{
 			'userId'=>$userId
 		);
 	} else {
+		$deckId = makeUniqueId();
+
 		//登録がない場合はINSERT
 		$sql = "
 		INSERT INTO
@@ -221,8 +212,51 @@ try{
 			'deckId'=>$deckId,
 			'userId'=>$userId
 		);
-	}
+;	}
 
+	$stmt = null;
+	$sql = '
+		UPDATE
+			DECK_CHARACTER
+		SET
+			CHARA_ID = NULL
+		WHERE
+			DECK_ID = :deckId';
+	$stmt = $dbh->prepare($sql);
+	$stmt -> bindValue('deckId', $deckId);
+	$stmt->execute();
+
+	if(isset($deckData['makedChara'])) {
+		for ($i = 0; $i < count($deckData['makedChara']); $i++) {
+			$sql = '
+		INSERT INTO
+			DECK_CHARACTER
+		(
+			DECK_ID,
+			USER_ID,
+			NO,
+			CHARA_ID
+		)
+		VALUES
+		(
+			:deckId,
+			:userId,
+			:no,
+			:charaId
+		)
+		ON DUPLICATE KEY
+		UPDATE
+			CHARA_ID = :charaId
+		';
+			$stmt = $dbh->prepare($sql);
+			$stmt -> bindValue('charaId', $deckData['makedChara'][$i]);
+			$stmt -> bindValue('userId', $userId);
+			$stmt -> bindValue('deckId', $deckId);
+			$stmt -> bindValue('no', $i+1);
+			$stmt->execute();
+			$stmt = null;
+		}
+	}
 
 }catch (PDOException $e){
 	die();

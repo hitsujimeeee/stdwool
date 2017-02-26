@@ -32,7 +32,7 @@ section {
 	font-size: 1.5em;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
-	padding-left: 0.5em;
+	padding-left: 0.3em;
 	border: solid 1px #000;
 	border-bottom: none;
 }
@@ -44,7 +44,7 @@ section {
 }
 
 .eveChara {
-	width: 16.666%;
+	width: 16.666666%;
 }
 
 .trainingIcon {
@@ -52,7 +52,6 @@ section {
 	filter: alpha(opacity=20);
 	-moz-opacity: 0.2;
 	width:100%;
-
 }
 
 .deckTraining {
@@ -65,6 +64,7 @@ section {
 	border-bottom-left-radius: 5px;
 	border-bottom-right-radius: 5px;
 	border: solid 1px #000;
+	line-height: 1.5em;
 }
 
 .trainingCell {
@@ -138,11 +138,11 @@ li.deckList {
 }
 
 .deckHeader h3 {
-	margin: 0.2em 0;
+	margin: 0.1em 0;
 }
 
 .authorName {
-	font-size: 0.5em;
+	font-size: 0.6em;
 	text-align: right;
 	margin-bottom: 0;
 }
@@ -180,4 +180,16 @@ li.deckList a:active,
 li.deckList a:link {
 	color: #000;
 	text-decoration: none;
+}
+
+.pageDisplay {
+	height: 38px;
+	max-width: 480px;
+	margin-left: 0.5em;
+	display: flex;
+	justify-content: space-between;
+}
+
+.scrollButton {
+	cursor: pointer;
 }

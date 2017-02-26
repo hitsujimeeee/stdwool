@@ -22,18 +22,15 @@
 		</header>
 		<section>
 			<form id="editForm" method="post" action="./deckCreator.php">
-				<input type="hidden" id="userName" name="userName" value="">
-				<input type="hidden" id="password" name="password" value="">
+				<input type="hidden" id="userName" data-form-name="ユーザー名" minlength="8" maxlength="20" name="userName" value="" required>
+				<input type="hidden" id="password" data-form-name="パスワード" minlength="8" maxlength="20" name="password" value="" required>
 				<input name="userId" type="hidden">
 				<input name="deckId" type="hidden">
 			</form>
-			<div class="actButton">
-				<button onclick="deckList.createNewDeck();">新規作成</button>
-			</div>
 		</section>
 
 		<section>
-			<p>■一覧</p>
+			<p>■デッキ一覧<button class="actButton" onclick="deckList.createNewDeck();">新規作成</button></p>
 			<div class="deckArea">
 				<ul id="deckList"></ul>
 			</div>

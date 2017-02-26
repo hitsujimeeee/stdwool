@@ -41,8 +41,8 @@ foreach ($dbh->query($sql) as $row) {
 	<?php include('../php/header.php'); ?>
 
 	<main>
-		<header>
-			<h2 class="pageHeader"><i class="fa fa-search">デッキ検索</i></h2>
+		<header class="pageHeader">
+			<h2><i class="fa fa-search"></i>デッキ検索</h2>
 		</header>
 
 		<section>
@@ -82,7 +82,6 @@ foreach ($dbh->query($sql) as $row) {
 						<p>twitter：<input type="text" id="twitterId"></p>
 						<p><input type="checkbox" id="favOnly">お気に入りのみ</p>
 
-						<hr />
 						<p>
 							並び順
 							<select id="sortOrder">
@@ -95,7 +94,7 @@ foreach ($dbh->query($sql) as $row) {
 								<option value="1">昇順</option>
 							</select>
 						</p>
-						<hr />
+						<hr class="abHr" />
 
 						<button onclick="deckSearch.search();">検索</button>
 						<button onclick="deckSearch.reset();">リセット</button>
@@ -107,6 +106,11 @@ foreach ($dbh->query($sql) as $row) {
 		<section>
 			<div class="deckArea" id="deckArea">
 				<ul id="deckList"></ul>
+				<div class="pageDisplay" style="display:none;">
+					<div><a onclick="deckSearch.sendPage(-1);return false;" class="scrollButton">＜＜</a></div>
+					<div><span id="pageNum"></span>/<span id="totalPageNum"></span></div>
+					<div><a onclick="deckSearch.sendPage(1);return false;" class="scrollButton">＞＞</a></div>
+				</div>
 				<div class="noResult hiddenDisplay">検索条件に該当するデッキは存在しません。</div>
 			</div>
 		</section>

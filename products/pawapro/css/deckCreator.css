@@ -1,9 +1,3 @@
-.pageHeader {
-	margin-left: 0.2em;
-	margin-bottom: 1.5em;
-}
-
-
 section {
 	margin-bottom: 1em;
 	margin-left: 0.5em;
@@ -13,7 +7,16 @@ section >*:not(header) {
 	margin-left: 1em;
 }
 
+#deckTitle {
+	font-weight: bold;
+
+}
+
 .evCharaContainer {
+	margin-top: 1em;
+}
+
+.evCharaContainer, .deackDetail {
 	margin: 0;
 }
 
@@ -22,17 +25,16 @@ section >*:not(header) {
 	list-style-type: none;
 	padding-left: 0;
 	margin-left: 0 !important;
-	margin-top: 1em;
 	margin-bottom: 0;
+	border: 1px solid #000;
+	border-bottom: none;
+	max-width: 600px;
 }
 
-.deackDetail {
-	margin-left: 0;
-}
 
 li.eveCharaImg {
 	position: relative;
-	width: 16.6%;
+	width: 16.666666%;
 	max-width: 100px;
 }
 
@@ -84,18 +86,9 @@ span.lvText {
 }
 
 
-.eveCharaIcon {
-	width: 100%;
-}
-
-
 .charaLv,
 .rareRank {
 	width: 100%;
-}
-
-.evecharaIcon {
-	z-index: -1;
 }
 
 .trainingIcon {
@@ -106,7 +99,6 @@ span.lvText {
 	border: none;
 }
 
-
 .summary {
 	width: 90%;
 	min-height: 8em;
@@ -114,8 +106,8 @@ span.lvText {
 
 .viewDeckAttribute {
 	max-width: 600px;
-	padding-right: 1,5em;
-	width: 95%;
+	width: 100%;
+	margin-left: 0;
 	display: flex;
 	justify-content: flex-end;
 }
@@ -169,12 +161,19 @@ span.lvText {
 .lvText, .bonusText {
 	position: absolute;
 	right: 0;
-	font-size: calc(0.3em + 3vw);
+	font-size: calc(0.2em + 3vw);
 	font-weight: bold;
 }
 
+@media (min-width:600px) {
+	.lvText, .bonusText {
+		font-size: 22px;
+	}
+}
+
+
 .lvText {
-	bottom: -0.5em;
+	bottom: -0.2em;
 	color: #000;
 	text-shadow: -1px 0px #fff, 0px -1px #fff, 1px 0px #fff, 0px 1px #fff;
 }
@@ -353,5 +352,37 @@ div.eventType > div:nth-of-type(2) {
 
 
 .favButton[data-fav-status="1"] {
+	background-color: #faff86;
+}
+
+
+.makedCharaTable td, .makedCharaTable th{
+	min-width: 2.5em;
+	text-align: center;
+}
+
+.charaFaceCell {
+	width:4em;
+	height:4em;
+}
+
+.charaFace {
+	width:4em;
+	border: none;
+}
+
+.rankGraph {
+	width:2em;
+}
+
+#makedCharaRemodal section > header {
+	text-align: left;
+}
+
+.table-responsive {
+	margin-left: 0;
+}
+
+tr.selectedMakedCharacter td {
 	background-color: #faff86;
 }

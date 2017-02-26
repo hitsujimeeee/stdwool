@@ -16,7 +16,8 @@ $(function() {
 		$('#sortOrder').val(cond.sortOrder);
 		$('#sortDir').val(cond.sortDir);
 		$('#favCheck').prop("checked", cond.favCheck);
-
+		$('#pageNum').html(cond.pageNum);
+		$('#totalPageNum').html(cond.totalPageNum);
 	}
 
 	if (searchDeata) {
@@ -42,7 +43,8 @@ var deckSearch = {
 			twitter:$('#twitterId').val(),
 			sortOrder: $('#sortOrder').val(),
 			sortDir: $('#sortDir').val(),
-			favCheck: $('#favOnly').prop('checked')
+			favCheck: $('#favOnly').prop('checked'),
+			pageNum: 0
 		};
 	},
 
@@ -59,13 +61,14 @@ var deckSearch = {
 		sessionStorage.removeItem('deckSearchCond');
 		sessionStorage.removeItem('deckSearchData');
 		document.querySelector('#deckList').innerHTML = '';
+		$('.pageDisplay').css('display', 'none');
 	},
 
 	search: function() {
 		var inputData = deckSearch.getSearchData();
 		var sendData = inputData;
-		sendData.userName = localStorage.getItem('userName');
-		sendData.password = localStorage.getItem('password');
+		sendData.userName = $('#loginUserName').val();
+		sendData.password = $('#loginPassword').val();
 		$.blockUI({
 			message: '<div><i class="fa fa-spinner fa-pulse fa-fw"></i>読み込み中……</div>',
 			css:{'width':'80%'}
@@ -76,11 +79,18 @@ var deckSearch = {
 			timeout: 10000,
 			data: sendData,
 		}).done(function(data) {
-			deckSearch.drawDeckList(data);
-			sessionStorage.setItem('deckSearchData', JSON.stringify(data));
+			ga('send', 'event', 'action', 'click', 'deckSearch');
+			deckSearch.drawDeckList(data.list);
+			sessionStorage.setItem('deckSearchData', JSON.stringify(data.list));
 			inputData.favCheck = $('#favOnly').prop('checked');
+			inputData.pageNum = 1;
+			inputData.totalPageNum = parseInt((data.count-1)/10+1);
 			sessionStorage.setItem('deckSearchCond', JSON.stringify(inputData));
 			$.unblockUI();
+
+			$('#pageNum').html(1);
+			$('#totalPageNum').html(parseInt((data.count-1)/10+1));
+
 
 			// 移動先を数値で取得
 			var position = $('#deckArea').offset().top;
@@ -88,7 +98,6 @@ var deckSearch = {
 			$('body,html').animate({scrollTop:position}, 400, 'swing');
 
 		}).fail(function(res) {
-			console.log(res);
 			$.unblockUI();
 		});
 	},
@@ -97,10 +106,13 @@ var deckSearch = {
 		var str = '';
 		var favList = localStorage.getItem('favoriteList');
 		var favCheck = $('#favOnly').prop('checked');
+		var rarelityGraphList = ['SR', 'SR', 'SR', 'R', 'R'];
 		if(data.length === 0) {
 			$('.noResult').removeClass('hiddenDisplay');
+			$('.pageDisplay').css('display', 'none');
 		} else {
 			$('.noResult').addClass('hiddenDisplay');
+			$('.pageDisplay').css('display', 'flex');
 		}
 
 		if(favList) {
@@ -117,7 +129,7 @@ var deckSearch = {
 				'<div class="deckHeader"><h3>' + d.name + '　</h3><p class="authorName">作者:' + d.author + (d.twitterId ? '(@' + d.twitterId + ')' : '' ) + '</p></div>' +
 				'<div class="deckDetail">';
 			for (var j = 0; j < d.chara.length; j++) {
-				str += '<img class="eveChara" src="../img/eventChara/' + (d.chara[j] ? d.chara[j] + '.jpg' : 'noimage.jpg') + '">';
+				str += '<img onerror="this.src=\'../img/noface.jpg\';" class="eveChara" src="../img/eventChara/' + (d.chara[j] ? rarelityGraphList[d.rare[j]] + '/' + d.chara[j] + '.jpg' : 'noimage.jpg') + '">';
 			}
 			str += '</div>' +
 				'<div class="deckTraining">';
@@ -139,8 +151,47 @@ var deckSearch = {
 		var disp = document.querySelector('#deckList');
 		disp.innerHTML = '';
 		disp.insertAdjacentHTML('beforeend', str);
+	},
+
+	sendPage: function(send) {
+
+		var cond = sessionStorage.getItem('deckSearchCond');
+		var pageNum = Number($('#pageNum').text());
+		var totalPageNum = Number($('#totalPageNum').text());
+		var newPageNum = pageNum + send;
+		if(newPageNum <= 0 || newPageNum > totalPageNum) {
+			return;
+		}
 
 
+		if (!cond) {
+			return;
+		}
+		var sendData = JSON.parse(cond);
+		sendData.userName = $('#loginUserName').val();
+		sendData.password = $('#loginPassword').val();
+		sendData.pageNum = newPageNum - 1;
+		$.blockUI({
+			message: '<div><i class="fa fa-spinner fa-pulse fa-fw"></i>読み込み中……</div>',
+			css:{'width':'80%'}
+		});
+		$.ajax({
+			type: 'POST',
+			url: './logic/search.php',
+			timeout: 10000,
+			data: sendData,
+		}).done(function(data) {
+			ga('send', 'event', 'action', 'click', 'pageScroll');
+			deckSearch.drawDeckList(data.list);
+			$('#pageNum').html(newPageNum);
+			sendData.pageNum = newPageNum;
+			$('#totalPageNum').html(parseInt((data.count-1)/10+1));
+			sessionStorage.setItem('deckSearchData', JSON.stringify(data.list));
+			sessionStorage.setItem('deckSearchCond', JSON.stringify(sendData));
+			$.unblockUI();
+		}).fail(function(res) {
+			$.unblockUI();
+		});
 	}
 
 };
