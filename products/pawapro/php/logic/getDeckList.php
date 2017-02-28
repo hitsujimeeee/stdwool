@@ -62,9 +62,11 @@ try{
 			DECK_PLAYER_TYPE P
 		ON
 			D.TYPE = P.ID
-        WHERE
+		WHERE
 			USER_ID = :userId
-        ";
+		ORDER BY
+			ENTRY_DATE DESC
+		";
 		$stmt = $dbh->prepare($sql);
 		$stmt -> bindParam('userId', $userId);
 		$stmt->execute();
