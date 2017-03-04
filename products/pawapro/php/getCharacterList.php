@@ -5,17 +5,23 @@ require_once "./getAssessmentPointFunc.php";
 
 $json = file_get_contents('php://input');
 $post = json_decode($json, true);
-$name = $post['name'];
-$password = $post['password'];
+$name = isset($post['name']) ? $post['name'] : null;
+$password = isset($post['password']) ? $post['password'] : null;
+$userId = isset($post['userId']) ? $post['userId'] : null;
+
 $charaList = array();
 
 try{
 	$dbh = DB::connect();
-	$userId = getID($dbh, $name, $password);
+	if($userId === null) {
+		$userId = getID($dbh, $name, $password);
+	}
+
 	//既に登録済みのユーザー
 	if($userId !== null) {
-		$sql = "SELECT ID, DATA FROM M_CHARACTER WHERE USER_ID = '$userId' AND DELETE_FLAG = '0'";
+		$sql = "SELECT ID, DATA FROM M_CHARACTER WHERE USER_ID = :userId AND DELETE_FLAG = '0'";
 		$stmt = $dbh->prepare($sql);
+		$stmt->bindValue('userId', $userId);
 		$stmt->execute();
 
 		while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {

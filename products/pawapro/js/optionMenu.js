@@ -32,3 +32,13 @@ $(function() {
 		$('#loginPassword').toggle();
 	});
 });
+
+window.onpageshow = function(event) {
+	if (event.persisted) {
+		var userData = localStorage.getItem('userData');
+		if(userData) {
+			userData = JSON.parse(userData);
+			$('#loginPassword').val(userData.loginPassword != null ? userData.loginPassword : userData.password);
+		}
+	}
+};

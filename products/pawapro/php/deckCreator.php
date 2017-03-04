@@ -140,7 +140,7 @@ function getTotalBonusPoint($lvList, $rareList) {
 
 function getDeckEventDetail($dbh, $charaList) {
 	$trainingList = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	$eventTypeList = [0, 0];
+	$eventTypeList = [[], []];
 	foreach ($charaList as $c) {
 		if($c === null) continue;
 		$sql = '
@@ -167,7 +167,7 @@ function getDeckEventDetail($dbh, $charaList) {
 			}
 
 		}
-		$eventTypeList[(int)$row['EVENT_TYPE']]++;
+		$eventTypeList[(int)$row['EVENT_TYPE']][] = $c;
 	}
 	return array(
 		'trainingList'=>$trainingList,
@@ -297,8 +297,26 @@ function getDeckEventDetail($dbh, $charaList) {
 					<?php } ?>
 				</div>
 				<div class="eventType">
-					<div>前<?= $deckEventDetail['eventTypeList'][0] ?></div>
-					<div>後<?= $deckEventDetail['eventTypeList'][1] ?></div>
+					<div>
+						<span>前<?= count($deckEventDetail['eventTypeList'][0]) ?></span>
+						<?php if (count($deckEventDetail['eventTypeList'][0]) > 0) {?>
+						<p class="arrow_box" style="width:<?= count($deckEventDetail['eventTypeList'][0]) * 10+10?>vw;max-width:400px">
+							<?php foreach($deckEventDetail['eventTypeList'][0] as $row) { ?>
+							<img class="evTypeTooltip" src="../img/eventChara/SR/<?= $row ?>.jpg">
+							<?php } ?>
+						</p>
+						<?php } ?>
+					</div>
+					<div>
+						<span>後<?= count($deckEventDetail['eventTypeList'][1]) ?></span>
+						<?php if (count($deckEventDetail['eventTypeList'][1]) > 0) {?>
+						<p class="arrow_box" style="width:<?= count($deckEventDetail['eventTypeList'][1]) * 10+10?>vw;max-width:400px">
+							<?php foreach($deckEventDetail['eventTypeList'][1] as $row) { ?>
+							<img class="evTypeTooltip" src="../img/eventChara/SR/<?= $row ?>.jpg">
+							<?php } ?>
+						</p>
+						<?php } ?>
+					</div>
 				</div>
 			</div>
 

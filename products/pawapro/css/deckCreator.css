@@ -12,12 +12,12 @@ section >*:not(header) {
 
 }
 
-.evCharaContainer {
-	margin-top: 1em;
-}
-
 .evCharaContainer, .deackDetail {
 	margin: 0;
+}
+
+.evCharaContainer {
+	margin-top: 0.5em;
 }
 
 .evCharaContainer ul {
@@ -89,6 +89,11 @@ span.lvText {
 .charaLv,
 .rareRank {
 	width: 100%;
+	min-height: 36px;
+}
+
+.charaLv {
+	text-align: right;
 }
 
 .trainingIcon {
@@ -149,8 +154,16 @@ span.lvText {
 	z-index: 100;
 }
 
+.eventType span {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
 .viewDeckAttribute span:active + p.arrow_box,
-.viewDeckAttribute span:hover + p.arrow_box {
+.viewDeckAttribute span:hover + p.arrow_box
+.eventType span:active + p.arrow_box,
+.eventType span:hover + p.arrow_box {
 	display: block;
 }
 
@@ -251,6 +264,7 @@ div.eventType {
 	width: 50%;
 	max-width: 300px;
 	display: flex;
+	position: relative;
 }
 
 @media (min-width:590px) {
@@ -276,6 +290,36 @@ div.eventType > div:nth-of-type(2) {
 	border-bottom-right-radius: 3px;
 }
 
+div.eventType .arrow_box {
+	display: none;
+	position: absolute;
+	padding: 5px;
+	left: 0;
+	right: 0;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	background-color: #444;
+	color: #fff;
+	font-size: 90%;
+	z-index: 100;
+	margin: auto;
+	margin-top: 5px;
+}
+
+div.eventType > div:nth-of-type(1) p.arrow_box {
+	background-color: rgba(255, 163, 163, 128);
+}
+
+div.eventType > div:nth-of-type(2) p.arrow_box {
+	background-color: rgba(158, 165, 255, 128);
+}
+
+
+.evTypeTooltip {
+	width:10vw;
+	max-width: calc(600px*0.1);
+}
 
 .deckTraining {
 	border: solid 1px #000;

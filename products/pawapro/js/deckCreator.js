@@ -26,7 +26,11 @@ $(function () {
 	$('.charaLv').on('change', function () {
 		var idx = $('.charaLv').index(this);
 		if (idx < deckCreator.selectedCharaList.length) {
-			deckCreator.selectedCharaList[idx].lv = Number(this.value);
+			if (Number(this.value) > 50) {
+				this.value = '';
+			} else {
+				deckCreator.selectedCharaList[idx].lv = Number(this.value);
+			}
 		}
 	});
 
@@ -86,6 +90,7 @@ $(function () {
 		var list = localStorage.getItem('favoriteList');
 		list = list ? JSON.parse(list) : [];
 		if(res) {
+			res = JSON.parse(res);
 			Array.prototype.push.apply(list, res.filter(function(elt){
 				return list.indexOf(elt) === -1;
 			}));
@@ -102,10 +107,18 @@ $(function () {
 
 	}
 
+
+	var queryStringArray = null;
+	if(mode === 3) {
+		queryStringArray = deckCreator.GetQueryString();
+	}
+
 	$.ajax({
 		url:'./getCharacterList.php',
 		type:'POST',
-		data:JSON.stringify({
+		data:JSON.stringify(mode === 3 ? {
+			userId: queryStringArray.userId
+		} : {
 			name: $('#loginUserName').val(),
 			password: $('#loginPassword').val()
 		})
@@ -114,8 +127,6 @@ $(function () {
 		deckCreator.setMakedCharacterList(data);
 	}).fail(function(res) {
 	});
-
-
 
 });
 
@@ -579,7 +590,30 @@ var deckCreator = {
 	getRankString: function(val) {
 		var rank = ['G', 'G', 'F', 'F', 'E', 'D', 'C', 'B', 'A', 'S'];
 		return val === 100 ? 'S' : rank[parseInt(val/10)];
-	}
+	},
+
+	GetQueryString: function() {
+		var result = {};
+		if( 1 < window.location.search.length )	{
+			// 最初の1文字 (?記号) を除いた文字列を取得する
+			var query = window.location.search.substring( 1 );
+
+			// クエリの区切り記号 (&) で文字列を配列に分割する
+			var parameters = query.split( '&' );
+
+			for( var i = 0; i < parameters.length; i++ ) {
+				// パラメータ名とパラメータ値に分割する
+				var element = parameters[ i ].split( '=' );
+
+				var paramName = decodeURIComponent( element[ 0 ] );
+				var paramValue = decodeURIComponent( element[ 1 ] );
+
+				// パラメータ名をキーとして連想配列に追加する
+				result[ paramName ] = paramValue;
+			}
+		}
+		return result;
+	},
 
 
 

@@ -35,6 +35,8 @@
 		</section>
 	</main>
 
+	<?php include('./optionMenu.php'); ?>
+
 	<?php include('../html/footer.html'); ?>
 </body>
 

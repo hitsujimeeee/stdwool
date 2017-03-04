@@ -28,7 +28,7 @@ try{
 	if($favCheck) {
 		$userId = getId($dbh, $userName, $password);
 		if(!$userId) {
-			$favCheck = false;
+			$userId = -1;
 		}
 	}
 
@@ -82,7 +82,7 @@ try{
 
 	$condStr = '';
 
-	if($favCheck && $userId) {
+	if($favCheck) {
 		$condStr .= "
 		INNER JOIN (
 			SELECT
@@ -172,7 +172,7 @@ try{
 			$sql .= "FAV_T.C " . $sortDir;
 			break;
 		default:
-			$sql .= "D.RENEW_DATE " . $sortDir;
+			$sql .= "IFNULL(D.RENEW_DATE, D.ENTRY_DATE) " . $sortDir;
 			break;
 	}
 	$sql .= "
@@ -201,15 +201,10 @@ try{
 	if(trim($twitter) !== "") {
 		$stmt -> bindValue('twitter', $twitter);
 	}
-	if ($favCheck && $userId) {
+	if ($favCheck) {
 		$stmt -> bindValue('favUserId', $userId);
 	}
 
-//	$stmt -> bindValue('offset', $offset);
-//	var_dump($offset);
-
-//	var_dump($sql);
-//	return;
 	$stmt->execute();
 	while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 		$list[] = array(
@@ -272,7 +267,7 @@ try{
 	if(trim($twitter) !== "") {
 		$stmt -> bindValue('twitter', $twitter);
 	}
-	if ($favCheck && $userId) {
+	if ($favCheck) {
 		$stmt -> bindValue('favUserId', $userId);
 	}
 
