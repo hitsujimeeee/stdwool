@@ -75,6 +75,6 @@
 @media screen and (min-width:550px) {
 	.linkText {
 		right: 1vw;
-		font-size: calc(400%);
+		font-size: 400%;
 	}
 }

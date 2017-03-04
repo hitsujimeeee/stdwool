@@ -1,5 +1,5 @@
 /*jslint browser: true, jquery: true */
-/* global savedCharaList, savedMakedCharaList, mode */
+/* global savedCharaList, savedMakedCharaList, mode, Clipboard */
 /*jslint shadow:true*/
 
 $(function () {
@@ -10,6 +10,15 @@ $(function () {
 //			alt: 'no image'
 //		});
 //	});
+	var clipboard = new Clipboard('#copyText');
+	clipboard.on('success', function(e) {
+		e.clearSelection();
+		alert('クリップボードにコピーしました。');
+	});
+	clipboard.on('error', function(e) {
+		e.clearSelection();
+		alert('ご使用のブラウザではコピーできません。');
+	});
 
 	$('#ui-tab').tabs();
 
@@ -349,6 +358,7 @@ var deckCreator = {
 			$('#deckId').val(res.deckId);
 			var newUrl = deckCreator.setParameter({'userId':res.userId, 'deckId':res.deckId});
 			history.replaceState('','',newUrl);
+			$('.openURL').html(window.location.href);
 
 		}).fail(function (res) {
 			alert('保存に失敗しました');

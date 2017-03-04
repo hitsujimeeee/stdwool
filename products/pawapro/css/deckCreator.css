@@ -430,3 +430,8 @@ div.eventType > div:nth-of-type(2) p.arrow_box {
 tr.selectedMakedCharacter td {
 	background-color: #faff86;
 }
+
+.openURL {
+	margin-left: 2em;
+	word-wrap: break-word;
+}

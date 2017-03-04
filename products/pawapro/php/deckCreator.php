@@ -2,13 +2,12 @@
 require_once 'global.php';
 require_once './userCommonModule.php';
 require_once './lib/Parsedown.php';
-$userName = null;
-$password = null;
-$userId = null;
-$deckId = null;
+
+$userId = isset($_GET['userId']) ? $_GET['userId'] : null;
+$deckId = isset($_GET['deckId']) ? $_GET['deckId'] : null;
 $rarelityList = ['', 'PSR', 'SR', 'PR', 'R'];
 $rarelityGraphList = ['SR', 'SR', 'SR', 'R', 'R'];
-
+$reffrer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
 $targetTypeList = [];
 $schoolList = [];
 $dbh = DB::connect();
@@ -23,8 +22,8 @@ foreach ($dbh->query($sql) as $row) {
 	$schoolList[] = $row['NAME'];
 }
 
-
-
+$hitReffrer = (empty($_SERVER["HTTPS"]) ? "http://" : "https://") . $_SERVER["HTTP_HOST"] . dirname($_SERVER['REQUEST_URI']) . '/deckList.php';
+$editFlag = ($reffrer && $reffrer === $hitReffrer);
 
 //0:不正
 //1:新規作成
@@ -32,61 +31,26 @@ foreach ($dbh->query($sql) as $row) {
 //3:閲覧
 $mode = 0;
 
-if(isset($_POST['userName'])) {
-	$userName = $_POST['userName'];
-}
-
-if(isset($_POST['password'])) {
-	$password = $_POST['password'];
-}
-
-if(isset($_GET['userId'])) {
-	$userId = $_GET['userId'];
-}
-
-if(isset($_GET['deckId'])) {
-	$deckId = $_GET['deckId'];
-}
-
-
-//不正なアクセス
-if ($userName === null && $password === null && $userId === null && $deckId === null) {
-	echo 'このページは表示できません。';
-	exit;
-}
-
-//閲覧モード(ユーザーIDとデッキIDのみの連携)
-if (($userName === null || $password === null) && ($userId !== null && $deckId !== null)) {
+//リファラとURLパラメーターからモードを設定
+if (!$editFlag) {
+	//閲覧モード(ユーザーIDとデッキIDのみの連携)
 	$mode = 3;
 	$dbUserId = $userId;
-}
-
-//新規作成モード(ユーザー名とパスワードのみの連携)
-if ($userName && $password && ($userId === null || $deckId === null)) {
+} else if ($editFlag && ($userId === null && $deckId === null)) {
+	//新規作成モード(ユーザー名とパスワードのみの連携)
 	$mode = 1;
-}
-
-//更新モード(全情報連携)
-if ($userName && $password && $userId && $deckId) {
+} else if ($editFlag && $userId && $deckId) {
+	//更新モード(全情報連携)
 	$mode = 2;
-
-	$dbUserId = getID($dbh, $userName, $password);
-	if($dbUserId !== (int)$userId) {
-		echo 'ユーザー名、またはパスワードが違います';
-		exit;
-	}
-
-}
-
-//不正なアクセス
-if ($mode === 0) {
+} else {
+	//不正なアクセス
 	echo 'このページは表示できません。';
 	exit;
 }
 
 if($mode === 2 || $mode === 3) {
 	require_once './logic/getDeck.php';
-	$deckData = getDeck($dbUserId, $deckId);
+	$deckData = getDeck($userId, $deckId);
 	if(!$deckData) {
 		echo 'このページは表示できません。';
 		exit;
@@ -186,6 +150,7 @@ function getDeckEventDetail($dbh, $charaList) {
 	require_once './headInclude.php';
 	?>
 	<link rel="stylesheet" href="../css/deckCreator.css">
+	<script src="https://cdn.jsdelivr.net/clipboard.js/1.6.0/clipboard.min.js"></script>
 	<script src="../js/deckCreator.js"></script>
 	<script>
 		var savedCharaList = [
@@ -494,6 +459,8 @@ function getDeckEventDetail($dbh, $charaList) {
 			</div>
 			<?php } else { ?>
 			<div><button onclick="deckCreator.save();">保存</button></div>
+			<div>▼公開用URL:<button id="copyText" data-clipboard-target="#openURL">クリップボードにコピー</button></div>
+			<div id="openURL" class="openURL"><?= $mode === 2 ? (empty($_SERVER["HTTPS"]) ? "http://" : "https://") . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] : ''?></div>
 			<?php } ?>
 		</section>
 

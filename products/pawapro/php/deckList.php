@@ -20,17 +20,9 @@
 		<header class="pageHeader">
 			<h2><i class="fa fa-wrench" aria-hidden="true"></i>デッキ編集</h2>
 		</header>
-		<section>
-			<form id="editForm" method="post" action="./deckCreator.php">
-				<input type="hidden" id="userName" data-form-name="ユーザー名" minlength="8" maxlength="20" name="userName" value="" required>
-				<input type="hidden" id="password" data-form-name="パスワード" minlength="8" maxlength="20" name="password" value="" required>
-				<input name="userId" type="hidden">
-				<input name="deckId" type="hidden">
-			</form>
-		</section>
 
 		<section>
-			<p>■デッキ一覧<button class="actButton" onclick="deckList.createNewDeck();">新規作成</button></p>
+			<p>■デッキ一覧<span class="newCreateButton"><a href="./deckCreator.php">新規作成</a></span></p>
 			<div class="deckArea">
 				<ul id="deckList"></ul>
 			</div>

@@ -39,7 +39,9 @@ function makeNewUser ($dbh, $name, $password) {
 }
 
 function validateUserInfo($name, $password) {
-	if (strlen($name) < 8 || strlen($password) < 8) {
+	if (strlen($name) === 0 || strlen($password) === 0) {
+		return array('status'=>-1, 'msg'=>'ユーザー名、パスワードを入力してください。※画面右下の設定ボタンから入力できます。');
+	} else if (strlen($name) < 8 || strlen($password) < 8) {
 		return array('status'=>-1, 'msg'=>'ユーザー名、パスワードは8文字以上にしてください。');
 	} else if (!ctype_alnum($name) || !ctype_alnum($password)){
 		return array('status'=>-1, 'msg'=>'ユーザー名、パスワードは半角英数字で入力してください。');
