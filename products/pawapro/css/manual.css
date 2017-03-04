@@ -40,3 +40,21 @@ section {
 p {
 	margin-left: 1em;
 }
+
+.contentHeader {
+	background-color: burlywood;
+	color: #333;
+	margin-left: 0;
+}
+
+.dlTitle {
+	margin-bottom: 0;
+}
+
+.defList {
+	margin-left: 2em;
+}
+
+.defList dd {
+	margin-left: +1em;
+}
