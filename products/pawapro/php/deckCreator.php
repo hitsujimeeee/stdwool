@@ -145,7 +145,7 @@ function getDeckEventDetail($dbh, $charaList) {
 
 <head>
 	<?php
-	$title = 'パワプロアプリ | デッキ編集';
+	$title = 'パワプロアプリ | デッキシェア';
 	$description = 'パワプロアプリのデッキをシェアする機能です';
 	require_once './headInclude.php';
 	?>
@@ -194,8 +194,10 @@ function getDeckEventDetail($dbh, $charaList) {
 		<header class="pageHeader">
 			<?php if ($mode === 3) { ?>
 			<h2><i class="fa fa-retweet" aria-hidden="true"></i>デッキシェア</h2>
-			<?php } else { ?>
+			<?php } else if ($mode === 2) { ?>
 			<h2><i class="fa fa-wrench" aria-hidden="true"></i>デッキ編集</h2>
+			<?php } else { ?>
+			<h2><i class="fa fa-wrench" aria-hidden="true"></i>デッキ作成</h2>
 			<?php } ?>
 		</header>
 		<hr class="abHr" />

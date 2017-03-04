@@ -10,6 +10,10 @@ footer {
 	color:#ffffff;
 }
 
+main {
+	min-height: 300px;
+}
+
 header.pageHeader h2 {
 	margin-top: 0.4em;
 }
