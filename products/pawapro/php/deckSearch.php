@@ -86,7 +86,7 @@ foreach ($dbh->query($sql) as $row) {
 							並び順
 							<select id="sortOrder">
 								<option value="0">最終更新日順</option>
-								<option value="1">作成日順</option>
+								<option value="1" selected>作成日順</option>
 								<option value="2">お気に入り数順</option>
 							</select>
 							<select id="sortDir">
