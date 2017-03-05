@@ -113,7 +113,7 @@ ul.otherMenuList > li i {
 	color:#000000;
 }
 
-dd.newItem:after {
+.newItem:after {
 	content: 'New';
 	margin-left: 0.5em;
 	color: #f00;

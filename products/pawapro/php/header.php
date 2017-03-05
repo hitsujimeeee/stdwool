@@ -21,6 +21,7 @@ if(basename(realpath("./")) === 'pawapro') {
 				<ul class="nav navbar-nav">
 					<li><a href="<?php echo $urlPadding; ?>php/batter.php">野手シミュ</a></li>
 					<li><a href="<?php echo $urlPadding; ?>php/pitcher.php">投手シミュ</a></li>
+					<li><a href="<?php echo $urlPadding; ?>php/deckShare.php">デッキシェア</a></li>
 					<li><a href="<?php echo $urlPadding; ?>php/assessment.php">査定計算機</a></li>
 					<li><a href="<?php echo $urlPadding; ?>php/characters.php">作成選手一覧</a></li>
 					<li><a href="<?php echo $urlPadding; ?>php/about.php">about</a></li>
