@@ -85,8 +85,8 @@ foreach ($dbh->query($sql) as $row) {
 						<p>
 							並び順
 							<select id="sortOrder">
-								<option value="0">最終更新日順</option>
-								<option value="1" selected>作成日順</option>
+								<option value="0">作成日順</option>
+								<option value="1">最終更新日順</option>
 								<option value="2">お気に入り数順</option>
 							</select>
 							<select id="sortDir">
@@ -105,6 +105,7 @@ foreach ($dbh->query($sql) as $row) {
 
 		<section>
 			<div class="deckArea" id="deckArea">
+				<div class="newInfo">新着デッキ</div>
 				<ul id="deckList"></ul>
 				<div class="pageDisplay" style="display:none;">
 					<div><a onclick="deckSearch.sendPage(-1);return false;" class="scrollButton">＜＜</a></div>

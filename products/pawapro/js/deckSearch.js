@@ -22,6 +22,10 @@ $(function() {
 
 	if (searchDeata) {
 		deckSearch.drawDeckList(JSON.parse(searchDeata));
+		$('.newInfo').addClass('hiddenDisplay')
+	} else {
+		deckSearch.search(true);
+		$('.newInfo').removeClass('hiddenDisplay')
 	}
 
 	$('#searchCond').on('hide', function() {
@@ -62,9 +66,10 @@ var deckSearch = {
 		sessionStorage.removeItem('deckSearchData');
 		document.querySelector('#deckList').innerHTML = '';
 		$('.pageDisplay').css('display', 'none');
+		$('.newInfo').addClass('hiddenDisplay');
 	},
 
-	search: function() {
+	search: function(newFlag) {
 		var inputData = deckSearch.getSearchData();
 		var sendData = inputData;
 		sendData.userName = $('#loginUserName').val();
@@ -81,21 +86,28 @@ var deckSearch = {
 		}).done(function(data) {
 			ga('send', 'event', 'action', 'click', 'deckSearch');
 			deckSearch.drawDeckList(data.list);
-			sessionStorage.setItem('deckSearchData', JSON.stringify(data.list));
-			inputData.favCheck = $('#favOnly').prop('checked');
-			inputData.pageNum = 1;
-			inputData.totalPageNum = parseInt((data.count-1)/10+1);
-			sessionStorage.setItem('deckSearchCond', JSON.stringify(inputData));
 			$.unblockUI();
 
+
+			if(newFlag == null || newFlag !== true) {
+				sessionStorage.setItem('deckSearchData', JSON.stringify(data.list));
+				inputData.favCheck = $('#favOnly').prop('checked');
+				inputData.pageNum = 1;
+				inputData.totalPageNum = parseInt((data.count-1)/10+1);
+				sessionStorage.setItem('deckSearchCond', JSON.stringify(inputData));
+				// 移動先を数値で取得
+				var position = $('#deckArea').offset().top;
+				// スムーススクロール
+				$('body,html').animate({scrollTop:position}, 400, 'swing');
+				$('.newInfo').addClass('hiddenDisplay')
+				$('#totalPageNum').html(parseInt((data.count-1)/10+1));
+			} else {
+				$('#totalPageNum').html(1);
+			}
+
 			$('#pageNum').html(1);
-			$('#totalPageNum').html(parseInt((data.count-1)/10+1));
 
 
-			// 移動先を数値で取得
-			var position = $('#deckArea').offset().top;
-			// スムーススクロール
-			$('body,html').animate({scrollTop:position}, 400, 'swing');
 
 		}).fail(function(res) {
 			$.unblockUI();

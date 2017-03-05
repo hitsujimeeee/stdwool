@@ -193,3 +193,26 @@ li.deckList a:link {
 .scrollButton {
 	cursor: pointer;
 }
+
+
+.newInfo {
+	font-size: 1.6em;
+	margin-left: 0.5em;
+}
+
+
+.newInfo:after {
+	content: 'New';
+	margin-left: 0.2em;
+	color: #f00;
+	animation: newInfo 1s step-end infinite;
+}
+
+/* アニメーション */
+@keyframes newInfo{
+	50%{
+		opacity: 0;
+	}
+}
+
+
