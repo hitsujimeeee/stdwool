@@ -1,5 +1,5 @@
 /*jslint browser: true, jquery: true */
-/* global savedCharaList, savedMakedCharaList, mode, Clipboard */
+/* global savedCharaList, savedMakedCharaList, mode, Clipboard, History */
 /*jslint shadow:true*/
 
 $(function () {
@@ -357,13 +357,41 @@ var deckCreator = {
 			ga('send', 'event', 'action', 'click', 'saveDeck');
 			$('#deckId').val(res.deckId);
 			var newUrl = deckCreator.setParameter({'userId':res.userId, 'deckId':res.deckId});
-			history.replaceState('','',newUrl);
+			History.replaceState('','',newUrl);
 			$('.openURL').html(window.location.href);
 
 		}).fail(function (res) {
 			alert('保存に失敗しました');
 		});
 
+	},
+
+	delete: function () {
+		if(!$('#deckId').val()) {
+			alert('このデッキは削除できません。');
+			return;
+		}
+
+		if(window.confirm('デッキを削除します。よろしいですか？')){
+
+			$.ajax({
+				type:'POST',
+				url:'./logic/deleteDeck.php',
+				data:{
+					userName:$('#loginUserName').val(),
+					password:$('#loginPassword').val(),
+					deckId:$('#deckId').val()
+				}
+			}).done(function(res) {
+				if(res.status === -1) {
+					alert(res.msg);
+					return;
+				}
+				window.location.replace('./deckList.php');
+			}).fail(function(res) {
+				alert(res.msg);
+			});
+		}
 	},
 
 	setFavarite: function () {

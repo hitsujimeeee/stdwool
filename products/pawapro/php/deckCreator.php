@@ -151,6 +151,7 @@ function getDeckEventDetail($dbh, $charaList) {
 	?>
 	<link rel="stylesheet" href="../css/deckCreator.css">
 	<script src="https://cdn.jsdelivr.net/clipboard.js/1.6.0/clipboard.min.js"></script>
+	<script src="../js/plugin/jquery.history.js"></script>
 	<script src="../js/deckCreator.js"></script>
 	<script>
 		var savedCharaList = [
@@ -182,6 +183,37 @@ function getDeckEventDetail($dbh, $charaList) {
 			echo $str;
 			?>];
 		var mode = <?= $mode ?>;
+
+		function deleteDeck() {
+			// 「OK」時の処理開始 ＋ 確認ダイアログの表示
+			if(!$('#deckId').val()) {
+				alert('このデッキは削除できません。');
+				return;
+			}
+
+			if(window.confirm('デッキを削除します。よろしいですか？')){
+
+				$.ajax({
+					type:'POST',
+					url:'./logic/deleteDeck.php',
+					data:{
+						userName:$('#loginUserName').val(),
+						password:$('#loginPassword').val(),
+						deckId:$('#deckId').val()
+					}
+				}).done(function(res) {
+					if(res.status === -1) {
+						alert(res.msg);
+						return;
+					}
+					window.location.replace('./deckList.php');
+				}).fail(function(res) {
+					alert(res.msg);
+				});
+
+			}
+
+		}
 
 	</script>
 </head>
@@ -460,7 +492,7 @@ function getDeckEventDetail($dbh, $charaList) {
 				<button id="favButton" class="favButton" data-fav-status="0" onclick="deckCreator.setFavarite();">お気に入り</button>
 			</div>
 			<?php } else { ?>
-			<div><button onclick="deckCreator.save();">保存</button></div>
+			<div><button onclick="deckCreator.save();">保存</button><button onclick="deleteDeck();">削除</button></div>
 			<div>▼公開用URL:<button id="copyText" data-clipboard-target="#openURL">クリップボードにコピー</button></div>
 			<div id="openURL" class="openURL"><?= $mode === 2 ? (empty($_SERVER["HTTPS"]) ? "http://" : "https://") . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] : ''?></div>
 			<?php } ?>
