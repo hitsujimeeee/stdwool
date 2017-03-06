@@ -166,13 +166,13 @@ try{
 		";
 	switch($sortOrder) {
 		case 1:
-			$sql .= "D.ENTRY_DATE " . $sortDir;
+			$sql .= "IFNULL(D.RENEW_DATE, D.ENTRY_DATE) " . $sortDir;
 			break;
 		case 2:
 			$sql .= "FAV_T.C " . $sortDir;
 			break;
 		default:
-			$sql .= "IFNULL(D.RENEW_DATE, D.ENTRY_DATE) " . $sortDir;
+			$sql .= "D.ENTRY_DATE " . $sortDir;
 			break;
 	}
 	$sql .= "
