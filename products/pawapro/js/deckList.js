@@ -18,14 +18,21 @@ var deckList = {
 			}
 		}).done(function (data) {
 			var str = '';
-			var rateGraphList = ['SR', 'SR', 'SR', 'R', 'R'];
+			var rarelityGraphList = ['SR', 'SR', 'SR', 'R', 'R'];
 			for (var i = 0; i < data.length; i++) {
 				var d = data[i];
 				str += '<a class="deckListLink" href="./deckCreator.php?userId=' + d.userId + '&deckId=' + d.id + '"><li class="deckList">' +
 					'<div class="deckHeader">' + d.name + '　</div>' +
 					'<div class="deckDetail">';
 				for (var j = 0; j < d.chara.length; j++) {
-					str += '<img onerror="this.src=\'../img/noface.jpg\';" class="eveChara" src="../img/eventChara/' + (d.chara[j] ? rateGraphList[d.rare[j]] + '/' + d.chara[j] + '.jpg' : 'noimage.jpg') + '">';
+					str += '<div class="evCharaContainer">' +
+						'<img class="eveChara" onerror="this.src=\'../img/noface.jpg\';" class="eveChara" src="../img/eventChara/' + (d.chara[j] ? rarelityGraphList[d.rare[j]] + '/' + d.chara[j] + '.jpg' : 'noimage.jpg') + '">';
+					if (Number(d.rare[j]) === 1) {
+						str += '<img class="rarelityBadge" src="../img/icon/PSR_icon.png">';
+					} else if (Number(d.rare[j]) === 3) {
+						str += '<img class="rarelityBadge" src="../img/icon/PR_icon.png">';
+					}
+					str += '</div>';
 				}
 				str += '</div>' +
 					'<div class="deckTraining">';

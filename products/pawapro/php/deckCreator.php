@@ -192,6 +192,7 @@ function getDeckEventDetail($dbh, $charaList) {
 			}
 
 			if(window.confirm('デッキを削除します。よろしいですか？')){
+				deckCreator.showBlockMessage('処理中……');
 
 				$.ajax({
 					type:'POST',
@@ -208,7 +209,9 @@ function getDeckEventDetail($dbh, $charaList) {
 					}
 					window.location.replace('./deckList.php');
 				}).fail(function(res) {
-					alert(res.msg);
+					res.msg = '<i class="fa fa-times" aria-hidden="true" style="color:#00ff00"></i>' + res.msg;
+					$('.blockMsg').html(res.msg);
+					$('.blockOverlay').click($.unblockUI).on('click', $.unblockUI);
 				});
 
 			}
@@ -275,8 +278,15 @@ function getDeckEventDetail($dbh, $charaList) {
 					<?php for ($i = 0; $i < count($deckData['chara']); $i++) {?>
 					<li class="eveCharaImg">
 						<div class="relative">
-							<img onerror="this.src='../img/noface.jpg';" src="../img/eventChara/<?= $deckData['chara'][$i] ? $rarelityGraphList[$deckData['rare'][$i]] . '/' . $deckData['chara'][$i] . '.jpg' : 'noimage.jpg' ?>">
+							<img class="eveIcon" onerror="this.src='../img/noface.jpg';" src="../img/eventChara/<?= $deckData['chara'][$i] ? $rarelityGraphList[$deckData['rare'][$i]] . '/' . $deckData['chara'][$i] . '.jpg' : 'noimage.jpg' ?>">
 							<div class="lvText"><?= $deckData['lv'][$i] ? 'Lv' . $deckData['lv'][$i] : '' ?></div>
+							<?php if ((int)$deckData['rare'][$i] === 1) {?>
+							<img class="rarelityBadge" src="../img/icon/PSR_icon.png">
+							<?php } else if ((int)$deckData['rare'][$i] === 3) {?>
+							<img class="rarelityBadge" src="../img/icon/PR_icon.png">
+							<?php } ?>
+
+
 							<?php //<div class="bonusText"><?= getBonusCount($deckData['lv'][$i], $deckData['rare'][$i]) </div>?>
 						</div>
 					</li>
@@ -335,9 +345,7 @@ function getDeckEventDetail($dbh, $charaList) {
 						<div>
 							<select class="rareRank"<?= !isset($deckData) || !$deckData['chara'][$i] ? ' disabled=true' : '' ?> tabindex="<?= $i+7 ?>" onclick="deckCreator.updateEveCharaList();">
 								<?php for ($j = 0; $j < count($rarelityList); $j++) { ?>
-								<?php if ($j % 2 == 0) {?>
 								<option value="<?= $j ?>"<?= (isset($deckData) && $deckData['rare'][$i] == $j ? ' selected' : '') ?>><?= $rarelityList[$j] ?></option>
-								<?php } ?>
 								<?php } ?>
 							</select>
 						</div>

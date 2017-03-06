@@ -40,11 +40,27 @@ section {
 .deckDetail {
 	border-left: solid 1px #000;
 	border-right: solid 1px #000;
-	text-align: center;
+	display: flex;
+}
+
+
+.deckDetail > .evCharaContainer {
+	width: 16.666666%;
+	position: relative;
+
+}
+
+
+.rarelityBadge {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width:35%;
+	height: 35%;
 }
 
 .eveChara {
-	width: 16.666666%;
+	width: 100%;
 }
 
 .trainingIcon {

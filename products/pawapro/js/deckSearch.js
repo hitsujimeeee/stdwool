@@ -141,7 +141,14 @@ var deckSearch = {
 				'<div class="deckHeader"><h3>' + d.name + '　</h3><p class="authorName">作者:' + d.author + (d.twitterId ? '(@' + d.twitterId + ')' : '' ) + '</p></div>' +
 				'<div class="deckDetail">';
 			for (var j = 0; j < d.chara.length; j++) {
-				str += '<img onerror="this.src=\'../img/noface.jpg\';" class="eveChara" src="../img/eventChara/' + (d.chara[j] ? rarelityGraphList[d.rare[j]] + '/' + d.chara[j] + '.jpg' : 'noimage.jpg') + '">';
+				str += '<div class="evCharaContainer">' +
+					'<img class="eveChara" onerror="this.src=\'../img/noface.jpg\';" class="eveChara" src="../img/eventChara/' + (d.chara[j] ? rarelityGraphList[d.rare[j]] + '/' + d.chara[j] + '.jpg' : 'noimage.jpg') + '">';
+				if (Number(d.rare[j]) === 1) {
+					str += '<img class="rarelityBadge" src="../img/icon/PSR_icon.png">';
+				} else if (Number(d.rare[j]) === 3) {
+					str += '<img class="rarelityBadge" src="../img/icon/PR_icon.png">';
+				}
+				str += '</div>';
 			}
 			str += '</div>' +
 				'<div class="deckTraining">';
@@ -200,6 +207,10 @@ var deckSearch = {
 			$('#totalPageNum').html(parseInt((data.count-1)/10+1));
 			sessionStorage.setItem('deckSearchData', JSON.stringify(data.list));
 			sessionStorage.setItem('deckSearchCond', JSON.stringify(sendData));
+			// 移動先を数値で取得
+			var position = $('#deckArea').offset().top;
+			// スムーススクロール
+			$('body,html').animate({scrollTop:position}, 400, 'swing');
 			$.unblockUI();
 		}).fail(function(res) {
 			$.unblockUI();

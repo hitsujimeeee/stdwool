@@ -340,6 +340,8 @@ var deckCreator = {
 		deckData.gameId = $('#gameId').val();
 		deckData.twitterId = $('#twitterId').val();
 
+		deckCreator.showBlockMessage('処理中……');
+
 		$.ajax({
 			url: '../php/logic/saveDeck.php',
 			type: 'POST',
@@ -350,7 +352,10 @@ var deckCreator = {
 				deckData: deckData
 			}
 		}).done(function (res) {
-			alert(res.msg);
+			res.msg = '<i class="fa fa-check" aria-hidden="true" style="color:#00ff00"></i>' + res.msg;
+			$('.blockMsg').html(res.msg);
+			$('.blockOverlay').click($.unblockUI).on('click', $.unblockUI);
+			setTimeout($.unblockUI, 2000);
 			if(res.status === -1) {
 				return;
 			}
@@ -361,7 +366,9 @@ var deckCreator = {
 			$('.openURL').html(window.location.href);
 
 		}).fail(function (res) {
-			alert('保存に失敗しました');
+			res.msg = '<i class="fa fa-times" aria-hidden="true" style="color:#00ff00"></i>' + res.msg;
+			$('.blockMsg').html(res.msg);
+			$('.blockOverlay').click($.unblockUI).on('click', $.unblockUI);
 		});
 
 	},
@@ -373,6 +380,7 @@ var deckCreator = {
 		}
 
 		if(window.confirm('デッキを削除します。よろしいですか？')){
+			deckCreator.showBlockMessage('処理中……');
 
 			$.ajax({
 				type:'POST',
@@ -389,7 +397,9 @@ var deckCreator = {
 				}
 				window.location.replace('./deckList.php');
 			}).fail(function(res) {
-				alert(res.msg);
+				res.msg = '<i class="fa fa-times" aria-hidden="true" style="color:#00ff00"></i>' + res.msg;
+				$('.blockMsg').html(res.msg);
+				$('.blockOverlay').click($.unblockUI).on('click', $.unblockUI);
 			});
 		}
 	},
@@ -653,6 +663,21 @@ var deckCreator = {
 		return result;
 	},
 
-
+	showBlockMessage: function (msg) {
+		$.blockUI({
+			message: msg,
+			css:{
+			border: 'none',
+			padding: '15px',
+			left: '10%',
+			width:'80%',
+			'-webkit-border-radius': '10px',
+			'-moz-border-radius':'10px',
+			opacity: '.8',
+			color:'#000',
+			'font-size':'1em'
+			}
+		});
+	}
 
 };

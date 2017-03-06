@@ -41,12 +41,24 @@ a.deckListLink {
 .deckDetail {
 	border: solid 1px #000;
 	border-top: none;
+	display: flex;
+}
 
-	text-align: center;
+.deckDetail > .evCharaContainer {
+	width: 16.666666%;
+	position: relative;
+}
+
+.rarelityBadge {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width:35%;
+	height: 35%;
 }
 
 .eveChara {
-	width: 16.666666%;
+	width: 100%;
 }
 
 .newCreateButton {
