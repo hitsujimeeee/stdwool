@@ -916,7 +916,7 @@ var commonModule = (function() {
 
 			var assessment = this.getAsyncData('getAssessmentPoint', JSON.stringify({"basePoint":basePoint, "ability":ability}));
 			$('#assessmentPointCharaData').html(assessment.rank + '(' + assessment.point + ')');
-			$('#assessmentPointMeter').val(+assessment.meter);
+			$('.meterGauge').css('width', (assessment.meter*10)+'%');
 
 		},
 

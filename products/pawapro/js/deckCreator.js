@@ -528,6 +528,7 @@ var deckCreator = {
 		var str = '';
 		for (var i = 0; i < list.length; i++) {
 			var chara = list[i].data;
+			var meter = list[i].meter;
 			if (chara.charaType === 0) {
 				str += '<tr data-charaid="' + list[i].id + '"' + (savedMakedCharaList.indexOf(list[i].id) >= 0 ? ' class="selectedMakedCharacter"' : '') + '>' +
 					'<td><img class="charaFace" src="' + list[i].imgURL + '"></td>' +
@@ -537,17 +538,24 @@ var deckCreator = {
 				for (var j = 0; j < chara.basePoint[1].length; j++) {
 					str += '<td>';
 					if(chara.basePoint[1][j] !== 0) {
-						str += '<img class="rankGraph" src="../img/';
+						str += '<div class="rankArea"><img class="rankGraph" src="../img/';
 						if(j === 0) {
 							str+= 'trajectory' + chara.basePoint[1][j];
 						} else {
-							str+= 'rank' + this.getRankString(chara.basePoint[1][j]);
+							str+= 'rank' + deckCreator.getRankString(chara.basePoint[1][j]);
 						}
 						str += '.png">';
+						if(j !== 0) {
+							str += '<div class="rankNum">' + chara.basePoint[1][j] + '</div>'
+						}
+						str += '</div>';
 					}
 					str += '</td>';
 				}
-				str += '<td>' + list[i].assessment + '</td>' +
+
+				var rankAlpha = list[i].rankStr.match(/^[A-Z]*/)[0];
+				var rankNum = list[i].rankStr.match(/[0-9]$/);
+				str += '<td><div class="rankArea"><div class="assessmentArea"><img class="rankGraph" src="../img/rank' + rankAlpha + '.png">' + (rankNum ? '<div class="rankGrade">' + rankNum + '</div>' : '') + '</div><div class="meterFrame"><div class="meterGauge" style="width:' + meter + '%"></div></div></div></td>' +
 					'<td><a href="./batter.php?userId=' + data.data.userId + '&charaId=' + list[i].id + '" target="_blank">詳細</a></td>' +
 					'</tr>';
 			}
@@ -570,8 +578,14 @@ var deckCreator = {
 						if(j === 0) {
 							str+= '' + chara.basePoint[1][j];
 						} else {
-							str+= '<img class="rankGraph" src="../img/rank' + this.getRankString(chara.basePoint[1][j]) + '.png">';
+							str += '<div class="rankArea"><img class="rankGraph" src="../img/';
+							str+= 'rank' + deckCreator.getRankString(chara.basePoint[1][j]);
+							str += '.png">';
 						}
+						if(j !== 0) {
+							str += '<div class="rankNum">' + chara.basePoint[1][j] + '</div>'
+						}
+						str += '</div>';
 					}
 					str += '</td>';
 				}

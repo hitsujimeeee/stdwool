@@ -79,7 +79,7 @@ function updateCharacterList(data) {
 	for (var i = 0; i < data.charaList.length; i++) {
 		var chara = data.charaList[i].data,
 			imgURL = data.charaList[i].imgURL,
-			point = data.charaList[i].assessment;
+			meter = data.charaList[i].meter;
 		if (chara.charaType === 0) {
 			str += '<tr>' +
 				'<td class="charaFaceCell"><a href="./batter.php?userId=' + data.userId + '&charaId=' + data.charaList[i].id + '"><img class="charaFace" src="' + imgURL + '"></a></td>' +
@@ -89,17 +89,23 @@ function updateCharacterList(data) {
 			for (var j = 0; j < chara.basePoint[1].length; j++) {
 				str += '<td>';
 				if(chara.basePoint[1][j] !== 0) {
-					str += '<img class="rankGraph" src="../img/';
+					str += '<div class="rankArea"><img class="rankGraph" src="../img/';
 					if(j === 0) {
 						str+= 'trajectory' + chara.basePoint[1][j];
 					} else {
 						str+= 'rank' + getRankString(chara.basePoint[1][j]);
 					}
 					str += '.png">';
+					if(j !== 0) {
+						str += '<div class="rankNum">' + chara.basePoint[1][j] + '</div>'
+					}
+					str += '</div>';
 				}
 				str += '</td>';
 			}
-			str += '<td>' + point + '</td>' +
+			var rankAlpha = data.charaList[i].rankStr.match(/^[A-Z]*/)[0];
+			var rankNum = data.charaList[i].rankStr.match(/[0-9]$/);
+			str += '<td><div class="rankArea"><div class="assessmentArea"><img class="rankGraph" src="../img/rank' + rankAlpha + '.png">' + (rankNum ? '<div class="rankGrade">' + rankNum + '</div>' : '') + '</div><div class="meterFrame"><div class="meterGauge" style="width:' + meter + '%"></div></div></div></td>' +
 				'<td><a href="./batter.php?userId=' + data.userId + '&charaId=' + data.charaList[i].id + '">編集</a></td>' +
 				'<td><a href="javascript:deleteCharacter(\'' + data.charaList[i].id + '\')">削除</a></td>' +
 				'</tr>';
@@ -124,8 +130,14 @@ function updateCharacterList(data) {
 					if(j === 0) {
 						str+= '' + chara.basePoint[1][j];
 					} else {
-						str+= '<img class="rankGraph" src="../img/rank' + getRankString(chara.basePoint[1][j]) + '.png">';
+						str += '<div class="rankArea"><img class="rankGraph" src="../img/';
+						str+= 'rank' + getRankString(chara.basePoint[1][j]);
+						str += '.png">';
 					}
+					if(j !== 0) {
+						str += '<div class="rankNum">' + chara.basePoint[1][j] + '</div>'
+					}
+					str += '</div>';
 				}
 				str += '</td>';
 			}

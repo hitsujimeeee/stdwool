@@ -103,4 +103,38 @@ function getAssessmentPointOfAbility($dbh, $abilityAim) {
 	}
 	return $point;
 }
+
+//渡された査定値から、選手ランクを取得
+function getAssessmentRank($dbh, $point) {
+	$sql = 'SELECT RANK_STR, POINT_FROM
+			FROM ASSESSMENT_RANK
+			WHERE POINT_FROM <= ' . $point  . '
+			AND POINT_TO > ' . $point;
+
+	$sth = $dbh->prepare($sql);
+	$sth->execute();
+	$row = $sth->fetch(PDO::FETCH_ASSOC);
+	if($row) {
+		return $row['RANK_STR'];
+	}
+	return null;
+}
+
+
+//渡された査定値から、選手ランクを取得
+function getAssessmentMeterLength($dbh, $point) {
+	$sql = 'SELECT RANK_STR, POINT_FROM
+			FROM ASSESSMENT_RANK
+			WHERE POINT_FROM <= ' . $point  . '
+			AND POINT_TO > ' . $point;
+
+	$sth = $dbh->prepare($sql);
+	$sth->execute();
+	$row = $sth->fetch(PDO::FETCH_ASSOC);
+	if($row) {
+		return (($point - (int)($row['POINT_FROM'])) / 14) * 10;
+	}
+	return null;
+}
+
 ?>

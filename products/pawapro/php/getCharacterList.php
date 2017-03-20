@@ -36,6 +36,8 @@ try{
 			$data = json_decode($unzip, true);
 
 			$point = 0;
+			$rankStr = '';
+			$meter = 0;
 			if((int)$data['charaType'] === 0) {
 				//基礎能力の査定値取得
 				$point = getAssessmentPointOfBaseAbility($dbh, $data['basePoint'][1]);
@@ -44,6 +46,8 @@ try{
 				$abPoint = getAssessmentPointOfAbility($dbh, $data['ability'][1]);
 
 				$point = (int)(($point+ $abPoint)/14) * 14;
+				$rankStr = getAssessmentRank($dbh, $point);
+				$meter = getAssessmentMeterLength($dbh, $point);
 			}
 
 			$data['name'] = htmlspecialchars($data['name']);
@@ -52,7 +56,9 @@ try{
 				'id'=>$row['ID'],
 				'imgURL'=>$imgURL,
 				'data'=>$data,
-				'assessment'=>$point
+				'assessment'=>$point,
+				'rankStr'=>$rankStr,
+				'meter'=>$meter
 			);
 		}
 		$state = 1;
