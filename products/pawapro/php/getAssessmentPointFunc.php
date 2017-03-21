@@ -121,7 +121,7 @@ function getAssessmentRank($dbh, $point) {
 }
 
 
-//渡された査定値から、選手ランクを取得
+//渡された査定値から、ゲージの長さを取得
 function getAssessmentMeterLength($dbh, $point) {
 	$sql = 'SELECT RANK_STR, POINT_FROM
 			FROM ASSESSMENT_RANK
@@ -132,7 +132,11 @@ function getAssessmentMeterLength($dbh, $point) {
 	$sth->execute();
 	$row = $sth->fetch(PDO::FETCH_ASSOC);
 	if($row) {
-		return (($point - (int)($row['POINT_FROM'])) / 14) * 10;
+		if($row['RANK_STR'] === 'G') {
+			return 0;
+		} else {
+			return (($point - (int)($row['POINT_FROM'])) / 14) * 10;
+		}
 	}
 	return null;
 }

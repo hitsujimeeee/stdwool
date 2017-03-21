@@ -36,7 +36,11 @@ try{
 	$row = $sth->fetch(PDO::FETCH_ASSOC);
 	if($row) {
 		$rankStr = $row['RANK_STR'];
-		$meter = ($point - (int)($row['POINT_FROM'])) / 14;
+		if ($rankStr === 'G') {
+			$meter = 0;
+		} else {
+			$meter = ($point - (int)($row['POINT_FROM'])) / 14;
+		}
 	}
 
 }catch (PDOException $e){
