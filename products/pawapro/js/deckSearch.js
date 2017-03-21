@@ -118,7 +118,7 @@ var deckSearch = {
 		var str = '';
 		var favList = localStorage.getItem('favoriteList');
 		var favCheck = $('#favOnly').prop('checked');
-		var rarelityGraphList = ['SR', 'SR', 'SR', 'R', 'R'];
+		var rarelityGraphList = ['SR', 'SR', 'SR', 'R', 'R', 'R', 'R'];
 		if(data.length === 0) {
 			$('.noResult').removeClass('hiddenDisplay');
 			$('.pageDisplay').css('display', 'none');
@@ -147,6 +147,10 @@ var deckSearch = {
 					str += '<img class="rarelityBadge" src="../img/icon/PSR_icon.png">';
 				} else if (Number(d.rare[j]) === 3) {
 					str += '<img class="rarelityBadge" src="../img/icon/PR_icon.png">';
+				} else if (Number(d.rare[j]) === 5) {
+					str += '<img class="rarelityBadge" src="../img/icon/PN_icon.png">';
+				} else if (Number(d.rare[j]) === 6) {
+					str += '<img class="rarelityBadge" src="../img/icon/N_icon.png">';
 				}
 				str += '</div>';
 			}
