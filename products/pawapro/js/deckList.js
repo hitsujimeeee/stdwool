@@ -18,7 +18,7 @@ var deckList = {
 			}
 		}).done(function (data) {
 			var str = '';
-			var rarelityGraphList = ['SR', 'SR', 'SR', 'R', 'R'];
+			var rarelityGraphList = ['SR', 'SR', 'SR', 'R', 'R', 'R', 'R'];
 			for (var i = 0; i < data.length; i++) {
 				var d = data[i];
 				str += '<a class="deckListLink" href="./deckCreator.php?userId=' + d.userId + '&deckId=' + d.id + '"><li class="deckList">' +
@@ -31,6 +31,10 @@ var deckList = {
 						str += '<img class="rarelityBadge" src="../img/icon/PSR_icon.png">';
 					} else if (Number(d.rare[j]) === 3) {
 						str += '<img class="rarelityBadge" src="../img/icon/PR_icon.png">';
+					} else if (Number(d.rare[j]) === 5) {
+						str += '<img class="rarelityBadge" src="../img/icon/PN_icon.png">';
+					} else if (Number(d.rare[j]) === 6) {
+						str += '<img class="rarelityBadge" src="../img/icon/N_icon.png">';
 					}
 					str += '</div>';
 				}

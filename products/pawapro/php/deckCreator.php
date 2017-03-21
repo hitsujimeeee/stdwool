@@ -5,8 +5,8 @@ require_once './lib/Parsedown.php';
 
 $userId = isset($_GET['userId']) ? $_GET['userId'] : null;
 $deckId = isset($_GET['deckId']) ? $_GET['deckId'] : null;
-$rarelityList = ['', 'PSR', 'SR', 'PR', 'R'];
-$rarelityGraphList = ['SR', 'SR', 'SR', 'R', 'R'];
+$rarelityList = ['', 'PSR', 'SR', 'PR', 'R', 'PN', 'N'];
+$rarelityGraphList = ['SR', 'SR', 'SR', 'R', 'R', 'R', 'R'];
 $reffrer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
 $targetTypeList = [];
 $schoolList = [];
@@ -82,22 +82,22 @@ function getBonusCount($lv, $rarelity) {
 function getTotalBonusPoint($lvList, $rareList) {
 	$total = 0;
 	$baseLevel = [40, 35, 25, 20, 15, 10];
-	$perBase = [0.5, 0.25, 0.1, 0.05, 0, 0];
-	$perMag = [0.1, 0.05, 0.02, 0.01, 0, 0];
+	$perBase = [0.5, 0, 0, 0, 0, 0];
+	$perMag = [0.1, 0.15, 0.1, 0.05, 0, 0];
 	for ($i = 0; $i < 6; $i++) {
 		$lv = $lvList[$i];
 		$rare = $rareList[$i];
 
-		if ($lv == null || $rare == null){
+		if ($lv == null || $rare == null || (int)$rare === 0){
 			continue;
 		}
-		$dif = $lv - $baseLevel[$rare];
+		$dif = $lv - $baseLevel[$rare-1];
 		if ($dif <= 0) {
 			continue;
 		}
 
 		$c = (int)($dif / 2);
-		$total += $perBase[$rare] + $c * $perMag[$rare];
+		$total += $perBase[$rare-1] + $c * $perMag[$rare-1];
 	}
 	return $total;
 }
@@ -284,6 +284,10 @@ function getDeckEventDetail($dbh, $charaList) {
 							<img class="rarelityBadge" src="../img/icon/PSR_icon.png">
 							<?php } else if ((int)$deckData['rare'][$i] === 3) {?>
 							<img class="rarelityBadge" src="../img/icon/PR_icon.png">
+							<?php } else if ((int)$deckData['rare'][$i] === 5) {?>
+							<img class="rarelityBadge" src="../img/icon/PN_icon.png">
+							<?php } else if ((int)$deckData['rare'][$i] === 6) {?>
+							<img class="rarelityBadge" src="../img/icon/N_icon.png">
 							<?php } ?>
 
 

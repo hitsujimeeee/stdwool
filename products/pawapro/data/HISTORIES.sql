@@ -69,7 +69,9 @@ INSERT INTO HISTORIES VALUES ('2017-01-27 22:00', '特能テンプレート機�
 INSERT INTO HISTORIES VALUES ('2017-02-09 22:00', '特能追加(接戦○、形勢逆転など)');
 INSERT INTO HISTORIES VALUES ('2017-03-04 20:30', 'デッキシェア機能追加');
 INSERT INTO HISTORIES VALUES ('2017-03-09 22:30', 'デッキシェア機能に「ギャネンドラ」、「ナヌーク」追加');
-INSERT INTO HISTORIES VALUES ('2017-03-09 21:00', '特能「順応」、「ジャストフィット」追加');
-INSERT INTO HISTORIES VALUES ('2017-03-09 21:10', 'デッキシェア機能に「緒川未羽」、「鳴海悠斗」追加');
+INSERT INTO HISTORIES VALUES ('2017-03-16 21:00', '特能「順応」、「ジャストフィット」追加');
+INSERT INTO HISTORIES VALUES ('2017-03-16 21:10', 'デッキシェア機能に「緒川未羽」、「鳴海悠斗」追加');
+INSERT INTO HISTORIES VALUES ('2017-03-20 22:00', '作成選手一覧画面一部修正');
+INSERT INTO HISTORIES VALUES ('2017-03-21 21:10', 'デッキシェア機能でレアリティ「PN」,「N」に対応');
 
 

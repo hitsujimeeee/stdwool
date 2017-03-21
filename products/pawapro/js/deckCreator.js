@@ -161,7 +161,7 @@ var deckCreator = {
 
 	updateEveCharaList : function() {
 		var list = deckCreator.selectedCharaList;
-		var rateGraphList = ['SR', 'SR', 'SR', 'R', 'R'];
+		var rateGraphList = ['SR', 'SR', 'SR', 'R', 'R', 'R', 'R'];
 		var f1 = function(){
 			return list[i].id ===  '' + $(this).data('charaId');
 		};
