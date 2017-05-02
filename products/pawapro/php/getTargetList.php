@@ -80,13 +80,13 @@ try{
 
 			if((double)$row['ASSESSMENT'] > $assessment) {
 				$total = $point[0] + $point[1] + $point[2] + $point[3];
+				$val = (int)bcmul((double)$row['ASSESSMENT'], 100) - (int)bcmul($nowAssessment, 100);
 				$set[] = array(
 					'id'=>$baseTypeStr[$i] . $row['POINT'],
 					'type'=>0,
 					'point'=>$point,
-					'val'=>(double)$row['ASSESSMENT']-$nowAssessment,
-					'eff'=>((double)$row['ASSESSMENT']-$nowAssessment)/(double)$total,
-					'total'=>$total
+					'val'=>$val,
+					'eff'=>$val/(double)$total
 				);
 				$assessment = (double)$row['ASSESSMENT'];
 			}
@@ -246,7 +246,7 @@ try{
 				$sth->bindParam(1, $abilityNow[$abilityGroup[$i]['pair']]['id'], PDO::PARAM_STR);
 				$sth->execute();
 				$row = $sth->fetch(PDO::FETCH_ASSOC);
-				$assessment -= (double)$row['ASSESSMENT'];
+				$assessment -= (int)bcmul((double)$row['ASSESSMENT'], 100);
 			}
 		}
 
@@ -263,7 +263,7 @@ try{
 			$valueList[1] += (int)($ability['speed'] * ($sense_per * $mag));
 			$valueList[2] += (int)($ability['tech'] * ($sense_per * $mag));
 			$valueList[3] += (int)($ability['mental'] * ($sense_per * $mag));
-			$assessment += (double)$ability['assessment'];
+			$assessment += (int)bcmul((double)$ability['assessment'], 100);
 
 			$stopFlag = false;
 			//手持ちの経験点内に収まるかチェック
@@ -324,15 +324,11 @@ try{
 
 	usort($targetList, 'compAssessmentEfficiencyAll');
 
-	$backetList = makeBacketList($targetList);
-	$baseNowAssessment = getAssessmentPointOfBaseAbilityRaw($dbh, $basePoint);
-	$abNowAssessment = getAssessmentPointOfAbility($dbh, getOwnAbilityList($abilityNow));
-	$greedyMaxPoint = getGreedyMaxPoint($expPoint, $targetList, $baseNowAssessment, $abNowAssessment);
+	$baseNowAssessment = (int)bcmul(getAssessmentPointOfBaseAbilityRaw($dbh, $basePoint), 100);
+	$abNowAssessment = (int)bcmul(getAssessmentPointOfAbility($dbh, getOwnAbilityList($abilityNow)),100);
 
 	$data = array(
 		'targetList'=>$targetList,
-		'backetList'=>$backetList,
-		'greedyMaxPoint'=>$greedyMaxPoint,
 		'baseNowAssessment'=>$baseNowAssessment,
 		'abNowAssessment'=>$abNowAssessment
 	);
@@ -380,47 +376,15 @@ function getStartAbility($list) {
 
 //査定効率でソート用
 function compAssessmentEfficiency($v1, $v2) {
-	return $v2['val']/$v2['total'] >= $v1['val']/$v1['total'] ? 1 : -1;
+	return $v2['eff'] >= $v1['eff'] ? 1 : -1;
 }
 
 
 //全体を査定効率でソート用
 function compAssessmentEfficiencyAll($v1, $v2) {
-	return $v2[0]['val']/$v2[0]['total'] >= $v1[0]['val']/$v1[0]['total'] ? 1 : -1;
+	return $v2[0]['eff'] >= $v1[0]['eff'] ? 1 : -1;
 }
 
-//バケットリスト作成
-function makeBacketList($list) {
-	$backetList = array();
-	$backetList[] = array("val"=>0, "total"=>0);
-
-	foreach($list as $row) {
-		$backetList[] = array("val"=>$row[0]['val'], "type"=>$row[0]['type'], "total"=>$row[0]['total']);
-	}
-	return $backetList;
-}
-
-
-//貪欲法の最適評価値を取得
-function getGreedyMaxPoint($point, $targetList, $baseNowAssessment, $abNowAssessment) {
-	$idx = 0;
-	$greedyMaxPoint = 0;
-	$asPoint = array(0, 0);
-	foreach($targetList as $row) {
-		for ($i = 0; $i < count($point); $i++) {
-			$point[$i] -= $row[0]['point'][$i];
-			if ($point[$i] < 0) {
-				$baseAs = $baseNowAssessment + $asPoint[0];
-				$abAs = $abNowAssessment + $asPoint[1];
-				return $abAs + $baseAs + 7.84 * round($baseAs / 47.04);
-			}
-		}
-		$asPoint[$row[0]['type']] += $row[0]['val'];
-	}
-	$baseAs = $baseNowAssessment + $asPoint[0];
-	$abAs = $abNowAssessment + $asPoint[1];
-	return $abAs + $baseAs + 7.84 * round($baseAs / 47.04);
-}
 
 
 ?>

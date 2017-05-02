@@ -57,9 +57,9 @@ var calcMaxAssessmentModule = (function() {
 				timeout: 10000,
 				data: JSON.stringify(data)
 			}).done(function(data){
-				var map = [[[0, 0, 0, 0], [0, 0], [], 0]];
+				var map = [[[0, 0, 0, 0], [0, 0], '', 0]];
 				expPoint.splice(3, 1);
-				calcMaxAssessmentModule.RecallMaxAssessment(map, data.targetList, 0, expPoint, data.greedyMaxPoint, data.backetList, data.baseNowAssessment, data.abNowAssessment);
+				calcMaxAssessmentModule.RecallMaxAssessment(map, data.targetList, 0, expPoint, data.baseNowAssessment, data.abNowAssessment);
 			}).fail(function(){
 				calcMaxAssessmentModule.ErrorCalcMaxAssessment();
 			});
@@ -67,7 +67,7 @@ var calcMaxAssessmentModule = (function() {
 
 
 
-		RecallMaxAssessment: function(map, targetList, depth, expPoint, greedyMaxPoint, backetList, baseNowAssessment, abNowAssessment) {
+		RecallMaxAssessment: function(map, targetList, depth, expPoint, baseNowAssessment, abNowAssessment) {
 			//最後の階層の場合
 			if(depth == targetList.length) {
 
@@ -81,7 +81,8 @@ var calcMaxAssessmentModule = (function() {
 				for (var i = 0; i < obj.length; i++) {
 					basePointNow[i] = Number(obj.eq(i).val());
 				}
-
+				map[0][2] = map[0][2].substr(0, map[0][2].length-1);
+				map[0][2] = map[0][2].split(',');
 				var data = {
 					map:map[0],
 					basePoint:basePointNow,
@@ -108,75 +109,51 @@ var calcMaxAssessmentModule = (function() {
 
 			//mapとtargetListの掛け合わせ
 			for (var i = 0; i < mapCount; i++) {
-				var count = 0;
 				for (var j = 0; j < target.length; j++) {
 					var point = calcMaxAssessmentModule.getMultArray(map[i][0], target[j].point, expPoint);
 					if(point === null){
-						var rest = calcMaxAssessmentModule.getTotalPoint(expPoint) - calcMaxAssessmentModule.getTotalPoint(map[i][0]);
-						if(!calcMaxAssessmentModule.isReachGreedyMaxPoint(depth, rest, map[i][1], greedyMaxPoint, backetList, baseNowAssessment, abNowAssessment)){
-							if (count > 0) {
-								map.splice(map.length-count, count);
-							}
-							break;
-						}
 						continue;
 					}
-					count++;
 					var val = [map[i][1][0], map[i][1][1]];
 					val[target[j].type] = val[target[j].type] + target[j].val;
 					var realPoint = calcMaxAssessmentModule.getRealAssessmentPoint(val, baseNowAssessment, abNowAssessment);
-					var newRoute = [];
-					for (var k = 0; k < map[i][2].length; k++) {
-						newRoute[k] = map[i][2][k];
-					}
-					newRoute[newRoute.length] = target[j].id;
-					map[map.length] = [point, val, newRoute, realPoint];
+					var totalPoint = calcMaxAssessmentModule.getTotalPoint(point);
+					map[map.length] = [point, val, map[i][2]+target[j].id+',', realPoint, totalPoint];
 				}
 			}
 
 
-			console.log('depth:' + depth + ', maxCount:' + map.length);
 
 //			下位互換の組み合わせを排除
 			if (map.length <= MAP_MAX_SIZE && depth <= 15) {
 				map.sort(function (m1, m2) {
 					return m2[3] - m1[3];
 				});
-				var cutCount = 0;
+				var startTime = +new Date();
 				for (var i = 0; i < map.length; i++) {
 
 					for (var j = i+1; j < map.length; j++) {
 
 						var cutFlag = true;
 						if (map[j][1][0] <= map[i][1][0] && map[j][1][1] <= map[i][1][1]) {
-							for (var k = 0; k < 4; k++) {
-								if (map[i][0][k] > map[j][0][k]) {
-									cutFlag = false;
-									break;
+							if (map[i][4] <= map[j][4]) {
+								for (var k = 0; k < 4; k++) {
+									if (map[i][0][k] > map[j][0][k]) {
+										cutFlag = false;
+										break;
+									}
 								}
-							}
-							if (cutFlag) {
-								map.splice(j, 1);
-								cutCount++;
-								j--;
-							}
-						} else if (map[j][1][0] >= map[i][1][0] && map[j][1][1] >= map[i][1][1]) {
-							for (var k = 0; k < 4; k++) {
-								if (map[i][0][k] < map[j][0][k]) {
-									cutFlag = false;
-									break;
+								if (cutFlag) {
+									map.splice(j, 1);
+									j--;
 								}
-							}
-							if (cutFlag) {
-								map.splice(i, 1);
-								cutCount++;
-								i--;
-								break;
 							}
 						}
 					}
+					if((+new Date()) - startTime  > 5000) {
+						break;
+					}
 				}
-				console.log('AllCutCount: ' + cutCount);
 			}
 
 			//足切り処理
@@ -190,7 +167,7 @@ var calcMaxAssessmentModule = (function() {
 			}
 
 			$('#blockMessage').hide().html('処理中... ' + Math.round((depth + 1)*100/targetList.length) + '%' ).show();
-			setTimeout(calcMaxAssessmentModule.RecallMaxAssessment, 0, map, targetList, depth+1, expPoint, greedyMaxPoint, backetList, baseNowAssessment, abNowAssessment);
+			setTimeout(calcMaxAssessmentModule.RecallMaxAssessment, 0, map, targetList, depth+1, expPoint, baseNowAssessment, abNowAssessment);
 
 		},
 
@@ -198,7 +175,7 @@ var calcMaxAssessmentModule = (function() {
 		getRealAssessmentPoint: function(array, baseNowAssessment, abNowAssessment){
 			var newbaseNowAssessment = baseNowAssessment + array[0];
 			var newabNowAssessment = abNowAssessment + array[1];
-			return newbaseNowAssessment + 7.84 * Math.round(newbaseNowAssessment/47.04) + 11.27 + newabNowAssessment;
+			return newbaseNowAssessment + 784 * Math.round(newbaseNowAssessment/4704) + 1127 + newabNowAssessment;
 		},
 
 
