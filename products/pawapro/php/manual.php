@@ -42,6 +42,14 @@
 						<li><a href="#idx2-7">デッキを共有する</a></li>
 					</ul>
 				</li>
+				<li><a href="#idx3">上限開放予報士くんの使い方</a>
+					<ul>
+						<li><a href="#idx3-1">機能説明</a></li>
+						<li><a href="#idx3-2">使い方</a></li>
+						<li><a href="#idx3-3">素材合成を有効にする</a></li>
+						<li><a href="#idx3-4">注意事項</a></li>
+					</ul>
+				</li>
 			</ul>
 			<hr class="abHr">
 		</section>
@@ -345,12 +353,77 @@
 					また、デッキ詳細画面のURLを使用して公開することもできます。
 				</p>
 				<div><img src="../img/manual/02-07-02.jpg"></div>
-
 			</section>
 
 		</section>
 
 
+		<section>
+			<h3 class="contentHeader" id="idx3">■上限開放予報士くんの使い方</h3>
+			<section>
+				<h3 id="idx3-1" class="sectionHeader"><i class="fa fa-info-circle"></i>機能説明</h3>
+				<div><a href="../img/manual/03-01-01.jpg" target="_blank"><img src="../img/manual/03-01-01.jpg"></a></div>
+				<p>
+					上限開放予報士くんは、手持ちの合成素材でどれぐらい上限開放出来るか、開放数毎の確率を計算してくれるツールです。
+				</p>
+			</section>
+			<section>
+				<h3 id="idx3-2" class="sectionHeader"><i class="fa fa-bar-chart"></i>使い方</h3>
+				<div><a href="../img/manual/03-02-01.jpg" target="_blank"><img src="../img/manual/03-02-01.jpg"></a></div>
+				<p>
+					<b>上限開放を行いたいイベキャラ</b>のレアリティ、現在の開放数を入力します。
+				</p>
+				<div><a href="../img/manual/03-02-02.jpg" target="_blank"><img src="../img/manual/03-02-02.jpg"></a></div>
+				<p>
+					手持ちの合成素材を入力します。合成素材はR～PSRの各レアリティ毎に「同ver,別ver,+5開放済み」の枚数を入力できます。<br>
+					<span style="color:#f00;">※開放数+1～+4には対応していません。開放数+1～+4は開放0として入力してください。</span><br><br>
+				</p>
+				<div><a href="../img/manual/03-02-03.jpg" target="_blank"><img src="../img/manual/03-02-03.jpg"></a></div>
+				<p>
+					「実行」ボタンを押下します。
+				</p>
+				<div><a href="../img/manual/03-02-04.jpg" target="_blank"><img src="../img/manual/03-02-04.jpg"></a></div>
+				<p>
+					計算された上限開放率が表示されます。最も確率の高い開放数は赤色で表示されます。<br>
+					<span style="color:#f00;">
+						※表示される開放数は、<b>現在の状態からどれくらい開放出来るか</b>を表しています。<br>
+						　現在の状態が+1の場合、表示される最大開放数は+4になります。
+					</span><br>
+				</p>
+			</section>
+			<section>
+				<h3 id="idx3-3" class="sectionHeader"><i class="fa fa-cube"></i>素材合成を有効にする</h3>
+				<p>
+					素材合成は、下位レアリティの素材を上位レアリティの素材に合成する事で、開放を効率的に行う機能です。<br>
+					例えば、SRにPRを合成する場合、RだけでPR+5を作るぐらい素材があれば、まずはPR+5を作ってからその上でSRに合成するといったようにします。<br>
+					素材合成は同じレアリティ同士で行いません(PRをPRに合成してPR+5を作るような事はありません)。常に一つ上のレアリティに対して合成します。
+				</p>
+				<div><a href="../img/manual/03-03-01.jpg" target="_blank"><img src="../img/manual/03-03-01.jpg"></a></div>
+				<p>
+					素材合成を行うには、「素材合成を行う」にチェックを入れ、閾値を入力します。(閾値のデフォルトは70%)<br>
+					素材合成時に使用する下位素材の数は、閾値によって決定されます。<br><br>
+
+					例えば、RをPRに合成する場合、PRが+5になる確率はRが10枚の場合は15%、Rが15枚の場合は48%,Rが18枚の場合は67%,Rが19枚の場合は72%です。<br>
+					閾値を70%に設定した場合、PR+5になる確率が70%以上になる枚数のRを使用して素材合成を行います。+5開放率が70%を超すのはRを19枚使用した時からのため、PR1枚とR19枚を消費してPR+5を1枚作ります。
+				</p>
+				<div><a href="../img/manual/03-03-02.jpg" target="_blank"><img src="../img/manual/03-03-02.jpg"></a></div>
+				<p>
+					素材合成を行った場合、合成後の素材の数が表示されます。<br>
+					図の例では、PR1枚とR19枚を使用してPR+5を作り、そのPR+5を1枚とPR14枚でSR+5を1枚作っています。<br>
+					素材合成をしなかった場合と比べると、+1は0%になるため出現しなくなり、また最大開放の確率が上がっています。<br>
+				</p>
+			</section>
+			<section>
+				<h3 id="idx3-4" class="sectionHeader"><i class="fa fa-warning"></i>注意事項</h3>
+				<p>
+					<ul>
+						<li>素材の枚数が多いなど処理に時間がかかる場合は処理を行わない事があります。その際は素材の枚数を減らすか、素材合成を行う等してください。</li>
+						<li>ご利用は自己責任でお願いします。</li>
+						<li>結果の間違いなどを発見した場合は製作者までご連絡ください。</li>
+					</ul>
+				</p>
+			</section>
+		</section>
 	</main>
 	<?php include('../html/footer.html'); ?>
 </body>

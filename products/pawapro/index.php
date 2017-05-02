@@ -46,8 +46,9 @@
 
 		<div class="otherMenu">
 			<ul class="otherMenuList">
-				<li class="newItem"><span><a href="./php/deckShare.php"><i class="fa fa-retweet fa-fw" aria-hidden="true"></i>デッキシェア</a></span></li>
+				<li><span><a href="./php/deckShare.php"><i class="fa fa-retweet fa-fw" aria-hidden="true"></i>デッキシェア</a></span></li>
 				<li><span><a href="./php/assessment.php"><i class="fa fa-calculator fa-fw" aria-hidden="true"></i>査定計算機</a></span></li>
+				<li class="newItem"><span><a href="./php/limitOpen.php"><i class="fa fa-bar-chart fa-fw" aria-hidden="true"></i>上限開放予報士くん</a></span></li>
 				<li><span><a href="./php/characters.php"><i class="fa fa-user fa-fw" aria-hidden="true"></i>作成選手一覧</a></span></li>
 				<li><span><a href="./php/hirameki.php"><i class="fa fa-lightbulb-o fa-fw" aria-hidden="true"></i>ひらめきシミュレーター</a></span></li>
 				<li><span><a href="./php/about.php"><i class="fa fa-home fa-fw" aria-hidden="true"></i>このサイトについて</a></span></li>
