@@ -370,9 +370,10 @@ ul.abilityDisplay li a, ul.subPositionList li a {
 
 .selectedAbility a, label.selectedAbility, ul.abilityDisplay li.selectedAbility,
 #abilityCharaData li.selectedAbility, .subPositionDetailList label.selected {
-	background: -webkit-gradient(radial, 0% 54%, 0, 0% 54%, 225, color-stop(1.00, #5cebff), color-stop(0.55, #c9edf7), color-stop(0.00, #5cebff));
-	background: -webkit-radial-gradient(0% 54%, circle, #5cebff 0%, #c9edf7 55%, #5cebff 100%);
-	background: radial-gradient(0% 54%, circle, #5cebff 0%, #c9edf7 55%, #5cebff 100%);
+	background: -webkit-gradient(radial, 0% 50%, 0, 0% 54%, 225, color-stop(1.00, #5cebff), color-stop(0.55, #c9edf7), color-stop(0.00, #5cebff));
+	background: -webkit-radial-gradient(0% 50%, circle, #5cebff 0%, #c9edf7 55%, #5cebff 100%);
+	background: -ms-radial-gradient(0% 50%, circle, #5cebff 0%, #c9edf7 55%, #5cebff 100%);
+	background: radial-gradient(0% 50%, circle, #5cebff 0%, #c9edf7 55%, #5cebff 100%);
 	color:#000000 !important;
 }
 
@@ -380,6 +381,7 @@ ul.abilityDisplay li a, ul.subPositionList li a {
 #abilityCharaData li.selectedBAbility {
 	background: -webkit-gradient(radial, 0% 50%, 0, 0% 50%, 241, color-stop(1.00, #ff5047), color-stop(0.51, #f9c3c2), color-stop(0.01, #ff5047));
 	background: -webkit-radial-gradient(0% 50%, circle, #ff5047 1%, #f9c3c2 51%, #ff5047 100%);
+	background: -ms-radial-gradient(0% 50%, circle, #ff5047 0%, #f9c3c2 55%, #ff5047 100%);
 	background: radial-gradient(0% 50%, circle, #ff5047 1%, #f9c3c2 51%, #ff5047 100%);
 	color:#000000 !important;
 }
@@ -389,6 +391,7 @@ ul.abilityDisplay li a, ul.subPositionList li a {
 #abilityCharaData li.selectedSAbility {
 	background: -webkit-gradient(radial, 0% 50%, 0, 0% 50%, 241, color-stop(1.00, #faea00), color-stop(0.52, #fffee0), color-stop(0.01, #faea00));
 	background: -webkit-radial-gradient(0% 50%, circle, #faea00 1%, #fffee0 52%, #faea00 100%);
+	background: -ms-radial-gradient(0% 50%, circle, #faea00 1%, #fffee0 52%, #faea00 100%);
 	background: radial-gradient(0% 50%, circle, #faea00 1%, #fffee0 52%, #faea00 100%);
 	color:#000000 !important;
 }
@@ -397,6 +400,7 @@ ul.abilityDisplay li a, ul.subPositionList li a {
 #abilityCharaData li.selectedPAbility {
 	background: -webkit-gradient(radial, 0% 50%, 0, 0% 50%, 241, color-stop(1.00, #fa0b00), color-stop(0.51, #f89d9b), color-stop(0.01, #fa0b00));
 	background: -webkit-radial-gradient(0% 50%, circle, #fa0b00 1%, #f89d9b 51%, #fa0b00 100%);
+	background: -ms-radial-gradient(0% 50%, circle, #fa0b00 1%, #f89d9b 51%, #fa0b00 100%);
 	background: radial-gradient(0% 50%, circle, #fa0b00 1%, #f89d9b 51%, #fa0b00 100%);
 	color:#000000 !important;
 
@@ -406,6 +410,7 @@ ul.abilityDisplay li a, ul.subPositionList li a {
 #abilityCharaData li.selectedHAbility {
 	background: -webkit-gradient(radial, 0% 50%, 0, 0% 50%, 241, color-stop(1.00, #ff5047), color-stop(0.70, #ffa8a3), color-stop(0.30, #a3f4ff), color-stop(0.01, #5cebff));
 	background: -webkit-radial-gradient(0% 50%, circle, #5cebff 1%, #a3f4ff 30%, #ffa8a3 70%, #ff5047 100%);
+	background: -ms-radial-gradient(0% 50%, circle, #5cebff 1%, #a3f4ff 30%, #ffa8a3 70%, #ff5047 100%);
 	background: radial-gradient(0% 50%, circle, #5cebff 1%, #a3f4ff 30%, #ffa8a3 70%, #ff5047 100%);
 	color:#000000 !important;
 }
@@ -415,6 +420,7 @@ ul.abilityDisplay li a, ul.subPositionList li a {
 #abilityCharaData li.selectedGAbility {
 	background: -webkit-gradient(radial, 0% 50%, 0, 0% 50%, 241, color-stop(1.00, #52ff42), color-stop(0.50, #cbfbad), color-stop(0.00, #52ff42));
 	background: -webkit-radial-gradient(0% 50%, circle, #52ff42 0%, #cbfbad 50%, #52ff42 100%);
+	background: -ms-radial-gradient(0% 50%, circle, #52ff42 0%, #cbfbad 50%, #52ff42 100%);
 	background: radial-gradient(0% 50%, circle, #52ff42 0%, #cbfbad 50%, #52ff42 100%);
 	color:#000000 !important;
 }
@@ -422,6 +428,7 @@ ul.abilityDisplay li a, ul.subPositionList li a {
 .subPositionDetailList label.infield, .subPositionList a.infield {
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(1.00, #FDCC17), color-stop(0.50, #FDCC17), color-stop(0.50, #FDE47D), color-stop(0.00, #FDE47D));
 	background: -webkit-linear-gradient(top, #FDE47D 0%, #FDE47D 50%, #FDCC17 50%, #FDCC17 100%);
+	background: -ms-linear-gradient(top, #FDE47D 0%, #FDE47D 50%, #FDCC17 50%, #FDCC17 100%);
 	color:#000000 !important;
 }
 
@@ -429,6 +436,7 @@ ul.abilityDisplay li a, ul.subPositionList li a {
 .subPositionDetailList label.outfield, .subPositionList a.outfield {
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(1.00, #13E309), color-stop(0.50, #13E309), color-stop(0.50, #99FBA6), color-stop(0.00, #99FBA6));
 	background: -webkit-linear-gradient(top, #99FBA6 0%, #99FBA6 50%, #13E309 50%, #13E309 100%);
+	background: -ms-linear-gradient(top, #99FBA6 0%, #99FBA6 50%, #13E309 50%, #13E309 100%);
 	color:#000000 !important;
 }
 
@@ -436,6 +444,7 @@ ul.abilityDisplay li a, ul.subPositionList li a {
 .subPositionDetailList label.catcher, .subPositionList a.catcher {
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(1.00, #0AB8FD), color-stop(0.50, #0AB8FD), color-stop(0.50, #0AB8FD), color-stop(0.00, #76E4FF));
 	background: -webkit-linear-gradient(top, #76E4FF 0%, #0AB8FD 50%, #0AB8FD 50%, #0AB8FD 100%);
+	background: -ms-linear-gradient(top, #76E4FF 0%, #0AB8FD 50%, #0AB8FD 50%, #0AB8FD 100%);
 	color:#000000 !important;
 }
 
@@ -444,6 +453,7 @@ ul.abilityDisplay li a, ul.subPositionList li a {
 .subPositionDetailList label.pitcher, .subPositionList a.pitcher {
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(1.00, #FE6869), color-stop(0.65, #FE6869), color-stop(0.65, #FE6869), color-stop(0.00, #FFACA8));
 	background: -webkit-linear-gradient(top, #FFACA8 0%, #FE6869 65%, #FE6869 65%, #FE6869 100%);
+	background: -ms-linear-gradient(top, #FFACA8 0%, #FE6869 65%, #FE6869 65%, #FE6869 100%);
 	color:#000000 !important;
 }
 
@@ -510,19 +520,6 @@ ul.abilityDisplay li a, ul.subPositionList li a {
 	display:none;
 }
 
- {
-	background: -webkit-gradient(radial, 0% 54%, 0, 0% 54%, 225, color-stop(1.00, #5cebff), color-stop(0.55, #c9edf7), color-stop(0.00, #5cebff));
-	background: -webkit-radial-gradient(0% 54%, circle, #5cebff 0%, #c9edf7 55%, #5cebff 100%);
-	background: radial-gradient(0% 54%, circle, #5cebff 0%, #c9edf7 55%, #5cebff 100%);
-	color:#000000 !important;
-}
-
-
-
-
-
-
-
 
 .senseButtonList {
 	padding:0;
@@ -546,14 +543,6 @@ ul.abilityDisplay li a, ul.subPositionList li a {
 	cursor:pointer;
 }
 
-
-.senseButtonList label.selected {
-	background: -webkit-gradient(radial, 0% 54%, 0, 0% 54%, 225, color-stop(1.00, #5cebff), color-stop(0.55, #c9edf7), color-stop(0.00, #5cebff));
-	background: -webkit-radial-gradient(0% 54%, circle, #5cebff 0%, #c9edf7 55%, #5cebff 100%);
-	background: radial-gradient(0% 54%, circle, #5cebff 0%, #c9edf7 55%, #5cebff 100%);
-	color:#000000;
-}
-
 .senseButtonList label input {
 	display:none;
 }
@@ -565,6 +554,7 @@ ul.abilityDisplay li a, ul.subPositionList li a {
 .selectedSense.senseM {
 	background: -webkit-gradient(radial, 0% 54%, 0, 0% 54%, 225, color-stop(1.00, #5cebff), color-stop(0.55, #c9edf7), color-stop(0.00, #5cebff));
 	background: -webkit-radial-gradient(0% 54%, circle, #5cebff 0%, #c9edf7 55%, #5cebff 100%);
+	background: -ms-radial-gradient(0% 50%, circle, #5cebff 0%, #c9edf7 55%, #5cebff 100%);
 	background: radial-gradient(0% 54%, circle, #5cebff 0%, #c9edf7 55%, #5cebff 100%);
 	color:#000000;
 }
@@ -572,6 +562,7 @@ ul.abilityDisplay li a, ul.subPositionList li a {
 .selectedSense.senseB {
 	background: -webkit-gradient(radial, 0% 50%, 0, 0% 50%, 241, color-stop(1.00, #ff5047), color-stop(0.51, #f9c3c2), color-stop(0.01, #ff5047));
 	background: -webkit-radial-gradient(0% 50%, circle, #ff5047 1%, #f9c3c2 51%, #ff5047 100%);
+	background: -ms-radial-gradient(0% 50%, circle, #ff5047 1%, #f9c3c2 51%, #ff5047 100%);
 	background: radial-gradient(0% 50%, circle, #ff5047 1%, #f9c3c2 51%, #ff5047 100%);
 	color:#000000;
 }
