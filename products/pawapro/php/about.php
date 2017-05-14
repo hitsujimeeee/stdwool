@@ -101,6 +101,8 @@ $dbh = DB::connect();
 		<hr class="abHr">
 		<div class="contactArticle">
 			<dl class="linkList">
+				<dt><a onclick="ga('send', 'event', 'link', 'click', 'blog');" href="http://studiowool.hatenablog.com/" target="_blank">パワプロ情報学入門</a>(管理人)</dt>
+				<dd>パワプロ関連のちょっと気になる確率の話、計算による効率化の話などを徒然と書いてます。</dd>
 				<dt><a onclick="ga('send', 'event', 'link', 'click', 'mspwpr2.wixsite.com/mspwpr');" href="http://mspwpr2.wixsite.com/mspwpr" target="_blank">細かすぎて伝わらない 査定理論 (とその他いろいろ) の部屋</a>(ms@査定算出ツール公開中さん<a onclick="ga('send', 'event', 'link', 'click', 'twitter.com/mspwpr');" href="https://twitter.com/mspwpr" target="_blank">@mspwpr</a>)</dt>
 				<dd>査定理論を細かく解説しています。当サイトの査定計算にはこちらの計算式を使わせていただいています。</dd>
 				<dt><a onclick="ga('send', 'event', 'link', 'click', 'pawamatome.web.fc2.com');" href="http://pawamatome.web.fc2.com/" target="_blank">野手版　実査定計算ツール</a>(センス▼@パワプロさん<a onclick="ga('send', 'event', 'link', 'click', 'twitter.com/pawa_xx');" href="https://twitter.com/pawa_xx" target="_blank">@pawa_xx</a>)(更新停止中)</dt>
