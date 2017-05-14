@@ -7,7 +7,7 @@
 	$description = 'パワプロアプリの育成シミュレーター(野手版)です。目標能力までに必要な経験点を計算できます。査定計算機能や、余った経験点から査定が最大になるように能力を振ってくれる査定最大化機能もあります。';
 	require_once './headInclude.php';
 	?>
-	<link rel="stylesheet" href="../css/batter.css">
+	<link rel="stylesheet" href="../css/batter.css?ver20170422">
 	<script src="../js/batter.js"></script>
 	<script src="../js/calcMaxAssessment.js?ver20170422"></script>
 	<script src="../js/commonModule.js"></script>

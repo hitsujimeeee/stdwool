@@ -791,3 +791,29 @@ div#abilityModal div.groupHeader{
 	background: radial-gradient(0% 56%, circle, #ffe552 27%, #ff4420 100%);
 
 }
+
+.dispBaseAb {
+	width: 1.8em;
+}
+
+.dispBaseAbT {
+	width: 1.6em;
+}
+
+.dispAbArea {
+	position: relative;
+
+}
+
+.dispAbNum {
+	position: absolute;
+	right: 0;
+	margin-top: 0.6em;
+	font-weight: bold;
+	text-shadow:
+		-1px 0px #fff,
+		0px -1px #fff,
+		1px 0px #fff,
+		0px 1px #fff;
+	opacity: 0.8;
+}
