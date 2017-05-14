@@ -847,9 +847,9 @@ var commonModule = (function() {
 			str = '';
 			for (var i = 0; i < basePointAim.length; i++) {
 				if (i === 0) {
-					str += basePointAim[i] ? basePointAim[i] + (IndividModule.getMakingType() === 1 ? 'km/h ' : '') : '-';
+					str += basePointAim[i] ? (IndividModule.getMakingType() === 1 ? basePointAim[i] + 'km/h ' : '<span class="dispAbArea"><img class="dispBaseAbT" src="../img/trajectory' + basePointAim[i] + '.png"></span>' ) : '-';
 				} else {
-					str += basePointAim[i] ? commonModule.getRankString(basePointAim[i]) : '-';
+					str += '<span class="dispAbArea"><img class="dispBaseAb" src="../img/rank' + commonModule.getRankString(basePointAim[i]) + '.png"><span class="dispAbNum">' + basePointAim[i] + '</span></span>';
 				}
 			}
 			$('#baseAbilityCharaData').html(str);
