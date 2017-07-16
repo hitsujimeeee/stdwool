@@ -348,11 +348,11 @@ var moneyCalc = {
 		str += '<h4>▼シミュレーション結果</h4>';
 		str += '<div class="mainText">';
 		if (simFlag) {
-			str += '平均して' + Math.round(average) + '回のガチャで目標を達成しました(金額:\\' + moneyCalc.separate(Math.round(average / 30 * 9800)) + ')<br>';
-			str += '中央値は' + centerValue + '回です(金額:\\' + moneyCalc.separate(Math.round(centerValue / 30 * 9800)) + ')<br>';
-			str += '最頻値は' + frequency + '回です(金額:\\' + moneyCalc.separate(Math.round(frequency / 30 * 9800)) + ')<br>';
-			str += '最小回数は' + minCount + '回です(金額:\\' + moneyCalc.separate(Math.round(minCount / 30 * 9800)) + ')<br>';
-			str += '最大回数は' + maxCount + '回です(金額:\\' + moneyCalc.separate(Math.round(maxCount / 30 * 9800)) + ')<br>';
+			str += '平均して' + Math.round(average) + '回のガチャで目標を達成しました(金額:&yen' + moneyCalc.separate(Math.round(average / 30 * 9800)) + ')<br>';
+			str += '中央値は' + centerValue + '回です(金額:&yen' + moneyCalc.separate(Math.round(centerValue / 30 * 9800)) + ')<br>';
+			str += '最頻値は' + frequency + '回です(金額:&yen' + moneyCalc.separate(Math.round(frequency / 30 * 9800)) + ')<br>';
+			str += '最小回数は' + minCount + '回です(金額:&yen' + moneyCalc.separate(Math.round(minCount / 30 * 9800)) + ')<br>';
+			str += '最大回数は' + maxCount + '回です(金額:&yen' + moneyCalc.separate(Math.round(maxCount / 30 * 9800)) + ')<br>';
 			str += '標準偏差は' + Math.round(hensa) + '回です<br>';
 		} else {
 			str += totalTryCount + '回目のガチャで目標を達成しました。(金額:\\' + moneyCalc.separate(Math.round(totalTryCount / 30 * 9800)) + ')<br>';
