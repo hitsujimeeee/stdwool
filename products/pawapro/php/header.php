@@ -35,6 +35,7 @@ if(basename(realpath("./")) === 'pawapro') {
 						</ul>
 					</li>
 					<li><a href="<?php echo $urlPadding; ?>php/assessment.php">査定計算機</a></li>
+					<li><a href="<?php echo $urlPadding; ?>php/moneyCalc.php">課金額予想</a></li>
 					<li><a href="<?php echo $urlPadding; ?>php/limitOpen.php">上限開放予報</a></li>
 					<li class="dropdown">
 						<a data-toggle="dropdown" href="javascript:return 0;">about▼</a>

@@ -50,6 +50,14 @@
 						<li><a href="#idx3-4">注意事項</a></li>
 					</ul>
 				</li>
+				<li><a href="#idx4">課金額予想シミュレーターの使い方</a>
+					<ul>
+						<li><a href="#idx4-1">機能説明</a></li>
+						<li><a href="#idx4-2">使い方</a></li>
+						<li><a href="#idx4-3">素材合成を有効にする</a></li>
+						<li><a href="#idx4-4">注意事項</a></li>
+					</ul>
+				</li>
 			</ul>
 			<hr class="abHr">
 		</section>
@@ -419,11 +427,80 @@
 					<ul>
 						<li>素材の枚数が多いなど処理に時間がかかる場合は処理を行わない事があります。その際は素材の枚数を減らすか、素材合成を行う等してください。</li>
 						<li>ご利用は自己責任でお願いします。</li>
-						<li>結果の間違いなどを発見した場合は製作者までご連絡ください。</li>
 					</ul>
 				</p>
 			</section>
 		</section>
+
+		<section>
+			<h3 class="contentHeader" id="idx4">■課金額予想シミュレーターの使い方</h3>
+			<section>
+				<h3 id="idx4-1" class="sectionHeader"><i class="fa fa-info-circle"></i>機能説明</h3>
+				<div><a href="../img/manual/04-01-01.jpg" target="_blank"><img src="../img/manual/04-01-01.jpg"></a></div>
+				<p>
+					課金額予想シミュレーターは、ガチャでお目当てのイベキャラをPSR50、またはSR45にするために大体幾らかかるを計算してくれるツールです。<br>
+					画面から入力された内容で10連ガチャと合成を繰り返し、目標を達成するまでに何回かかったかを表示します。そのため毎回結果にバラツキがあります。<br>
+					オプションの「1万回やって統計を取る」を有効にすると、バラツキを抑えつつ結果を統計的に見ることができます。<br>
+					入力するガチャ情報は6回目以降(それ以上SR率、確定枠が変化しない回以降)を入力してください。
+				</p>
+			</section>
+
+			<section>
+				<h3 id="idx4-2" class="sectionHeader"><i class="fa fa-bar-chart"></i>使い方</h3>
+				<p>
+					まず初めに目標とするイベキャラのレアリティを設定します。<br>「PSR50」と「SR45」から選択できます。
+				</p>
+				<div><a href="../img/manual/04-02-01.jpg" target="_blank"><img src="../img/manual/04-02-01.jpg"></a></div>
+				<p>
+					次に目標キャラを既に取得済みの場合は現在所持している開放数を設定します。<br>
+				</p>
+				<div><a href="../img/manual/04-02-02.jpg" target="_blank"><img src="../img/manual/04-02-02.jpg"></a></div>
+				<p>
+					ガチャの出現割合を設定します。各レアリティ毎の出現率を入力してください。<br>
+					デフォルトでは通常ガチャの確率が入力されています。
+				</p>
+				<div><a href="../img/manual/04-02-03.jpg" target="_blank"><img src="../img/manual/04-02-03.jpg"></a></div>
+				<p>
+					出現するイベキャラの種類を設定します。ピックアップキャラの数、ピックアップキャラ以外の数、ピックアップキャラの出現率を入力してください。<br>
+					大ピックアップ、小ピックアップ両方あるガチャの場合は、自分の目標とするイベキャラの含まれるピックアップの設定を入力してください。<br>
+					ピックアップ無しの場合、「ピックアップキャラ数」に「0」、「上記以外のキャラ数」に出現する全イベキャラの数を入力してください。<br>
+				</p>
+				<div><a href="../img/manual/04-02-04.jpg" target="_blank"><img src="../img/manual/04-02-04.jpg"></a></div>
+				<p>
+					「PR1枚確定」等の確定枠がある場合はその情報を設定します。<br>
+				</p>
+				<div><a href="../img/manual/04-02-05.jpg" target="_blank"><img src="../img/manual/04-02-05.jpg"></a></div>
+				<p>
+					シミュレーションのオプションを入力します。<br>
+				</p>
+				<dl class="defList">
+					<dt>PSRをSRの素材にする</dt>
+					<dd>目標が「SR45」の時、この項目にチェックを入れた場合に手に入ったPSRをSRに合成するようにします。</dd>
+					<dt>素材合成をON</dt>
+					<dd>この項目にチェックを入れた場合、PRやRをPSRに直接合成せずに、PR+5やSR+5等を作って効率的に合成するようになります。</dd>
+					<dt>1万回やって統計を取る</dt>
+					<dd>この項目にチェックを入れた場合、「目標を達成するまで10連ガチャと合成を繰り返す」処理1万回行って、その統計を表示します。<br></dd>
+				</dl>
+				<div><a href="../img/manual/04-02-06.jpg" target="_blank"><img src="../img/manual/04-02-06.jpg"></a></div>
+				<p>
+					「計算開始」ボタンを押して処理を実行します。<br>
+				</p>
+				<div><a href="../img/manual/04-02-07.jpg" target="_blank"><img src="../img/manual/04-02-07.jpg"></a></div>
+				<p>
+					画面に結果が表示されます。<br>
+				</p>
+				<div><a href="../img/manual/04-02-08.jpg" target="_blank"><img src="../img/manual/04-02-08.jpg"></a></div>
+			</section>
+			<section>
+				<h3 id="idx4-3" class="sectionHeader"><i class="fa fa-warning"></i>注意事項</h3>
+				<p>
+					このツールで表示された結果は、その金額かければ必ず目標を達成できると保証するものではありません。運が悪いと表示結果の十倍の金額かけても目標達成できないことがあります。あくまで課金額の目安を図るツールとしてお使いください。<br>
+					ご利用は自己責任でお願いします。
+				</p>
+			</section>
+
+		</section>
+
 	</main>
 	<?php include('../html/footer.html'); ?>
 </body>

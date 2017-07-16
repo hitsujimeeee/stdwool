@@ -50,8 +50,12 @@ table.condList th {
 	display: block;
 }
 
-.condOthers input[type=checkbox]{
+.condOthers input[type=checkbox] {
 	margin-left: 1em;
+}
+
+.manualAnnotation {
+	margin-left: 1.5em;
 }
 
 #displayArea {
@@ -62,13 +66,32 @@ table.condList th {
 	width: 80%;
 	margin-left: 1.5em;
 	margin-bottom: 1em;
+}
 
+svg {
+	margin-left: 1.5em;
+	margin-bottom: 1em;
 }
 
 #displayArea > h4 {
 	font-size: 1em;
 }
 
-#displayArea > .mainText {
+#displayArea > .mainText, .difList {
 	margin-left: 1em;
+}
+
+
+
+/* d3.js関連 */
+.axis text {
+	font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+	fill: none;
+	stroke: #000;
+	stroke-width: 2;
+	shape-rendering: crispEdges;
 }
