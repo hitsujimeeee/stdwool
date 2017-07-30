@@ -36,6 +36,33 @@ $dbh = DB::connect();
 
 		<section class="despBox">
 			<header>
+				<p><a href="./deckShare.php"><i class="fa fa-retweet"></i>デッキシェア</a></p>
+			</header>
+			<article>
+				自分の考えたデッキを他の人に共有したり、他の人の考えたデッキを見たりできます。<br>
+			</article>
+		</section>
+
+		<section class="despBox">
+			<header>
+				<p><a href="./moneyCalc.php"><i class="fa fa-jpy"></i>課金予想額シミュレーター</a></p>
+			</header>
+			<article>
+				期間限定ガチャでお目当てキャラをPSR50(SR45)にするのに幾らかかるかをシミュレートします。<br>
+			</article>
+		</section>
+
+		<section class="despBox">
+			<header>
+				<p><a href="./limitOpen.php"><i class="fa fa-jpy"></i>上限開放予報士くん</a></p>
+			</header>
+			<article>
+				手持ちの合成素材でSR,PSRキャラをどれくらい上限開放できるかを計算します。<br>
+			</article>
+		</section>
+
+		<section class="despBox">
+			<header>
 				<p><a href="./assessment.php"><i class="fa fa-calculator"></i>査定計算機</a></p>
 			</header>
 			<article>
