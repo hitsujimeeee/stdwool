@@ -955,6 +955,10 @@ var commonModule = (function() {
 					setTimeout($.unblockUI, 2000);
 				}
 			}, function (res) {
+				res.msg = '<i class="fa fa-times" aria-hidden="true" style="color:#ff0000"></i>エラーが発生しました。電波状態の良い所でやり直してください。';
+				$('#blockMsg').html(res.msg);
+				$('.blockOverlay').click($.unblockUI).on('click', $.unblockUI);
+				setTimeout($.unblockUI, 2000);
 			});
 
 			//パラメータを設定したURLを返す

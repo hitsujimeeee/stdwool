@@ -3,8 +3,7 @@
 /*jslint shadow:true*/
 
 var calcMaxAssessmentModule = (function() {
-	var MAP_MAX_SIZE = 20000,
-		CUT_FREQ = 12;
+	var MAP_MAX_SIZE = 15000;
 	return {
 
 		//査定最大化
@@ -105,7 +104,8 @@ var calcMaxAssessmentModule = (function() {
 
 
 			var target = targetList[depth],
-				mapCount = map.length;
+				mapCount = map.length,
+				startTime;
 
 			//mapとtargetListの掛け合わせ
 			for (var i = 0; i < mapCount; i++) {
@@ -129,11 +129,41 @@ var calcMaxAssessmentModule = (function() {
 				map.sort(function (m1, m2) {
 					return m2[3] - m1[3];
 				});
-				var startTime = +new Date();
+				startTime = +new Date();
 				for (var i = 0; i < map.length; i++) {
-
 					for (var j = i+1; j < map.length; j++) {
+						var cutFlag = true;
+						if (map[j][1][0] <= map[i][1][0] && map[j][1][1] <= map[i][1][1]) {
+							if (map[i][4] <= map[j][4]) {
+								for (var k = 0; k < 4; k++) {
+									if (map[i][0][k] > map[j][0][k]) {
+										cutFlag = false;
+										break;
+									}
+								}
+								if (cutFlag) {
+									map.splice(j, 1);
+									j--;
+								}
+							}
+						}
+					}
+					if((+new Date()) - startTime  > 10000) {
+						break;
+					}
+				}
+			}
 
+			//足切り処理
+			if(map.length >= MAP_MAX_SIZE * 5) {
+				//査定値の降順でソート後、上位5000番目までを残す
+				map.sort(function (m1, m2) {
+					return m2[3] - m1[3];
+				});
+				map = map.slice(0, MAP_MAX_SIZE);
+				startTime = +new Date();
+				for (var i = 0; i < map.length; i++) {
+					for (var j = i+1; j < map.length; j++) {
 						var cutFlag = true;
 						if (map[j][1][0] <= map[i][1][0] && map[j][1][1] <= map[i][1][1]) {
 							if (map[i][4] <= map[j][4]) {
@@ -154,16 +184,6 @@ var calcMaxAssessmentModule = (function() {
 						break;
 					}
 				}
-			}
-
-			//足切り処理
-			if(map.length >= MAP_MAX_SIZE * 5 || (depth % CUT_FREQ === 0 && map.length >= MAP_MAX_SIZE)) {
-				//査定値の降順でソート後、上位5000番目までを残す
-				map.sort(function (m1, m2) {
-					return m2[3] - m1[3];
-				});
-//				console.log('TopCutCount: ' + (map.length - MAP_MAX_SIZE));
-				map = map.slice(0, MAP_MAX_SIZE);
 			}
 
 			$('#blockMessage').hide().html('処理中... ' + Math.round((depth + 1)*100/targetList.length) + '%' ).show();
@@ -248,7 +268,7 @@ var calcMaxAssessmentModule = (function() {
 		},
 
 		ErrorCalcMaxAssessment: function () {
-			$('#blockMessage').html('エラーが発生しました。');
+			$('#blockMessage').html('エラーが発生しました。電波状態の良い所でやり直してください。');
 			$('.blockOverlay').click($.unblockUI).on('click', $.unblockUI);
 			setTimeout($.unblockUI, 2000);
 		},
