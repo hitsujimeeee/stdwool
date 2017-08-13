@@ -19,7 +19,7 @@ try{
 
 	//既に登録済みのユーザー
 	if($userId !== null) {
-		$sql = "SELECT ID, DATA FROM M_CHARACTER WHERE USER_ID = :userId AND DELETE_FLAG = '0'";
+		$sql = "SELECT ID, DATA FROM M_CHARACTER WHERE USER_ID = :userId AND DELETE_FLAG = '0' ORDER BY ENTRY_DATE";
 		$stmt = $dbh->prepare($sql);
 		$stmt->bindValue('userId', $userId);
 		$stmt->execute();
