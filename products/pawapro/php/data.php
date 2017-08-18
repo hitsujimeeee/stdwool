@@ -33,8 +33,10 @@ $dbh = DB::connect();
 					<li><a class="tabMenu" href="#tabShoulder">肩力</a></li>
 					<li><a class="tabMenu" href="#tabDefense">守備</a></li>
 					<li><a class="tabMenu" href="#tabCatch">捕球</a></li>
-					<li><a class="tabMenu" href="#tabAbility">特能</a></li>
-					<li><a class="tabMenu" href="#tabSability">金特</a></li>
+					<li><a class="tabMenu" href="#tabAbilityBatter">野手特能</a></li>
+					<li><a class="tabMenu" href="#tabSabilityBatter">野手金特</a></li>
+					<li><a class="tabMenu" href="#tabAbilityPitcher">投手特能</a></li>
+					<li><a class="tabMenu" href="#tabSabilityPitcher">投手金特</a></li>
 				</ul>
 
 				<?php
@@ -69,7 +71,7 @@ $dbh = DB::connect();
 				?>
 
 
-				<div id="tabAbility" class="tab_content">
+				<div id="tabAbilityBatter" class="tab_content">
 					<div class="table-responsive">
 						<table class="modern">
 							<tr>
@@ -88,7 +90,7 @@ $dbh = DB::connect();
 									ON H.ID = D.HEADER_ID
 									WHERE CATEGORY IN (\'0\', \'1\', \'2\', \'5\', \'7\')
 									AND D.TYPE IN(\'0\', \'4\', \'5\')
-									ORDER BY CATEGORY, H.SORT_ORDER, D.ID
+									ORDER BY H.SORT_ORDER, D.ID
 									';
 							foreach ($dbh->query($sql) as $row) {
 								echo '<tr><td>' . $row['NAME'] . '</td><td>' .
@@ -103,7 +105,7 @@ $dbh = DB::connect();
 						</table>
 					</div>
 				</div>
-				<div id="tabSability" class="tab_content">
+				<div id="tabSabilityBatter" class="tab_content">
 					<div class="table-responsive">
 						<table class="modern">
 							<tr>
@@ -122,7 +124,7 @@ $dbh = DB::connect();
 									ON H.ID = D.HEADER_ID
 									WHERE CATEGORY IN (\'0\', \'1\', \'2\')
 									AND D.TYPE IN(\'1\')
-									ORDER BY CATEGORY, H.SORT_ORDER, D.ID
+									ORDER BY H.SORT_ORDER, D.ID
 									';
 							foreach ($dbh->query($sql) as $row) {
 								echo '<tr><td>' . $row['NAME'] . '</td><td>' .
@@ -136,6 +138,76 @@ $dbh = DB::connect();
 							?>
 						</table>
 					</div>
+				</div>
+				<div id="tabAbilityPitcher" class="tab_content">
+					<div class="table-responsive">
+						<table class="modern">
+							<tr>
+								<th>名前</th>
+								<th>筋力</th>
+								<th>敏捷</th>
+								<th>技術</th>
+								<th>変化球</th>
+								<th>精神</th>
+								<th>査定値</th>
+							</tr>
+							<?php
+							$sql = 'SELECT D.NAME, D.POWER, D.SPEED, D.TECH, D.SCREWBALL, D.MENTAL, D.ASSESSMENT
+								FROM ABILITY_HEADER H
+								INNER JOIN ABILITY_DETAIL D
+								ON H.ID = D.HEADER_ID
+								WHERE CATEGORY IN (\'4\', \'6\', \'7\')
+								AND D.TYPE IN(\'0\', \'4\', \'5\')
+								ORDER BY H.SORT_ORDER, D.ID
+								';
+							foreach ($dbh->query($sql) as $row) {
+								echo '<tr><td>' . $row['NAME'] . '</td><td>' .
+									$row['POWER'] . '</td><td>' .
+									$row['SPEED'] . '</td><td>' .
+									$row['TECH'] . '</td><td>' .
+									$row['SCREWBALL'] . '</td><td>' .
+									$row['MENTAL'] . '</td><td>' .
+									$row['ASSESSMENT'] .     '</td></tr>';
+							}
+							?>
+						</table>
+					</div>
+				</div>
+				<div id="tabSabilityPitcher" class="tab_content">
+					<div class="table-responsive">
+						<table class="modern">
+							<tr>
+								<th>名前</th>
+								<th>筋力</th>
+								<th>敏捷</th>
+								<th>技術</th>
+								<th>変化球</th>
+								<th>精神</th>
+								<th>査定値</th>
+							</tr>
+							<?php
+							$sql = 'SELECT D.NAME, D.POWER, D.SPEED, D.TECH, D.SCREWBALL, D.MENTAL, D.ASSESSMENT
+								FROM ABILITY_HEADER H
+								INNER JOIN ABILITY_DETAIL D
+								ON H.ID = D.HEADER_ID
+								WHERE CATEGORY IN (\'4\')
+								AND D.TYPE IN(\'1\')
+								ORDER BY H.SORT_ORDER, D.ID
+								';
+							foreach ($dbh->query($sql) as $row) {
+								echo '<tr><td>' . $row['NAME'] . '</td><td>' .
+									$row['POWER'] . '</td><td>' .
+									$row['SPEED'] . '</td><td>' .
+									$row['TECH'] . '</td><td>' .
+									$row['SCREWBALL'] . '</td><td>' .
+									$row['MENTAL'] . '</td><td>' .
+									$row['ASSESSMENT'] .     '</td></tr>';
+							}
+							?>
+						</table>
+					</div>
+
+				</div>
 
 				</div>
 			</div>
