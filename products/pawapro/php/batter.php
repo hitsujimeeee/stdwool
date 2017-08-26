@@ -8,9 +8,9 @@
 	require_once './headInclude.php';
 	?>
 	<link rel="stylesheet" href="../css/batter.css?ver20170422">
-	<script src="../js/batter.js"></script>
-	<script src="../js/calcMaxAssessment.js?ver20170813"></script>
-	<script src="../js/commonModule.js"></script>
+	<script src="../js/batter.js?ver20170818"></script>
+	<script src="../js/calcMaxAssessment.js?ver20170826"></script>
+	<script src="../js/commonModule.js?ver20170826"></script>
 	<script>var abilityCount = <?php include('../php/getAbilityCount.php'); ?>;</script>
 </head>
 

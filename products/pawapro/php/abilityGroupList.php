@@ -11,7 +11,7 @@ try{
 	$sql = 'SELECT ID, NAME, CATEGORY, PAIR
 		FROM ABILITY_HEADER
 		WHERE CATEGORY IN (' . $category_str . ')
-		ORDER BY SORT_ORDER
+		ORDER BY CATEGORY, SORT_ORDER
 		';
 	// SQL の実行
 	$sth = $dbh->query($sql);
@@ -20,8 +20,8 @@ try{
 		$data[] = array(
 			'id'=>(int)$row['ID'],
 			'name'=>$row['NAME'],
-			'category'=>$row['CATEGORY'],
-			'pair'=>$row['PAIR']
+			'category'=>(int)$row['CATEGORY'],
+			'pair'=>(int)$row['PAIR']
 		);
 	}
 	$abilityGroupList = array();

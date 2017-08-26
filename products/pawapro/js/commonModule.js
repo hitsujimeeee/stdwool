@@ -6,7 +6,9 @@ var abilityData = null;
 
 $(function() {
 
-
+	//ローカルストレージから査定値を表示しないフラグを取得
+//	var chk = localStorage.getItem('nonAssessment');
+//	$('#nonAssessment').prop('checked', chk !== null ? JSON.parse(chk) : false);
 
 	$('#ui-tab').tabs();
 	$("#abilitySlider").labeledslider({value:0, min: 0, max: 5, range:"min", change:commonModule.setAbilityPointValue});
@@ -45,6 +47,28 @@ $(function() {
 		JSON.stringify({pageType:IndividModule.getMakingType()}),
 		function(data) {
 			abilityData = JSON.parse(data);
+			var param = commonModule.GetQueryString();
+			if(param.userId && param.charaId) {
+				var data = {'userId':Number(param.userId), 'charaId':param.charaId};
+				commonModule.getAsyncData('getCharacter', JSON.stringify(data), function (res) {
+					if (res.data) {
+						$('#characterId').val(res.charaId);
+						$('#charaImg').attr('src', res.imgURL);
+						charaData.setSaveData(res.data);
+						IndividModule.updateBaseAbilityRank();
+						if(typeof IndividModule.updateChangeBallRank !== 'undefined') {
+							IndividModule.updateChangeBallRank();
+						}
+						commonModule.refreshDisplayAbility(0);
+						commonModule.refreshDisplaySubPosition();
+						commonModule.calcExpPoint();
+						$('.shareLinkBody').html(window.location.href);
+					}
+
+				});
+			}
+
+
 		},
 		function() {
 			alert("エラーが発生しました。ページを再読み込みしてください");
@@ -53,32 +77,32 @@ $(function() {
 
 	charaData.init();
 
-	var param = commonModule.GetQueryString();
-	if(param.userId && param.charaId) {
-		var data = {'userId':Number(param.userId), 'charaId':param.charaId};
-		commonModule.getAsyncData('getCharacter', JSON.stringify(data), function (res) {
-			if (res.data) {
-				$('#characterId').val(res.charaId);
-				$('#charaImg').attr('src', res.imgURL);
-				charaData.setSaveData(res.data);
-				IndividModule.updateBaseAbilityRank();
-				if(typeof IndividModule.updateChangeBallRank !== 'undefined') {
-					IndividModule.updateChangeBallRank();
-				}
-				commonModule.refreshDisplayAbility(0);
-				commonModule.refreshDisplaySubPosition();
-				commonModule.calcExpPoint();
-				$('.shareLinkBody').html(window.location.href);
-			}
-
-		});
-	}
-
 	commonModule.setTabType(0);
-//	$('.pointInput').eq(0).val(200);
-//	$('.pointInput').eq(1).val(200);
-//	$('.pointInput').eq(2).val(200);
-//	$('.pointInput').eq(4).val(200);
+//	$('.pointInput').eq(0).val(0);
+//	$('.pointInput').eq(1).val(0);
+//	$('.pointInput').eq(2).val(0);
+//	$('.pointInput').eq(3).val(0);
+//	$('.pointInput').eq(4).val(0);
+
+	$('.pointInput').on('change', function () {
+		var objs = $('.pointInput'),
+			total = 0;
+		for (var i = 0; i < objs.length; i++) {
+			var value = parseInt(objs.eq(i).val(), 10);
+			if (value) {
+				if (value > Number(objs.eq(i).attr('max'))) {
+					value = Number(objs.eq(i).attr('max'));
+				} else if (value < Number(objs.eq(i).attr('min'))) {
+					value = Number(objs.eq(i).attr('min'));
+				}
+				objs.eq(i).val(value);
+				total += value;
+			} else {
+				objs.eq(i).val('0');
+			}
+		}
+		$('.ownPointTotal').html(total);
+	});
 
 });
 
@@ -670,15 +694,21 @@ var commonModule = (function() {
 			var abilityList = charaData.getAbilityList(idx);
 			var str = '<ul class="abilityDisplay">';
 			var count = 0;
-			for (var i = 0; i < abilityList.length; i++) {
-				var ability = abilityList[i];
-				if (ability) {
-					var changeTypeStr = '';
-					if(idx === 1) {
-						changeTypeStr = charaData.getAbilityList(0, i) === null ? '<span>new</span>' : (ability.id === charaData.getAbilityList(0, i).id ? '' : '<span><i class="fa fa-level-up changeIcon" aria-hidden="true"></i><i class="fa fa-level-up changeIcon" aria-hidden="true"></i></span>');
+
+			for (var i = 0; i < abilityData.length; i++) {
+				var id = abilityData[i].id;
+
+				if (abilityList[id] !== null) {
+					var ability = abilityList[id];
+					if (ability) {
+						var changeTypeStr = '';
+						if(idx === 1) {
+							changeTypeStr = charaData.getAbilityList(0, id) === null ? '<span>new</span>' : (ability.id === charaData.getAbilityList(0, id).id ? '' : '<span><i class="fa fa-level-up changeIcon" aria-hidden="true"></i><i class="fa fa-level-up changeIcon" aria-hidden="true"></i></span>');
+						}
+						str += '<li class="' + abTypeClass[Number(ability.type)] + '"><a onclick="javascript:commonModule.openAbilityDetailDirect(\'' + id +'\')">' + ability.name + changeTypeStr + '</a></li>';
+						count++;
 					}
-					str += '<li class="' + abTypeClass[Number(ability.type)] + '"><a onclick="javascript:commonModule.openAbilityDetailDirect(\'' + i +'\')">' + ability.name + changeTypeStr + '</a></li>';
-					count++;
+
 				}
 			}
 			str += '</ul>';
@@ -874,19 +904,24 @@ var commonModule = (function() {
 			}
 
 
-			obj = $('#tab2 ul.abilityDisplay li');
 			str = '';
 
-			charaData.getAbilityList(1).filter(function (elem){
-				return elem !== null;
-			}).forEach(function (elem){
-				str += '<li class="' + abTypeClass[elem.type] + '">' + elem.name + '</li>';
-			});
+			var charaAbility = charaData.getAbilityList(1);
+
+			for (var i = 0; i < abilityData.length; i++) {
+				var ability = charaAbility[abilityData[i].id];
+				if(ability !== null) {
+					str += '<li class="' + abTypeClass[ability.type] + '">' + ability.name + '</li>';
+				}
+			}
+
 
 			$('#abilityCharaData').html(str);
 
 			if(IndividModule.getMakingType() === 0) {
 				commonModule.updateAssessmentPoint();
+			} else {
+				commonModule.updateAssessmentPointPitcher();
 			}
 
 		},
@@ -917,6 +952,63 @@ var commonModule = (function() {
 			var assessment = this.getAsyncData('getAssessmentPoint', JSON.stringify({"basePoint":basePoint, "ability":ability}));
 			$('#assessmentPointCharaData').html(assessment.rank + '(' + assessment.point + ')');
 			$('.meterGauge').css('width', (assessment.meter*10)+'%');
+
+		},
+
+		updateAssessmentPointPitcher: function() {
+			var chk = $('#nonAssessment').prop("checked");
+			localStorage.setItem('nonAssessment', JSON.stringify(chk));
+
+			if (chk) {
+				$('#assessmentPointCharaData').html('');
+				return;
+			}
+
+
+			var obj = $('#tab1 .basePointInput'),
+				baseNowPoint = [];
+			for (var i = 0; i < obj.length; i++) {
+				baseNowPoint[i] = Number(obj.eq(i).val());
+			}
+
+			var obj = $('#tab2 .basePointInput'),
+				baseAimPoint = [];
+			for (var i = 0; i < obj.length; i++) {
+				baseAimPoint[i] = Number(obj.eq(i).val());
+			}
+
+
+			var changeBallType = [];
+			var changeBallNow = [];
+			var changeBallAim = [];
+			obj = $('#tab2 .changeBallType');
+			for (var i = 0; i < obj.length; i++) {
+				changeBallType[i] = Number(obj.eq(i).val());
+			}
+
+			obj = $('#tab2 .changeBallInput');
+			for (var i = 0; i < obj.length; i++) {
+				changeBallNow[i] = Number($('#tab1 .changeBallInput').eq(i).val());
+				changeBallAim[i] = Number(obj.eq(i).val());
+			}
+
+			var abilityNow = charaData.getAbilityList(0).filter(function (elem){
+				return elem !== null;
+			}).map(function (elem){
+				return elem.id;
+			});
+
+			var abilityAim = charaData.getAbilityList(1).filter(function (elem){
+				return elem !== null;
+			}).map(function (elem){
+				return elem.id;
+			});
+
+			var assessmentNow = this.getAsyncData('getAssessmentPointPitcher', JSON.stringify({"basePoint":baseNowPoint, "ability":abilityNow, "changeBallType":changeBallType, "changeBallValue":changeBallNow}));
+			var assessmentAim = this.getAsyncData('getAssessmentPointPitcher', JSON.stringify({"basePoint":baseAimPoint, "ability":abilityAim, "changeBallType":changeBallType, "changeBallValue":changeBallAim}));
+			var nowTotal = (assessmentNow.basePoint !== null ? assessmentNow.basePoint : 0) + assessmentNow.abPoint;
+			var aimTotal = (assessmentAim.basePoint !== null ? assessmentAim.basePoint : 0) + assessmentAim.abPoint;
+			$('#assessmentPointCharaData').html((assessmentNow.basePoint !== null ? parseInt(aimTotal) : '') + '(' + parseInt(aimTotal - nowTotal, 10) + '↑)');
 
 		},
 

@@ -1,10 +1,5 @@
-/*global $, jQuery, alert, encodingParam, commonModule*/
+/*global $, alert, encodingParam, commonModule*/
 $(function () {
-
-	//ローカルストレージから査定地を表示しないフラグを取得
-	var chk = localStorage.getItem('nonAssessment');
-	$('#nonAssessment').prop('checked', chk !== null ? JSON.parse(chk) : false);
-
 
 	$('.tabMenu').click(function () {
 		var idx = $('.tabMenu').index(this);
@@ -15,26 +10,6 @@ $(function () {
 			IndividModule.updateBaseAbilityRank();
 			commonModule.refreshDisplaySubPosition();
 		}
-	});
-
-	$('.pointInput').on('change', function () {
-		var objs = $('.pointInput'),
-			total = 0;
-		for (var i = 0; i < objs.length; i++) {
-			var value = parseInt(objs.eq(i).val(), 10);
-			if (value) {
-				if (value > Number(objs.eq(i).attr('max'))) {
-					value = Number(objs.eq(i).attr('max'));
-				} else if (value < Number(objs.eq(i).attr('min'))) {
-					value = Number(objs.eq(i).attr('min'));
-				}
-				objs.eq(i).val(value);
-				total += value;
-			} else {
-				objs.eq(i).val('0');
-			}
-		}
-		$('.ownPointTotal').html(total);
 	});
 
 });

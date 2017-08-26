@@ -21,9 +21,9 @@ try {
 			SELECT ID,
 			--NAME,
 			CASE CATEGORY
-				WHEN 0 THEN 1
+				WHEN 4 THEN 1
 				ELSE 0
-			END BATTER_ABILITY,
+			END PITCHER_ABILITY,
 			PAIR
 			FROM ABILITY_HEADER
 			ORDER BY CATEGORY, SORT_ORDER, ID';
@@ -33,7 +33,7 @@ try {
 	while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
 		$abilityGroup[] = array(
 			'id'=>(int)$row['ID'],
-			'flag'=>(int)$row['BATTER_ABILITY'],
+			'flag'=>(int)$row['PITCHER_ABILITY'],
 			'pair'=>$row['PAIR']
 		);
 	}
@@ -73,7 +73,7 @@ echo json_encode($data);
 
 
 function getNewBaseAbility($baseAbility, $route) {
-	$baseTypeStr = array('DA', 'ME', 'PO', 'SP', 'SH', 'DE', 'CA');
+	$baseTypeStr = array('SP', 'CO', 'ST');
 	$list = array();
 	for ($i = 0; $i < count($baseAbility); $i++) {
 		$hitFlag = false;
