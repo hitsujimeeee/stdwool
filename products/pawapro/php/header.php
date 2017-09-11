@@ -34,6 +34,7 @@ if(basename(realpath("./")) === 'pawapro') {
 							<li><a href="<?php echo $urlPadding; ?>php/deckSearch.php">デッキ検索</a></li>
 						</ul>
 					</li>
+					<li><a href="<?php echo $urlPadding; ?>php/quizHome.php">パワプロクイズ</a></li>
 					<li><a href="<?php echo $urlPadding; ?>php/assessment.php">査定計算機</a></li>
 					<li><a href="<?php echo $urlPadding; ?>php/moneyCalc.php">課金額予想</a></li>
 					<li><a href="<?php echo $urlPadding; ?>php/limitOpen.php">上限開放予報</a></li>

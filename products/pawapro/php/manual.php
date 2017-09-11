@@ -59,6 +59,14 @@
 						<li><a href="#idx4-4">注意事項</a></li>
 					</ul>
 				</li>
+				<li><a href="#idx5">パワプロクイズの使い方</a>
+					<ul>
+						<li><a href="#idx5-1">機能説明</a></li>
+						<li><a href="#idx5-2">クイズに挑戦する</a></li>
+						<li><a href="#idx5-3">問題を作る</a></li>
+						<li><a href="#idx5-4">問題作成に関して注意事項</a></li>
+					</ul>
+				</li>
 			</ul>
 			<hr class="abHr">
 		</section>
@@ -526,9 +534,83 @@
 					ご利用は自己責任でお願いします。
 				</p>
 			</section>
+		</section>
+		<section>
+			<h3 class="contentHeader" id="idx5">■パワプロクイズの使い方</h3>
+			<section>
+				<h3 id="idx5-1" class="sectionHeader"><i class="fa fa-graduation-cap"></i>機能説明</h3>
+				<div><a href="../img/manual/05-01-01.jpg" target="_blank"><img src="../img/manual/05-01-01.jpg"></a></div>
+				<p>
+					パワプロの四択クイズに挑戦できます。全部で10問、沢山のクイズの中からランダムで出題されます。<br>
+					また、クイズを作成して他のプレイヤーに出題する事もできます。
+				</p>
+			</section>
+			<section>
+				<h3 id="idx5-2" class="sectionHeader"><i class="fa fa-info-circle"></i>クイズに挑戦する</h3>
+				<p>
+					パワプロクイズのメイン画面で「挑戦する」ボタンをクリックします。
+				</p>
+				<div><a href="../img/manual/05-02-01.jpg" target="_blank"><img src="../img/manual/05-02-01.jpg"></a></div>
+				<p>
+					画面上に問題が出題されます。青い枠で表示される４つの選択肢の中から正解だと思うものをクリックしてください。
+				</p>
+				<div><a href="../img/manual/05-02-02.jpg" target="_blank"><img src="../img/manual/05-02-02.jpg"></a></div>
+				<p>
+					正解した場合、選んだ選択肢が緑色に表示されます。不正解の場合は選んだ選択肢が赤く表示され、正解の選択肢が緑色に表示されます。<br>
+				</p>
+				<div><a href="../img/manual/05-02-03.jpg" target="_blank"><img src="../img/manual/05-02-03.jpg"></a></div>
+				<p>
+					解説欄右下のGOODボタンとBADボタンで、問題に対しての評価を行えます。
+					良い問題だと思ったらGOODを。不快な問題、解答が間違ってる場合はBADで投票してください。<br>
+					画面左下の「次へ」ボタンを押すことで次の問題が出題されます。10問答えると結果確認画面へ移動します。
+				</p>
+			</section>
+			<section>
+				<h3 id="idx5-3" class="sectionHeader"><i class="fa fa-info-circle"></i>問題を作る</h3>
+				<p>
+					パワプロクイズのメイン画面で「問題を作る」をクリックします。
+				</p>
+				<div><a href="../img/manual/05-03-01.jpg" target="_blank"><img src="../img/manual/05-03-01.jpg"></a></div>
+				<p>
+					問題作成画面に移動したら、必要事項を記入します。
+					<ul>
+						<li>問題文……問題の本文。200文字まで。<span style="color:#f00">必須</span></li>
+						<li>画像……問題に添付する画像。必要な場合のみ貼り付けてください。<span style="color:#f00">4つ全て必須</span></li>
+						<li>選択肢……4択の選択肢。正解はどの位置でも構いません。</li>
+						<li>正解……選択肢で正解を記入した番号を指定してください。</li>
+						<li>カテゴリ……問題のカテゴリ(ジャンル)を選択して下さい。迷った場合はそれっぽいと思うものを選択してください。</li>
+						<li>解説……問題の解説を行って下さい。未記入でも問題ありません。もし難しい問題で答えの理由がない場合BADが付く原因にもなるので出来れば記入しておいた方が良いです。</li>
+						<li>作者……名前とTwitterのIDを入力してください。未記入でも問題ありません。</li>
+					</ul>
+				</p>
+				<div><a href="../img/manual/05-03-02.jpg" target="_blank"><img src="../img/manual/05-03-02.jpg"></a></div>
+				<p>
+					入力が完了したら、「登録する」ボタンをクリックします。
+				</p>
+				<div><a href="../img/manual/05-03-03.jpg" target="_blank"><img src="../img/manual/05-03-03.jpg"></a></div>
+				<p>
+					最終確認のポップアップが表示されます。内容に間違いが無ければOKをクリックしてください。
+				</p>
+				<div><a href="../img/manual/05-03-04.jpg" target="_blank"><img src="../img/manual/05-03-04.jpg"></a></div>
+				<p>
+					以上で登録は完了です。
+				</p>
+				<div><a href="../img/manual/05-03-05.jpg" target="_blank"><img src="../img/manual/05-03-05.jpg"></a></div>
+			</section>
+			<section>
+				<h3 id="idx5-4" class="sectionHeader"><i class="fa fa-info-circle"></i>問題作成に関して注意事項</h3>
+				<p>
+					問題を作る上で、以下の注意次項を必ず守ってください。
+					<ul>
+						<li>特定の個人を中傷する内容、他者が不快になるような内容を記載するのはお控えください。</li>
+						<li>問題の内容は明確に答えがあるものを使用してください。個人の予想や想像、不明瞭な情報での出題はお控えください。</li>
+						<li>将来的に答えが変わる可能性の高いものはなるべく出題をお控え下さい(例えば「現在実装されてるイベキャラは何種類か？」等)。また、もしそういった問題を出題する場合は出題日時を問題文に記載してください。</li>
+						<li>一度投稿したクイズの内容を自分で変更、削除する事は出来ません。もし削除したい場合は管理者のツイッター(<a href="https://twitter.com/hitsujiPawapro">@hitsujiPawapro</a>)か、本ホームページの<a href="http://jbbs.shitaraba.net/game/58946/">掲示板</a>に削除依頼を申請してください。</li>
+				</ul>
+				</p>
+			</section>
 
 		</section>
-
 	</main>
 	<?php include('../html/footer.html'); ?>
 </body>
