@@ -817,3 +817,7 @@ div#abilityModal div.groupHeader{
 		0px 1px #fff;
 	opacity: 0.8;
 }
+
+.baseLimitBreakArea > div {
+	margin: 1em 0.5em;
+}

@@ -181,7 +181,7 @@ function doDeleteCharacter() {
 }
 
 function getRankString(val) {
-	var rank = ['G', 'G', 'F', 'F', 'E', 'D', 'C', 'B', 'A', 'S'];
+	var rank = ['G', 'G', 'F', 'F', 'E', 'D', 'C', 'B', 'A', 'S', 'S'];
 	return val === 100 ? 'S' : rank[parseInt(val/10)];
 }
 

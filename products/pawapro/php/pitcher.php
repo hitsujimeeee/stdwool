@@ -7,11 +7,11 @@
 	$description = 'パワプロアプリの育成シミュレーター(野手版)です。目標能力までに必要な経験点を計算できます。査定計算機能や、余った経験点から査定が最大になるように能力を振ってくれる査定最大化機能もあります。';
 	require_once './headInclude.php';
 	?>
-	<link rel="stylesheet" href="../css/batter.css">
+	<link rel="stylesheet" href="../css/batter.css?ver20170912">
 	<link rel="stylesheet" href="../css/pitcher.css">
 	<script src="../js/pitcher.js"></script>
-	<script src="../js/calcMaxAssessmentPitcher.js"></script>
-	<script src="../js/commonModule.js?ver20170826"></script>
+	<script src="../js/calcMaxAssessmentPitcher.js?ver20170912"></script>
+	<script src="../js/commonModule.js?ver20170912"></script>
 	<script>var abilityCount = <?php include('../php/getAbilityCount.php'); ?>;</script>
 </head>
 
@@ -41,8 +41,8 @@
 							<td><div></div></td>
 						</tr>
 						<tr>
-							<td><input type="number" class="basePointInput" min="80" max="175" step="1"></td>
-							<td><input type="number" class="basePointInput" min="1" max="100" step="1"></td>
+							<td><input type="number" class="basePointInput" min="80" max="170" step="1"></td>
+							<td><input type="number" class="basePointInput" min="1" max="102" step="1"></td>
 							<td><input type="number" class="basePointInput" min="1" max="100" step="1"></td>
 						</tr>
 					</table>
@@ -114,8 +114,8 @@
 							<td><div></div></td>
 						</tr>
 						<tr>
-							<td><input type="number" class="basePointInput" min="80" max="175" step="1"></td>
-							<td><input type="number" class="basePointInput" min="1" max="100" step="1"></td>
+							<td><input type="number" class="basePointInput" min="80" max="170" step="1"></td>
+							<td><input type="number" class="basePointInput" min="1" max="102" step="1"></td>
 							<td><input type="number" class="basePointInput" min="1" max="100" step="1"></td>
 						</tr>
 					</table>
@@ -264,6 +264,30 @@
 					</table>
 
 				</section>
+
+				<section class="baseLimitBreakArea">
+					<p>■基礎上限突破</p>
+					<div>
+						球速
+						<select class="baseLimitBreak">
+							<option value="170">170</option>
+						</select>
+					</div>
+					<div>
+						コン
+						<select class="baseLimitBreak">
+							<option value="100">100</option>
+							<option value="102">102</option>
+						</select>
+					</div>
+					<div>
+						スタ
+						<select class="baseLimitBreak">
+							<option value="100">100</option>
+						</select>
+					</div>
+				</section>
+
 
 				<section>
 					<p>■センス</p>

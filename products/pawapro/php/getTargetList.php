@@ -10,6 +10,7 @@ $post = json_decode($json, true);
 $basePoint = $post['basePoint'];
 $abilityNow = $post['ability'];
 $baseTrickLevel = $post['baseTrickLevel'];
+$baseLimitBreak = $post['baseLimitBreak'];
 $isCatcher = $post['isCather'];
 $nonCatcher = $post['nonCatcher'];
 $nonMoody = isset($post['nonMoody']) ? $post['nonMoody'] : 0;
@@ -52,10 +53,13 @@ try{
 					TYPE = :type
 				AND
 					POINT >= :nowPoint
+				AND
+					POINT <= :limit
 		';
 		$sth = $dbh->prepare($sql);
 		$sth->bindValue('type', $i, PDO::PARAM_INT);
 		$sth->bindValue('nowPoint', $basePoint[$i], PDO::PARAM_INT);
+		$sth->bindValue('limit', ($i == 0 ? 4 : $baseLimitBreak[$i-1]), PDO::PARAM_INT);
 		$sth->execute();
 
 		//現在の査定値を取得

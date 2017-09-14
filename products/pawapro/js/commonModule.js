@@ -216,6 +216,15 @@ var charaData = (function() {
 			return list;
 		},
 
+		fetchBaseLimitBreak: function() {
+			var obj = $('.baseLimitBreak'),
+				list = [];
+			for (var i = 0; i < obj.length; i++) {
+				list[i] = Number(obj.eq(i).val());
+			}
+			return list;
+		},
+
 		fetchChangeBall: function (type) {
 			var obj = $('#tab'+ (type + 1) + ' .changeBallInput'),
 				list = [];
@@ -255,6 +264,7 @@ var charaData = (function() {
 				useHand:$('#useHand').val(),
 				basePoint:[this.fetchBasePoint(0), this.fetchBasePoint(1)],
 				baseTrickLevel:this.fetchBaseTrickLevel(),
+				baseLimitBreak:this.fetchBaseLimitBreak(),
 				ability:abilitys,
 				trickLevel:trickLevel,
 				StrickLevel:StrickLevel,
@@ -286,6 +296,14 @@ var charaData = (function() {
 			for (var i = 0; i < data.baseTrickLevel.length; i++) {
 				obj.eq(i).labeledslider("value", data.baseTrickLevel[i]);
 			}
+
+			obj = $('.baseLimitBreak');
+			if(data.baseLimitBreak) {
+				for (var i = 0; i < data.baseTrickLevel.length; i++) {
+					obj.eq(i).val(data.baseLimitBreak[i]);
+				}
+			}
+
 
 			var abData = commonModule.getAsyncData('convertSaveAbility', JSON.stringify({ability:data.ability}));
 			for (var i = 0; i < abData[0].length; i++) {
@@ -1020,7 +1038,7 @@ var commonModule = (function() {
 		},
 
 		getRankString: function (val) {
-			var rank = ['G', 'G', 'F', 'F', 'E', 'D', 'C', 'B', 'A', 'S'];
+			var rank = ['G', 'G', 'F', 'F', 'E', 'D', 'C', 'B', 'A', 'S', 'S'];
 			return val === 100 ? 'S' : rank[parseInt(val/10)];
 		},
 

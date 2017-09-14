@@ -24,6 +24,11 @@ var calcMaxAssessmentModule = (function() {
 				return Number($(elt).labeledslider("value"));
 			});
 
+			//基礎上限突破
+			var baseLimitBreak = Array.prototype.map.call(document.querySelectorAll('.baseLimitBreak'), function(elt){
+				return Number($(elt).val());
+			});
+
 			//特能
 			var abNow = charaData.getAbilityList(0);
 			for (var i = 0; i < abNow.length; i++) {
@@ -43,6 +48,7 @@ var calcMaxAssessmentModule = (function() {
 				"basePoint":basePointNow,
 				"ability":ability,
 				"baseTrickLevel": baseTrickLevel,
+				"baseLimitBreak": baseLimitBreak,
 				"sense": charaData.getSensePer(),
 				"expPoint": expPoint,
 				"isCather":commonModule.isCatcher(),

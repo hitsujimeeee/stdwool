@@ -7,10 +7,10 @@
 	$description = 'パワプロアプリの育成シミュレーター(野手版)です。目標能力までに必要な経験点を計算できます。査定計算機能や、余った経験点から査定が最大になるように能力を振ってくれる査定最大化機能もあります。';
 	require_once './headInclude.php';
 	?>
-	<link rel="stylesheet" href="../css/batter.css?ver20170422">
+	<link rel="stylesheet" href="../css/batter.css?ver20170912">
 	<script src="../js/batter.js?ver20170818"></script>
-	<script src="../js/calcMaxAssessment.js?ver20170826"></script>
-	<script src="../js/commonModule.js?ver20170826"></script>
+	<script src="../js/calcMaxAssessment.js?ver20170912"></script>
+	<script src="../js/commonModule.js?ver20170912"></script>
 	<script>var abilityCount = <?php include('../php/getAbilityCount.php'); ?>;</script>
 </head>
 
@@ -49,7 +49,7 @@
 						</tr>
 						<tr>
 							<td><input type="number" class="basePointInput" min="1" max="4" step="1"></td>
-							<td><input type="number" class="basePointInput" min="1" max="100" step="1"></td>
+							<td><input type="number" class="basePointInput" min="1" max="102" step="1"></td>
 							<td><input type="number" class="basePointInput" min="1" max="100" step="1"></td>
 							<td><input type="number" class="basePointInput" min="1" max="100" step="1"></td>
 							<td><input type="number" class="basePointInput" min="1" max="100" step="1"></td>
@@ -103,7 +103,7 @@
 						</tr>
 						<tr>
 							<td><input type="number" class="basePointInput" min="1" max="4" step="1"></td>
-							<td><input type="number" class="basePointInput" min="1" max="100" step="1"></td>
+							<td><input type="number" class="basePointInput" min="1" max="102" step="1"></td>
 							<td><input type="number" class="basePointInput" min="1" max="100" step="1"></td>
 							<td><input type="number" class="basePointInput" min="1" max="100" step="1"></td>
 							<td><input type="number" class="basePointInput" min="1" max="100" step="1"></td>
@@ -209,7 +209,47 @@
 							</td>
 						</tr>
 					</table>
+				</section>
 
+				<section class="baseLimitBreakArea">
+					<p>■基礎上限突破</p>
+					<div>
+						ミート
+						<select class="baseLimitBreak">
+							<option value="100">100</option>
+							<option value="102">102</option>
+						</select>
+					</div>
+					<div>
+						パワー
+						<select class="baseLimitBreak">
+							<option value="100">100</option>
+						</select>
+					</div>
+					<div>
+						走力
+						<select class="baseLimitBreak">
+							<option value="100">100</option>
+						</select>
+					</div>
+					<div>
+						肩力
+						<select class="baseLimitBreak">
+							<option value="100">100</option>
+						</select>
+					</div>
+					<div>
+						守備
+						<select class="baseLimitBreak">
+							<option value="100">100</option>
+						</select>
+					</div>
+					<div>
+						捕球
+						<select class="baseLimitBreak">
+							<option value="100">100</option>
+						</select>
+					</div>
 				</section>
 
 				<section>
