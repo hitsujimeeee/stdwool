@@ -4,7 +4,7 @@
 <head>
 	<?php
 	$title = 'パワプロアプリ育成シミュレーター | 作成選手一覧';
-	$description = 'パワプロアプリの育成シミュレーターです。目標能力までに必要な経験点を計算できます。';
+	$description = 'パワプロアプリの育成シミュレーターです。当サイトで登録した選手を閲覧できます。';
 	require_once './headInclude.php';
 	?>
 	<link rel="stylesheet" href="../css/characters.css">

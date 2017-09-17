@@ -1,5 +1,22 @@
+html {
+	height: 100%;
+}
 body {
+	background: #fff9eb;
+	height: 100%;
 	font-family:'Meiryo UI';
+}
+
+body > header, main, body > footer {
+	max-width: 960px;
+	margin: 0 auto;
+}
+
+main {
+	background: #fff;
+	padding-top: 0.5em;
+	padding-bottom: 1em;
+	min-height: 90%;
 }
 
 footer {
@@ -10,12 +27,9 @@ footer {
 	color:#ffffff;
 }
 
-main {
-	min-height: 300px;
-}
-
 header.pageHeader h2 {
-	margin-top: 0.4em;
+	margin-top: 0;
+	font-size: 2em;
 }
 
 
@@ -68,7 +82,7 @@ table.modern th {
 
 
 img.iconGraph {
-	width: 1.2em;
+	width: 1em;
 	margin-right: .2em;
 }
 

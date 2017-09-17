@@ -60,3 +60,29 @@
 .changeBallRank div.r {
 	background-image: url(../img/r.png);
 }
+
+.basePoint td {
+	width: 60px;
+}
+
+.basePoint .baseRank > td:nth-child(1) {
+	background-image: url(../img/ballspeed.jpg);
+	position: relative;
+}
+
+.baseRank .alphaScreen {
+	background: rgba(255, 255, 255, 0.4);
+	width: 100%;
+	height: 100%;
+}
+
+.baseRank .valueScreen {
+	position: absolute;
+	right: 0.2em;
+	bottom: -0.2em;
+	text-shadow:
+		1px 1px #fff,
+		-1px 1px #fff,
+		1px -1px #fff,
+		-1px -1px #fff;
+}

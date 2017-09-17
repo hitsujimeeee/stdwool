@@ -1,3 +1,8 @@
+.bibiFace {
+	width: 130px;
+}
+
+
 .hiramekiChara td {
 	text-align:center;
 }
@@ -246,12 +251,6 @@ button.calc {
 	width:45px;
 }
 
-#contents {
-	width:520px;
-	padding:0px;
-	margin:0px;
-}
-
 .header {
 	background: -webkit-gradient(radial, 100% 54%, 0, 100% 54%, 241, color-stop(1.00, #989898), color-stop(0.00, #272727));
 	background: -webkit-radial-gradient(100% 54%, circle, #272727, #989898);
@@ -263,9 +262,4 @@ button.calc {
 
 .hiramekiImage > img {
 	height:35px;
-}
-
-#contents {
-	margin-left: 0.5em;
-	margin-bottom: 2em;
 }

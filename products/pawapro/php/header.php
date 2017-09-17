@@ -24,9 +24,13 @@ if(basename(realpath("./")) === 'pawapro') {
 						<ul class="dropdown-menu">
 							<li><a href="<?php echo $urlPadding; ?>php/batter.php">野手シミュ</a></li>
 							<li><a href="<?php echo $urlPadding; ?>php/pitcher.php">投手シミュ</a></li>
+							<li><a href="<?php echo $urlPadding; ?>php/assessment.php">査定計算機</a></li>
 							<li><a href="<?php echo $urlPadding; ?>php/characters.php">作成選手一覧</a></li>
 						</ul>
 					</li>
+					<li><a href="<?php echo $urlPadding; ?>php/moneyCalc.php">課金額シミュ</a></li>
+					<li><a href="<?php echo $urlPadding; ?>php/limitOpen.php">上限開放予報</a></li>
+					<li><a href="<?php echo $urlPadding; ?>php/quizHome.php">パワプロクイズ</a></li>
 					<li class="dropdown">
 						<a data-toggle="dropdown" href="javascript:return 0;">デッキシェア▼</a>
 						<ul class="dropdown-menu">
@@ -34,15 +38,12 @@ if(basename(realpath("./")) === 'pawapro') {
 							<li><a href="<?php echo $urlPadding; ?>php/deckSearch.php">デッキ検索</a></li>
 						</ul>
 					</li>
-					<li><a href="<?php echo $urlPadding; ?>php/quizHome.php">パワプロクイズ</a></li>
-					<li><a href="<?php echo $urlPadding; ?>php/assessment.php">査定計算機</a></li>
-					<li><a href="<?php echo $urlPadding; ?>php/moneyCalc.php">課金額予想</a></li>
-					<li><a href="<?php echo $urlPadding; ?>php/limitOpen.php">上限開放予報</a></li>
 					<li class="dropdown">
-						<a data-toggle="dropdown" href="javascript:return 0;">about▼</a>
+						<a data-toggle="dropdown" href="javascript:return 0;">その他▼</a>
 						<ul class="dropdown-menu">
 							<li><a href="<?php echo $urlPadding; ?>php/about.php">このサイトについて</a></li>
 							<li><a href="<?php echo $urlPadding; ?>php/manual.php">使い方</a></li>
+							<li><a href="<?php echo $urlPadding; ?>php/data.php">データ一覧</a></li>
 							<li><a onclick="ga('send', 'event', 'link', 'click', 'board');" href="http://jbbs.shitaraba.net/game/58946/" target="_blank">掲示板</a></li>
 							<li><a onclick="ga('send', 'event', 'link', 'click', 'blog');" href="http://studiowool.hatenablog.com/" target="_blank">Blog</a></li>
 						</ul>

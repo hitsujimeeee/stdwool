@@ -7,8 +7,8 @@
 		$description = 'パワプロの4択クイズができます。また、クイズを作って他のユーザーに出題することもできます。';
 		require_once './headInclude.php';
 		?>
-		<link rel="stylesheet" href="../css/quiz.css">
-		<script src="../js/quiz.js?ver20170911"></script>
+		<link rel="stylesheet" href="../css/quiz.css?ver20170917">
+		<script src="../js/quiz.js?ver20170917"></script>
 	</head>
 
 	<body>

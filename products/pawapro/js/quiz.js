@@ -41,7 +41,7 @@ var quiz = {
 
 		for (var i = 0; i < q.OPTIONS.length; i++) {
 			if (i % 2 === 0) {
-				str += '<div class="container">';
+				str += '<div class="optionContainer">';
 			}
 
 			if (q.OPTIONS[i]) {

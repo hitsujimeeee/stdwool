@@ -3,7 +3,7 @@
 
 <head>
 	<?php
-		$title = 'パワプロアプリ育成シミュレーター | 課金額予想シミュレーター';
+		$title = 'パワプロアプリ育成シミュレーター | 課金額シミュレーター';
 		$description = 'パワプロアプリの課金額計算ツールです。ガチャで選手をMAX開放するのに幾ら必要かを計算します。';
 		require_once './headInclude.php';
 	?>
@@ -18,7 +18,7 @@
 
 	<main>
 		<header class="pageHeader">
-			<h2><i class="fa fa-jpy"></i>課金額予想シミュレーター</h2>
+			<h2><i class="fa fa-jpy"></i>課金額シミュレーター</h2>
 		</header>
 
 		<section id="targetSection">

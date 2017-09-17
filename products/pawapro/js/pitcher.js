@@ -1,12 +1,14 @@
-/*global $, jQuery, alert, encodingParam, commonModule*/
-/*jslint shadow:true*/
+/*global commonModule*/
+/*jslint shadow:true, browser: true, jquery: true */
 
 $(function() {
 
 	$('.changeBallInput').on('change', IndividModule.updateChangeBallRank);
 	$('.tabMenu').click(function() {
 		var idx = $('.tabMenu').index(this);
-		if(commonModule.getTabType() === idx) return;
+		if(commonModule.getTabType() === idx) {
+			return;
+		}
 		commonModule.setTabType(idx);
 		if (idx === 0 || idx === 1) {
 			commonModule.refreshDisplayAbility(idx);
@@ -38,18 +40,16 @@ var IndividModule = (function() {
 				var value = parseInt(array.eq(i).val(), 10);
 				var targetObj = $('#tab' + (commonModule.getTabType() + 1) + ' .baseRank td').eq(i);
 				targetObj.removeClass();
-				if(value) {
-					if(value > Number(array.eq(i).attr('max'))) {
-						value = Number(array.eq(i).attr('max'));
-					} else if (value < Number(array.eq(i).attr('min'))){
-						value = Number(array.eq(i).attr('min'));
-					}
-					array.eq(i).val(value);
-					if (i % 7 !== 0) {
-						targetObj.addClass('rank' + commonModule.getRankString(value));
-					}
+				if(value > Number(array.eq(i).attr('max'))) {
+					value = Number(array.eq(i).attr('max'));
+				} else if (value < Number(array.eq(i).attr('min'))){
+					value = Number(array.eq(i).attr('min'));
+				}
+				array.eq(i).val(value || '');
+				if (i % 7 !== 0) {
+					targetObj.addClass('rank' + commonModule.getRankString(value || 0));
 				} else {
-					array.eq(i).val('');
+					targetObj.find('.valueScreen').html(value ? (value + '<span style="font-size:70%">km/h</span') : '');
 				}
 			}
 		},
@@ -71,11 +71,10 @@ var IndividModule = (function() {
 		},
 
 		setRandomDefault: function () {
-			var obj = $('#tab1 .basePointInput'),
-				rest = 150;
+			var obj = $('#tab1 .basePointInput');
 
 			//球速
-			obj.eq(0).val(120 + Math.floor(Math.random() * 11));
+			obj.eq(0).val(125 + Math.floor(Math.random() * 6));
 
 			//コン・スタ
 			for(var i=1;i<obj.length;i++){

@@ -8,7 +8,7 @@ $dbh = DB::connect();
 <head>
 	<?php
 	$title = 'パワプロアプリ育成シミュレーター | 査定計算機';
-	$description = 'パワプロアプリの査定計算ツールです。';
+	$description = 'パワプロアプリの査定計算ツールです。選手能力を入れると査定値(実査定値、表示査定値)を計算します。';
 	require_once './headInclude.php';
 	?>
 	<link rel="stylesheet" href="../css/assessment.css">
@@ -99,7 +99,7 @@ $dbh = DB::connect();
 				</tr>
 				<tr>
 					<th>ミート</th>
-					<td><input type="number" class="basePointInput" min="1" max="100" step="1"></td>
+					<td><input type="number" class="basePointInput" min="1" max="102" step="1"></td>
 				</tr>
 				<tr>
 					<th>パワー</th>
@@ -147,63 +147,6 @@ $dbh = DB::connect();
 				?>
 			</ul>
 
-			<?php
-			/*
-				<div style="text-align:left;"><img class="iconGraph" src="../img/icon/bat.png">打撃系特能</div>
-				<hr class="abHr">
-				<ul class="block-grid block-grid-1-2-3 abilityButtonList">
-					<?php
-					require_once "getAbilityList.php";
-					$data = getAbilityList(0);
-					$displayIdx = 0;
-
-					for ($i = 0; $i < count($data); $i++) {
-						$d = $data[$i];
-						if ($d['category'] === '0') {
-							echo '<li idx="' . $d['id'] . '"><a name="ability" default="' . $d['name'] . '" headerId="' . $d['id'] . '" href="javascript:module.openAbilityDetail(' . $displayIdx . ', ' . $d['id'] . ');">' . $d['name'] . '</a></li>';
-							$displayIdx++;
-						}
-					}
-
-					?>
-				</ul>
-			</div>
-
-			<div style="text-align:left;"><img class="iconGraph" src="../img/icon/shoes.png">走塁系特能</div>
-			<hr class="abHr">
-
-			<ul class="block-grid block-grid-1-2-3 abilityButtonList">
-
-				<?php
-				for ($i = 0; $i < count($data); $i++) {
-					$d = $data[$i];
-					if ($d['category'] === '1') {
-						echo '<li idx="' . $d['id'] . '"><a name="ability" default="' . $d['name'] . '" headerId="' . $d['id'] . '" href="javascript:module.openAbilityDetail(' . $displayIdx . ', ' . $d['id'] . ');">' . $d['name'] . '</a></li>';
-						$displayIdx++;
-					}
-				}
-
-				?>
-			</ul>
-
-			<div style="text-align:left;"><img class="iconGraph" src="../img/icon/glove.png">守備系特能</div>
-			<hr class="abHr">
-
-			<ul class="block-grid block-grid-1-2-3 abilityButtonList">
-				<?php
-				for ($i = 0; $i < count($data); $i++) {
-					$d = $data[$i];
-					if ($d['category'] === '2') {
-						echo '<li idx="' . $d['id'] . '"><a name="ability" default="' . $d['name'] . '" headerId="' . $d['id'] . '" href="javascript:module.openAbilityDetail(' . $displayIdx . ', ' . $d['id'] . ');">' . $d['name'] . '</a></li>';
-						$displayIdx++;
-					}
-				}
-
-				?>
-			</ul>
-			*/
-			?>
-
 			<div class="groupHeader"><i class="fa fa-user iconGraph" aria-hidden="true"></i>その他特能</div>
 			<hr class="abHr">
 
@@ -244,5 +187,3 @@ $dbh = DB::connect();
 </body>
 
 </html>
-
-<!-- https://jsfiddle.net/dpgjx1ca/ -->

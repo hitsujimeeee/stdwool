@@ -1,9 +1,13 @@
-/*global $, alert, encodingParam, commonModule*/
+/*global commonModule*/
+/*jslint shadow:true, browser: true, jquery: true */
+
 $(function () {
 
 	$('.tabMenu').click(function () {
 		var idx = $('.tabMenu').index(this);
-		if (commonModule.getTabType() === idx) return;
+		if(commonModule.getTabType() === idx) {
+			return;
+		}
 		commonModule.setTabType(idx);
 		if (idx === 0 || idx === 1) {
 			commonModule.refreshDisplayAbility(idx);
@@ -37,20 +41,16 @@ var IndividModule = (function () {
 				var value = parseInt(array.eq(i).val(), 10);
 				var targetObj = $('#tab' + (commonModule.getTabType() + 1) + ' .baseRank td').eq(i);
 				targetObj.removeClass();
-				if (value) {
-					if (value > Number(array.eq(i).attr('max'))) {
-						value = Number(array.eq(i).attr('max'));
-					} else if (value < Number(array.eq(i).attr('min'))) {
-						value = Number(array.eq(i).attr('min'));
-					}
-					array.eq(i).val(value);
-					if (i % 7 === 0) {
-						targetObj.addClass('trajectory' + value);
-					} else {
-						targetObj.addClass('rank' + commonModule.getRankString(value));
-					}
+				if (value > Number(array.eq(i).attr('max'))) {
+					value = Number(array.eq(i).attr('max'));
+				} else if (value < Number(array.eq(i).attr('min'))) {
+					value = Number(array.eq(i).attr('min'));
+				}
+				array.eq(i).val(value || '');
+				if (i % 7 === 0) {
+					targetObj.addClass('trajectory' + value);
 				} else {
-					array.eq(i).val('');
+					targetObj.addClass('rank' + commonModule.getRankString(value || 0));
 				}
 			}
 		},

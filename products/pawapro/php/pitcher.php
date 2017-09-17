@@ -4,14 +4,14 @@
 <head>
 	<?php
 	$title = 'パワプロアプリ | 投手シミュレーター';
-	$description = 'パワプロアプリの育成シミュレーター(野手版)です。目標能力までに必要な経験点を計算できます。査定計算機能や、余った経験点から査定が最大になるように能力を振ってくれる査定最大化機能もあります。';
+	$description = 'パワプロアプリの育成シミュレーター(投手版)です。目標能力までに必要な経験点を計算できます。査定計算機能や、余った経験点から査定が最大になるように能力を振ってくれる査定最大化機能もあります。';
 	require_once './headInclude.php';
 	?>
-	<link rel="stylesheet" href="../css/batter.css?ver20170912">
-	<link rel="stylesheet" href="../css/pitcher.css">
-	<script src="../js/pitcher.js"></script>
+	<link rel="stylesheet" href="../css/batter.css?ver20170917">
+	<link rel="stylesheet" href="../css/pitcher.css?ver20170917">
+	<script src="../js/pitcher.js?ver20170917"></script>
 	<script src="../js/calcMaxAssessmentPitcher.js?ver20170912"></script>
-	<script src="../js/commonModule.js?ver20170912"></script>
+	<script src="../js/commonModule.js?ver20170917"></script>
 	<script>var abilityCount = <?php include('../php/getAbilityCount.php'); ?>;</script>
 </head>
 
@@ -19,6 +19,9 @@
 	<?php include('../php/header.php'); ?>
 
 	<main>
+		<header class="pageHeader">
+			<h2><img class="iconGraph" src="../img/icon/ball.png">投手シミュレーター</h2>
+		</header>
 		<div id="ui-tab">
 			<ul class="tab_menu">
 				<li><a class="tabMenu" href="#tab1">現在値</a></li>
@@ -36,7 +39,10 @@
 							<th>スタ</th>
 						</tr>
 						<tr class="baseRank">
-							<td><div></div></td>
+							<td>
+								<div class="alphaScreen"></div>
+								<div class="valueScreen"></div>
+							</td>
 							<td><div></div></td>
 							<td><div></div></td>
 						</tr>
@@ -109,7 +115,10 @@
 							<th>スタ</th>
 						</tr>
 						<tr class="baseRank">
-							<td><div></div></td>
+							<td>
+								<div class="alphaScreen"></div>
+								<div class="valueScreen"></div>
+							</td>
 							<td><div></div></td>
 							<td><div></div></td>
 						</tr>

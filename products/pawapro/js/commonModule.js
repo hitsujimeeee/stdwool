@@ -66,6 +66,8 @@ $(function() {
 					}
 
 				});
+			} else {
+				IndividModule.updateBaseAbilityRank();
 			}
 
 

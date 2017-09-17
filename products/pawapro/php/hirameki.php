@@ -26,13 +26,13 @@
 	<?php include('../php/header.php'); ?>
 
 	<main id="contents">
-		<div class="aling_line" style="width:520px;margin-bottom:5px;">
-			<div class="right_align" style="width:360px;text-align:left;font-size:1.8em;">
-				パワプロアプリひらめきシミュレーター</div>
+		<header class="pageHeader">
+			<h2><i class="fa fa-lightbulb-o"></i>ひらめきシミュレーター</h2>
 			<div class="left_align" style="width:140px;">
-				<img src="../img/bibi_face.png" style="width:130px;">
+				<img src="../img/bibi_face.png" class="bibiFace">
 			</div>
-		</div>
+		</header>
+
 		<br>
 		<a href="./hirameki_Manual.php" target="_blank">使い方</a><br>
 		<br>
