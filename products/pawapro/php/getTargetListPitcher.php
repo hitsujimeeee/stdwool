@@ -67,10 +67,11 @@ try{
 				AND
 					POINT <= :limit
 		';
+			$limit = $basePoint[$i] > $baseLimitBreak[$i] ? $basePoint[$i] : $baseLimitBreak[$i];
 			$sth = $dbh->prepare($sql);
 			$sth->bindValue('type', $i+7, PDO::PARAM_INT);
 			$sth->bindValue('nowPoint', $basePoint[$i], PDO::PARAM_INT);
-			$sth->bindValue('limit', $baseLimitBreak[$i], PDO::PARAM_INT);
+			$sth->bindValue('limit', $limit, PDO::PARAM_INT);
 			$sth->execute();
 
 			//現在の査定値を取得
