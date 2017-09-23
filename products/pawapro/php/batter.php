@@ -246,6 +246,7 @@
 						守備
 						<select class="baseLimitBreak">
 							<option value="100">100</option>
+							<option value="102">102</option>
 						</select>
 					</div>
 					<div>
