@@ -28,37 +28,13 @@ main {
 	margin-bottom: 20px;
 }
 
-/* 横並び用 */
-nav> ul> li,
-.box{
-	float: left;
-}
-
-nav> ul,
-.boxContainer {
-	overflow: hidden;
-}
-
-nav> ul: before,
-nav> ul: after,
-.boxContainer:before,
-.boxContainer:after{
-	content: "";
-	display: table;
-}
-
-nav> ul: after,
-.boxContainer:after {
-	clear: both;
-}
-
 .basePoint td{
 	width: 3.5em;
 }
 
-
 .basePointInput, .pointInput {
 	width:100%;
+	max-width: 6em;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
@@ -93,7 +69,9 @@ tr.baseRank > td  {
 	margin-left: 0.5em;
 }
 
-.addAbility i {
+.addAbility:before {
+	font-family: FontAwesome;
+	content: '\f090';
 	margin-right: 0.2em;
 }
 
@@ -103,60 +81,19 @@ tr.baseRank > td {
 	background-position:center;
 }
 
-tr.baseRank > td.rankG {
-	background-image:url(../img/rankG.png);
-}
-
-
-tr.baseRank > td.rankF {
-	background-image:url(../img/rankF.png);
-}
-
-
-tr.baseRank > td.rankE {
-	background-image:url(../img/rankE.png);
-}
-
-
-tr.baseRank > td.rankD {
-	background-image:url(../img/rankD.png);
-}
-
-
-tr.baseRank > td.rankC {
-	background-image:url(../img/rankC.png);
-}
-
-
-tr.baseRank > td.rankB {
-	background-image:url(../img/rankB.png);
-}
-
-
-tr.baseRank > td.rankA {
-	background-image:url(../img/rankA.png);
-}
-
-
-tr.baseRank > td.rankS {
-	background-image:url(../img/rankS.png);
-}
-
-tr.baseRank > td.trajectory1 {
-	background-image:url(../img/trajectory1.png);
-}
-
-tr.baseRank > td.trajectory2 {
-	background-image:url(../img/trajectory2.png);
-}
-
-tr.baseRank > td.trajectory3 {
-	background-image:url(../img/trajectory3.png);
-}
-
-tr.baseRank > td.trajectory4 {
-	background-image:url(../img/trajectory4.png);
-}
+/*基礎値のアイコン*/
+tr.baseRank > td.rankG {background-image:url(../img/rankG.png);}
+tr.baseRank > td.rankF {background-image:url(../img/rankF.png);}
+tr.baseRank > td.rankE {background-image:url(../img/rankE.png);}
+tr.baseRank > td.rankD {background-image:url(../img/rankD.png);}
+tr.baseRank > td.rankC {background-image:url(../img/rankC.png);}
+tr.baseRank > td.rankB {background-image:url(../img/rankB.png);}
+tr.baseRank > td.rankA {background-image:url(../img/rankA.png);}
+tr.baseRank > td.rankS {background-image:url(../img/rankS.png);}
+tr.baseRank > td.trajectory1 {background-image:url(../img/trajectory1.png);}
+tr.baseRank > td.trajectory2 {background-image:url(../img/trajectory2.png);}
+tr.baseRank > td.trajectory3 {background-image:url(../img/trajectory3.png);}
+tr.baseRank > td.trajectory4 {background-image:url(../img/trajectory4.png);}
 
 .block-grid {
 	width: auto;
@@ -171,8 +108,6 @@ tr.baseRank > td.trajectory4 {
 	margin: 0 1% 5px;
 	padding: 0;
 	display: block;
-	/*background-color: #52707e;
-	color:#b9b9b9;*/
 }
 
 .block-grid a {
@@ -202,7 +137,6 @@ tr.baseRank > td.trajectory4 {
 	}
 }
 
-
 .visibleDisplay {
 	display: inline;
 }
@@ -211,35 +145,8 @@ tr.baseRank > td.trajectory4 {
 	margin-bottom: 20px;
 }
 
-.trickBar .ui-slider-wrapper {
-	width:90% !important;
-}
-
 .slider .ui-slider-handle {
 	border-radius: 10px;
-}
-
-.abilitySlider, .SabilitySlider {
-	width:80%;
-	margin:10px 0 0 0;
-}
-
-.abilitySlider .ui-slider-range {
-	background:#37ffff;
-}
-
-.abilitySlider .ui-slider-handle{
-	border-color:#37ffff;
-	background:#37ffff;
-}
-
-.SabilitySlider .ui-slider-range {
-	background:#eff74e;
-}
-
-.SabilitySlider .ui-slider-handle{
-	background:#eff74e;
-	border-color:#eff74e;
 }
 
 .ui-slider-horizontal {
@@ -249,7 +156,6 @@ tr.baseRank > td.trajectory4 {
 	top: -.5em;
 	margin-left: -.6em;
 }
-
 
 .baseTrickBar .ui-slider-wrapper,
 .changeBallTrickBar .ui-slider-wrapper {
@@ -262,7 +168,6 @@ tr.baseRank > td.trajectory4 {
 .changeBallTrickBar {
 	margin:5px 0 0 30px;
 }
-
 
 .baseTrickBar .ui-slider-labels,
 .changeBallTrickBar .ui-slider-labels{
@@ -285,153 +190,347 @@ td.changeBallTrickBar {
 	padding-top: 20px;
 }
 
-#abilityDetail {
-	margin-bottom:20px;
+.abSelectHeader {
+	display: flex;
+	height: 25px;
+	background:#000;
+	color:#fff;
+	font-weight: bold;
 }
 
-/*ラジオボタン*/
-.abilityDetailList {
-	padding:0;
+.abSelectHeader > div:nth-child(2) {
+	flex-grow: 1;
+	display: flex;
+	height: 100%;
+	-webkit-justify-content: center;
+	justify-content: center;
+	align-items: center;
 }
 
-.abilityDetailList li {
-	display:inline;
-	list-style-type:none;
+.abSelectHeader > div:nth-child(4),
+.abSelectHeader > div:nth-child(5)
+{
+	display:flex;
+	align-items: center;
+	-webkit-justify-content: center;
+	justify-content: center;
 }
 
-.abilityDetailList label {
-	display:inline-block;
-	font-size:1.1em;
-	padding:0.3em 0.5em;
-	background-color:#ddd;
-	color:#999;
-	border:2px solid #bbb;
-	border-radius:20px;
-	box-shadow:inset 1px 1px 5px #fff;
-	cursor:pointer;
-	width:95%;
+.abSelectHeader > div:nth-child(4) {
+	color:#0ff;
 }
 
-.abilityDetailList label.selected {
-	background: -webkit-gradient(radial, 0% 54%, 0, 0% 54%, 225, color-stop(1.00, #5cebff), color-stop(0.55, #c9edf7), color-stop(0.00, #5cebff));
-	background: -webkit-radial-gradient(0% 54%, circle, #5cebff 0%, #c9edf7 55%, #5cebff 100%);
-	background: radial-gradient(0% 54%, circle, #5cebff 0%, #c9edf7 55%, #5cebff 100%);
-	color:#000000;
+.abSelectHeader > div:nth-child(5) {
+	color:#ff0;
+}
+
+.abilityButtonList,
+.otherAbilityList {
+	list-style:none;
+	padding: 0;
+}
+
+.abilityButtonList li,
+.otherAbilityList li {
+	display:flex;
+	height: 40px;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-khtml-touch-callout: none;
+}
+
+.abilityButtonList li > div:nth-child(1),
+.abilityButtonList li > div:nth-child(3),
+.otherAbilityList li > div:nth-child(1),
+.otherAbilityList li > div:nth-child(3),
+.abSelectHeader > div:nth-child(1),
+.abSelectHeader > div:nth-child(3)
+{
+	width: 30px;
+	min-width: 30px;
+	height: 100%;
+	display: flex;
+	-webkit-justify-content: center;
+	justify-content: center;
+	position: relative;
 }
 
 
-.abilityDetailList label input {
-	display:none;
+.abilityButtonList li > div:nth-child(2),
+.otherAbilityList .abName
+{
+	flex-grow: 1;
+	display: flex;
+	height: 100%;
+	-webkit-justify-content: center;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid #aaa;
+	border-radius: 8px;
 }
 
-.abilityButtonList li a {
-	background-color: #dddddd;
+.abilityButtonList li > div:nth-child(4),
+.abilityButtonList li > div:nth-child(5),
+.otherAbilityList li > div:nth-child(4),
+.otherAbilityList li > div:nth-child(5),
+.abSelectHeader > div:nth-child(4),
+.abSelectHeader > div:nth-child(5)
+{
+	min-width: 40px;
+	width: 40px;
 }
 
-.abilityButtonList li a {
-	border:2px solid #bbb;
-	border-radius:20px;
-	cursor:pointer;
-	padding:0.2em 0;
+.abName {
+	background: #eee;
+}
+
+
+.abilityButtonList button,
+.abilityButtonList select {
+	width: 100%;
+	height: 100%;
+}
+
+.abTrickLevel {
+	background-color: #b0f5ff;
+}
+
+.SabTrickLevel {
+	background-color: #fcffb0;
+}
+
+.otherAbilityList li,
+.otherAbilityList li div {
+	width: 100%;
+}
+
+.otherAbilityList li button {
+	width: 100%;
+	height: 100%;
+	border: 1px solid #aaa;
+	border-radius: 8px;
+}
+
+.nice-select {
+	padding-left: 5px;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+}
+
+.pmButton {
+	width: 30px;
+	height: 25px;
+}
+
+.pmButton:before {
+	content: '';
+	width: 21.213px;
+	height: 21.213px;
 	display: block;
-	margin: auto;
-	width:90%;
+	transform: rotate(45deg);
+	position: absolute;
+}
+
+.pmButton:after {
+	font-family: FontAwesome;
+	color: #fff;
+	font-size: 26px;
+	position: absolute;
+	text-shadow:
+		1px 1px #000,
+		1px -1px #000,
+		-1px 1px #000,
+		-1px -1px #000;
+}
+
+.plusButton:before {
+	top: 4.5px;
+	left: 4.5px;
+	border-top: 1px solid #000;
+	border-left: 1px solid #000;
+	background: #f00;
+	background: -webkit-gradient(radial, 0% 0%, 0, 0% 0%, 241, color-stop(1.00, #f00), color-stop(0.70, #f6441c), color-stop(0.00, #fb9983));
+	background: -webkit-radial-gradient(0% 0%, circle, #fb9983 0%, #f6441c 70%, #f00 100%);
+	background: -moz-radial-gradient(0% 0%, circle, #fb9983 0%, #f6441c 70%, #f00 100%);
+	background: -o-radial-gradient(0% 0%, circle, #fb9983 0%, #f6441c 70%, #f00 100%);
+	background: -ms-radial-gradient(0% 0%, circle, #fb9983 0%, #f6441c 70%, #f00 100%);
+	background: radial-gradient(0% 0%, circle, #fb9983 0%, #f6441c 70%, #f00 100%);
+}
+
+.plusButton {
+	margin-top: 15px;
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	border-bottom: 1px solid #000;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	background: #f00;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1.00, #f00), color-stop(0.00, #f6441c));
+	background: -webkit-linear-gradient(#f6441c, #f00);
+	background: -moz-linear-gradient(#f6441c, #f00);
+	background: -o-linear-gradient(#f6441c, #f00);
+	background: -ms-linear-gradient(#f6441c, #f00);
+	background: linear-gradient(#f6441c, #f00);
+}
+
+.plusButton:after {
+	content: '\f067';
+	top: 6px;
+	left: 4.7px;
+}
+
+.minusButton:before {
+	top: 14.5px;
+	right: 4.5px;
+	background: #0f0;
+	border-right: 1px solid #000;
+	border-bottom: 1px solid #000;
+	background: -webkit-gradient(radial, 100% 100%, 0, 100% 100%, 241, color-stop(1.00, #ccffd3), color-stop(0.65, #0f0), color-stop(0.00, #029216));
+	background: -webkit-radial-gradient(100% 100%, circle, #029216 0%, #0f0 65%, #ccffd3 100%);
+	background: -moz-radial-gradient(100% 100%, circle, #029216 0%, #0f0 65%, #ccffd3 100%);
+	background: -o-radial-gradient(100% 100%, circle, #029216 0%, #0f0 65%, #ccffd3 100%);
+	background: -ms-radial-gradient(100% 100%, circle, #029216 0%, #0f0 65%, #ccffd3 100%);
+	background: radial-gradient(100% 100%, circle, #029216 0%, #0f0 65%, #ccffd3 100%);
+}
+
+.minusButton {
+	margin-top: 0px;
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	border-top: 1px solid #000;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	background: #0f0;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1.00, #0f0), color-stop(0.00, #ccffd3));
+	background: -webkit-linear-gradient(#ccffd3, #0f0);
+	background: -moz-linear-gradient(#ccffd3, #0f0);
+	background: -o-linear-gradient(#ccffd3, #0f0);
+	background: -ms-linear-gradient(#ccffd3, #0f0);
+	background: linear-gradient(#ccffd3, #0f0);
+}
+
+
+.minusButton:after {
+	content: '\f068';
+	top: -1px;
+	right: 5px;
+}
+
+a.buttonAct {
+	display: flex;
+	width: 50px;
+	height: 100%;
+	position: absolute;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.plusButtonArea > a.buttonAct {
+	justify-content: flex-start;
+	right: -20px;
+}
+
+.minusButtonArea > a.buttonAct {
+	justify-content: flex-end;
+	left: -20px;
 }
 
 ul.abilityDisplay, ul.subPositionList {
+	display: flex;
+	flex-wrap: wrap;
 	list-style:none;
-	width:100%;
 	padding-left: 10px;
+	position: relative;
 }
 
-ul.abilityDisplay:after, ul.subPositionList:after {
-	display:block;
-	clear:both;
-	height:0px;
-	visibility:hidden;
-	content:"";
-}
-
-ul.abilityDisplay li a, ul.subPositionList li a {
-	float:left;
-	display: inline;
+ul.abilityDisplay li, ul.subPositionList li {
 	border:1px solid #bbb;
 	background-color:#ddd;
 	color:#999;
 	border-radius:20px;
 	margin-bottom:10px;
 	margin-right:10px;
-}
-
-ul.abilityDisplay li a, ul.subPositionList li a {
-	text-decoration: none;
-	cursor: pointer;
 	padding:0.3em 1em;
+	position: relative;
+	cursor: pointer;
 }
 
+ul.subPositionList li {
+	text-decoration: none;
+	box-shadow: 1px 1px 2px;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-khtml-touch-callout: none;
+}
 
 .nonSelectAbility a {
 	color:#bbbbbb;
 }
 
-.selectedAbility a, label.selectedAbility, ul.abilityDisplay li.selectedAbility,
-#abilityCharaData li.selectedAbility, .subPositionDetailList label.selected {
+li.selectedAbility, #abilityCharaData li.selectedAbility, div.abColor, .selectedSense.senseM {
 	background: -webkit-gradient(radial, 0% 50%, 0, 0% 54%, 225, color-stop(1.00, #5cebff), color-stop(0.55, #c9edf7), color-stop(0.00, #5cebff));
 	background: -webkit-radial-gradient(0% 50%, circle, #5cebff 0%, #c9edf7 55%, #5cebff 100%);
 	background: -ms-radial-gradient(0% 50%, circle, #5cebff 0%, #c9edf7 55%, #5cebff 100%);
 	background: radial-gradient(0% 50%, circle, #5cebff 0%, #c9edf7 55%, #5cebff 100%);
+	background-color: #5cebff;
 	color:#000000 !important;
 }
 
-.selectedBAbility a, label.selectedBAbility, ul.abilityDisplay li.selectedBAbility,
-#abilityCharaData li.selectedBAbility {
+li.selectedBAbility, #abilityCharaData li.selectedBAbility, div.BAbColor, .selectedSense.senseB {
 	background: -webkit-gradient(radial, 0% 50%, 0, 0% 50%, 241, color-stop(1.00, #ff5047), color-stop(0.51, #f9c3c2), color-stop(0.01, #ff5047));
 	background: -webkit-radial-gradient(0% 50%, circle, #ff5047 1%, #f9c3c2 51%, #ff5047 100%);
 	background: -ms-radial-gradient(0% 50%, circle, #ff5047 0%, #f9c3c2 55%, #ff5047 100%);
 	background: radial-gradient(0% 50%, circle, #ff5047 1%, #f9c3c2 51%, #ff5047 100%);
+	background-color: #ff5047;
 	color:#000000 !important;
 }
 
 
-.selectedSAbility a, label.selectedSAbility, ul.abilityDisplay li.selectedSAbility,
-#abilityCharaData li.selectedSAbility {
+li.selectedSAbility, #abilityCharaData li.selectedSAbility, div.SAbColor {
 	background: -webkit-gradient(radial, 0% 50%, 0, 0% 50%, 241, color-stop(1.00, #faea00), color-stop(0.52, #fffee0), color-stop(0.01, #faea00));
 	background: -webkit-radial-gradient(0% 50%, circle, #faea00 1%, #fffee0 52%, #faea00 100%);
 	background: -ms-radial-gradient(0% 50%, circle, #faea00 1%, #fffee0 52%, #faea00 100%);
 	background: radial-gradient(0% 50%, circle, #faea00 1%, #fffee0 52%, #faea00 100%);
+	background-color: #faea00;
 	color:#000000 !important;
 }
 
-.selectedPAbility a, label.selectedPAbility, ul.abilityDisplay li.selectedPAbility,
-#abilityCharaData li.selectedPAbility {
+li.selectedPAbility, #abilityCharaData li.selectedPAbility, div.PAbColor {
 	background: -webkit-gradient(radial, 0% 50%, 0, 0% 50%, 241, color-stop(1.00, #fa0b00), color-stop(0.51, #f89d9b), color-stop(0.01, #fa0b00));
 	background: -webkit-radial-gradient(0% 50%, circle, #fa0b00 1%, #f89d9b 51%, #fa0b00 100%);
 	background: -ms-radial-gradient(0% 50%, circle, #fa0b00 1%, #f89d9b 51%, #fa0b00 100%);
 	background: radial-gradient(0% 50%, circle, #fa0b00 1%, #f89d9b 51%, #fa0b00 100%);
+	background-color: #fa0b00;
 	color:#000000 !important;
 
 }
 
-.selectedHAbility a, label.selectedHAbility, ul.abilityDisplay li.selectedHAbility,
-#abilityCharaData li.selectedHAbility {
+li.selectedHAbility, #abilityCharaData li.selectedHAbility, div.HAbColor {
 	background: -webkit-gradient(radial, 0% 50%, 0, 0% 50%, 241, color-stop(1.00, #ff5047), color-stop(0.70, #ffa8a3), color-stop(0.30, #a3f4ff), color-stop(0.01, #5cebff));
 	background: -webkit-radial-gradient(0% 50%, circle, #5cebff 1%, #a3f4ff 30%, #ffa8a3 70%, #ff5047 100%);
 	background: -ms-radial-gradient(0% 50%, circle, #5cebff 1%, #a3f4ff 30%, #ffa8a3 70%, #ff5047 100%);
 	background: radial-gradient(0% 50%, circle, #5cebff 1%, #a3f4ff 30%, #ffa8a3 70%, #ff5047 100%);
+	background-color: #5cebff;
 	color:#000000 !important;
 }
 
 
-.selectedGAbility a, label.selectedGAbility, ul.abilityDisplay li.selectedGAbility,
-#abilityCharaData li.selectedGAbility {
+li.selectedGAbility, #abilityCharaData li.selectedGAbility, div.GAbColor {
 	background: -webkit-gradient(radial, 0% 50%, 0, 0% 50%, 241, color-stop(1.00, #52ff42), color-stop(0.50, #cbfbad), color-stop(0.00, #52ff42));
 	background: -webkit-radial-gradient(0% 50%, circle, #52ff42 0%, #cbfbad 50%, #52ff42 100%);
 	background: -ms-radial-gradient(0% 50%, circle, #52ff42 0%, #cbfbad 50%, #52ff42 100%);
 	background: radial-gradient(0% 50%, circle, #52ff42 0%, #cbfbad 50%, #52ff42 100%);
+	background-color: #52ff42;
 	color:#000000 !important;
 }
 
-.subPositionDetailList label.infield, .subPositionList a.infield {
+.subPositionList li.infield {
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(1.00, #FDCC17), color-stop(0.50, #FDCC17), color-stop(0.50, #FDE47D), color-stop(0.00, #FDE47D));
 	background: -webkit-linear-gradient(top, #FDE47D 0%, #FDE47D 50%, #FDCC17 50%, #FDCC17 100%);
 	background: -ms-linear-gradient(top, #FDE47D 0%, #FDE47D 50%, #FDCC17 50%, #FDCC17 100%);
@@ -439,7 +538,7 @@ ul.abilityDisplay li a, ul.subPositionList li a {
 }
 
 
-.subPositionDetailList label.outfield, .subPositionList a.outfield {
+.subPositionList li.outfield {
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(1.00, #13E309), color-stop(0.50, #13E309), color-stop(0.50, #99FBA6), color-stop(0.00, #99FBA6));
 	background: -webkit-linear-gradient(top, #99FBA6 0%, #99FBA6 50%, #13E309 50%, #13E309 100%);
 	background: -ms-linear-gradient(top, #99FBA6 0%, #99FBA6 50%, #13E309 50%, #13E309 100%);
@@ -447,7 +546,7 @@ ul.abilityDisplay li a, ul.subPositionList li a {
 }
 
 
-.subPositionDetailList label.catcher, .subPositionList a.catcher {
+.subPositionList li.catcher {
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(1.00, #0AB8FD), color-stop(0.50, #0AB8FD), color-stop(0.50, #0AB8FD), color-stop(0.00, #76E4FF));
 	background: -webkit-linear-gradient(top, #76E4FF 0%, #0AB8FD 50%, #0AB8FD 50%, #0AB8FD 100%);
 	background: -ms-linear-gradient(top, #76E4FF 0%, #0AB8FD 50%, #0AB8FD 50%, #0AB8FD 100%);
@@ -456,20 +555,14 @@ ul.abilityDisplay li a, ul.subPositionList li a {
 
 
 
-.subPositionDetailList label.pitcher, .subPositionList a.pitcher {
+.subPositionList li.pitcher {
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(1.00, #FE6869), color-stop(0.65, #FE6869), color-stop(0.65, #FE6869), color-stop(0.00, #FFACA8));
 	background: -webkit-linear-gradient(top, #FFACA8 0%, #FE6869 65%, #FE6869 65%, #FE6869 100%);
 	background: -ms-linear-gradient(top, #FFACA8 0%, #FE6869 65%, #FE6869 65%, #FE6869 100%);
 	color:#000000 !important;
 }
 
-
-#tab2 .abilityDisplay a {
-	position: relative;
-}
-
-
-#tab2 .abilityDisplay span {
+#tab2 .changeTypeStr {
 	position: absolute;
 	width:0.5em;
 	top:-5px;
@@ -484,48 +577,9 @@ ul.abilityDisplay li a, ul.subPositionList li a {
 	display: inline;
 }
 
-
-.trickTitle {
-	width:20%;
-	padding-right: 10px;
-}
-
-.trickBar, .baseTrickBar, .changeBallTrickBar {
+.baseTrickBar, .changeBallTrickBar {
 	width:80%;
 }
-
-.TrickDiv {
-	margin-bottom:10px;
-}
-
-
-/*ラジオボタン*/
-.subPositionDetailList {
-	padding:0;
-}
-
-.subPositionDetailList li {
-	display:inline;
-	list-style-type:none;
-}
-
-.subPositionDetailList label {
-	display:inline-block;
-	font-size:1.1em;
-	padding:0.3em 0.5em;
-	background-color:#ddd;
-	color:#999;
-	border:2px solid #bbb;
-	border-radius:20px;
-	box-shadow:inset 1px 1px 5px #fff;
-	cursor:pointer;
-	width:95%;
-}
-
-.subPositionDetailList label input {
-	display:none;
-}
-
 
 .senseButtonList {
 	padding:0;
@@ -553,56 +607,23 @@ ul.abilityDisplay li a, ul.subPositionList li a {
 	display:none;
 }
 
-.senseButtonList {
-	color:#000000;
-}
-
-.selectedSense.senseM {
-	background: -webkit-gradient(radial, 0% 54%, 0, 0% 54%, 225, color-stop(1.00, #5cebff), color-stop(0.55, #c9edf7), color-stop(0.00, #5cebff));
-	background: -webkit-radial-gradient(0% 54%, circle, #5cebff 0%, #c9edf7 55%, #5cebff 100%);
-	background: -ms-radial-gradient(0% 50%, circle, #5cebff 0%, #c9edf7 55%, #5cebff 100%);
-	background: radial-gradient(0% 54%, circle, #5cebff 0%, #c9edf7 55%, #5cebff 100%);
-	color:#000000;
-}
-
-.selectedSense.senseB {
-	background: -webkit-gradient(radial, 0% 50%, 0, 0% 50%, 241, color-stop(1.00, #ff5047), color-stop(0.51, #f9c3c2), color-stop(0.01, #ff5047));
-	background: -webkit-radial-gradient(0% 50%, circle, #ff5047 1%, #f9c3c2 51%, #ff5047 100%);
-	background: -ms-radial-gradient(0% 50%, circle, #ff5047 1%, #f9c3c2 51%, #ff5047 100%);
-	background: radial-gradient(0% 50%, circle, #ff5047 1%, #f9c3c2 51%, #ff5047 100%);
-	color:#000000;
-}
-
-
-
 #abilityCharaData {
+	display: flex;
+	flex-wrap: wrap;
 	padding:0;
 	margin-left:10px;
 }
 
 #abilityCharaData li {
-	display:inline;
 	list-style-type:none;
 	font-size:0.9em;
 	padding:0.3em 0.6em;
 	margin-bottom: 0.5em;
 	margin-right:0.8em;
-	background-color:#ddd;
 	border:2px solid #bbb;
 	border-radius:20px;
 	box-shadow:inset 1px 1px 5px #fff;
-	float:left;
 }
-
-ul#abilityCharaData:after {
-	display:block;
-	clear:both;
-	height:0px;
-	visibility:hidden;
-	content:"";
-}
-
-
 
 .needExp {
 	margin-left:0.5em;
@@ -628,20 +649,12 @@ select#mainPosition {
 	margin-left: 10px;
 }
 
-.userForm > div, .userForm > p {
-	margin-bottom: 0.5em;
-	margin-left: 0.5em;
-}
-
-.userForm input {
-	width: 8em;
-}
-
 button.exec {
 	margin-left: 0.5em;
 	border-radius:5px 5px 5px 5px;
 	border:1px solid #999;
 	font-size: 1.1em;
+	box-shadow: 1px 1px 1px;
 }
 
 button.calcExp:before {
@@ -661,55 +674,29 @@ button.save:before {
 	font-family: FontAwesome;
 }
 
-button.save {
-	margin-left: 0;
-}
-
-div.abilityPointTableDiv {
-	margin: auto auto 2em auto;
-	display: flex;
-	-webkit-justify-content: center;
-	justify-content: center;
-	position: relative;
-}
-
-table.abilityPointTable td, table.abilityPointTable th {
-	height:1.5em;
-	padding-left: 0.2em;
-	padding-right: 0.2em;
-}
-
-
 div.modalButton {
 	margin-top: 1.5em;
 }
 
-@media screen and (max-width: 370px) {
+@media screen and (max-width: 480px) {
+	#abSelectList {
+		padding: 0;
+	}
+
 	.remodal {
 		padding-left: 20px;
 		padding-right: 20px;
 	}
 }
 
-#abSelectList > ul > li {
-	position: relative;
+#abSelectList {
+	max-width: 420px;
 }
 
-#abSelectList > ul > li.hasTrick:after {
-	position: absolute;
-	content: 'コツ';
-	top: 0;
-	right: 0;
-	font-size: 0.8em;
-	font-weight: bold;
-	color:#ffd855;
-	text-shadow:
-		#000 1px 1px 0px,
-		#000 -1px 1px 0px,
-		#000 1px -1px 0px,
-		#000 -1px -1px 0px;
+#charaDataDisplay {
+	max-width: 600px;
+	background-color: #fff;
 }
-
 
 .charaFace {
 	position: absolute;
@@ -733,13 +720,8 @@ div.imgBorder {
 	cursor: pointer;
 }
 
-#assessmentPointMeter {
-	margin-left: 0.2em;
-}
-
-meter::-webkit-meter-optimum-value {
-	background: -webkit-gradient(linear, left top, left bottom, from(#ad7), to(#ad7), color-stop(0.20, #cea), color-stop(0.45, #7a3), color-stop(0.55, #7a3));
-	height: 100%;
+#abilityModal {
+	max-width: 580px;
 }
 
 div#abilityModal div.groupHeader{
@@ -776,7 +758,6 @@ div#abilityModal div.groupHeader{
 .assessmentArea {
 	display: flex;
 	align-items: center;
-
 }
 
 .meterFrame {

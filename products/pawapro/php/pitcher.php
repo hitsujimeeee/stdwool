@@ -7,11 +7,13 @@
 	$description = 'パワプロアプリの育成シミュレーター(投手版)です。目標能力までに必要な経験点を計算できます。査定計算機能や、余った経験点から査定が最大になるように能力を振ってくれる査定最大化機能もあります。';
 	require_once './headInclude.php';
 	?>
-	<link rel="stylesheet" href="../css/batter.css?ver20170917">
-	<link rel="stylesheet" href="../css/pitcher.css?ver20170917">
-	<script src="../js/pitcher.js?ver20170917"></script>
-	<script src="../js/calcMaxAssessmentPitcher.js?ver20170912"></script>
-	<script src="../js/commonModule.js?ver20170917"></script>
+	<link rel="stylesheet" href="../css/lib/nice-select.css">
+	<link rel="stylesheet" href="../css/batter.css?ver20170924">
+	<link rel="stylesheet" href="../css/pitcher.css?ver20170924">
+	<script src="../js/plugin/jquery.nice-select.min.js"></script>
+	<script src="../js/pitcher.js?ver20170924"></script>
+	<script src="../js/calcMaxAssessmentPitcher.js?ver20170924"></script>
+	<script src="../js/commonModule.js?ver20170924"></script>
 	<script>var abilityCount = <?php include('../php/getAbilityCount.php'); ?>;</script>
 </head>
 
@@ -86,7 +88,7 @@
 				</section>
 
 				<section class="abilitySection">
-					<p>■特殊能力<button onclick="commonModule.openModalWindow(0);" class="addAbility"><i class="fa fa-sign-in"></i>追加</button><span class="abilityCount">0個</span></p>
+					<p>■特殊能力<button onclick="commonModule.openModalWindow(0);" class="addAbility">追加</button><span class="abilityCount">0個</span></p>
 					<div class="displayAbility"></div>
 				</section>
 
@@ -161,7 +163,7 @@
 				</section>
 
 				<section class="abilitySection">
-					<p>■特殊能力<button onclick="commonModule.openModalWindow(1);" class="addAbility"><i class="fa fa-sign-in"></i>追加</button><span class="abilityCount">0個</span></p>
+					<p>■特殊能力<button onclick="commonModule.openModalWindow(1);" class="addAbility">追加</button><span class="abilityCount">0個</span></p>
 					<div class="displayAbility"></div>
 				</section>
 
@@ -386,7 +388,7 @@
 
 				<section>
 					<p>■選手データ保存</p>
-					<p><button class="exec save"onclick="commonModule.saveCharaData(1)">保存</button></p>
+					<p><button class="exec save" onclick="commonModule.saveCharaData(1)">保存</button></p>
 					<div class="shareLinkHeader">▼共有用URL</div>
 					<div class="shareLinkBody"></div>
 				</section>
@@ -397,64 +399,159 @@
 
 
 
-		<div id="abilityModal" class="remodal" data-remodal-id="modal" data-remodal-options="hashTracking:false, closeOnOutsideClick:false, closeOnCancel:false, closeOnConfirm:false, closeOnEscape:false">
-			<button class="remodal-close" onclick="commonModule.CancelRemodal()"></button>
+		<div id="abilityModal" class="remodal" data-remodal-id="modal" data-remodal-options="hashTracking:false, closeOnCancel:false, closeOnConfirm:false, closeOnEscape:false">
+			<button class="remodal-close" onclick="commonModule.ConfirmRemodal()"></button>
 			<div id="abilityList">
 				<!-- <h2>特殊能力選択</h2> -->
 				<div id="abSelectList" class="container-fluid">
 
 					<div style="text-align:left;"><img class="iconGraph" src="../img/icon/ball.png">投手特能</div>
 					<hr class="abHr">
-					<ul class="block-grid block-grid-1-2-3 abilityButtonList">
+					<div class="abSelectHeader">
+						<div></div>
+						<div>特能名</div>
+						<div></div>
+						<div>青ｺﾂ</div>
+						<div>金ｺﾂ</div>
+					</div>
 
+					<ul class="abilityButtonList">
 						<?php
 						require_once "getAbilityList.php";
 						$data = getAbilityList(1);
-						$displayIdx = 0;
 
 						for ($i = 0; $i < count($data); $i++) {
 							$d = $data[$i];
-							if ($d['category'] === '4') {
-								echo '<li idx="' . $d['id'] . '"><a name="ability" default="' . $d['name'] . '" headerId="' . $d['id'] . '" href="javascript:commonModule.openAbilityDetail(' . $displayIdx . ', ' . $d['id'] . ');">' . $d['name'] . '</a></li>';
-								$displayIdx++;
-							}
-						}
+							if ($d['category'] === '4') { ?>
 
-						?>
+						<li idx="<?= $d['id'] ?>">
+							<div class="plusButtonArea">
+								<a class="buttonAct">
+									<div class="pmButton plusButton"></div>
+								</a>
+							</div>
+							<div class="abName" data-defname="<?= $d['name'] ?>"><?= $d['name'] ?></div>
+							<div class="minusButtonArea">
+								<a class="buttonAct">
+									<div class="pmButton minusButton"></div>
+								</a>
+							</div>
+							<div>
+								<select class="abTrickLevel"<?= !$d['abTrick'] ? ' disabled' : ''?>>
+									<option value="0">0</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+								</select>
+							</div>
+							<div>
+								<select class="SabTrickLevel"<?= !$d['SabTrick'] ? ' disabled' : ''?>>
+									<option value="0">0</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+								</select>
+							</div>
+						</li>
+						<?php } ?>
+						<?php } ?>
 					</ul>
+
 
 					<div style="text-align:left;"><i class="fa fa-times iconGraph" aria-hidden="true"></i>マイナス特能</div>
 					<hr class="abHr">
 
-					<ul class="block-grid block-grid-1-2-3 abilityButtonList">
+
+
+					<div class="abSelectHeader">
+						<div></div>
+						<div>特能名</div>
+						<div></div>
+						<div>青ｺﾂ</div>
+						<div>金ｺﾂ</div>
+					</div>
+
+					<ul class="abilityButtonList">
 
 						<?php
+						require_once "getAbilityList.php";
+						$data = getAbilityList(1);
+
 						for ($i = 0; $i < count($data); $i++) {
 							$d = $data[$i];
-							if ($d['category'] === '8') {
-								echo '<li idx="' . $d['id'] . '"><a name="ability" default="' . $d['name'] . '" headerId="' . $d['id'] . '" href="javascript:commonModule.openAbilityDetail(' . $displayIdx . ', ' . $d['id'] . ');">' . $d['name'] . '</a></li>';
-								$displayIdx++;
-							}
-						}
+							if ($d['category'] === '8') { ?>
 
-						?>
+						<li idx="<?= $d['id'] ?>">
+							<div class="plusButtonArea">
+								<a class="buttonAct">
+									<div class="pmButton plusButton"></div>
+								</a>
+							</div>
+							<div class="abName" data-defname="<?= $d['name'] ?>"><?= $d['name'] ?></div>
+							<div class="minusButtonArea">
+								<a class="buttonAct">
+									<div class="pmButton minusButton"></div>
+								</a>
+							</div>
+							<div>
+								<select class="abTrickLevel"<?= !$d['abTrick'] ? ' disabled' : ''?>>
+									<option value="0">0</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+								</select>
+							</div>
+							<div>
+								<select class="SabTrickLevel"<?= !$d['SabTrick'] ? ' disabled' : ''?>>
+									<option value="0">0</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+								</select>
+							</div>
+						</li>
+						<?php } ?>
+						<?php } ?>
 					</ul>
 
 					<div style="text-align:left;"><i class="fa fa-user iconGraph" aria-hidden="true"></i>その他特能</div>
 					<hr class="abHr">
 
-					<ul class="block-grid block-grid-1-2-3 abilityButtonList">
 
+					<div class="abSelectHeader">
+						<div></div>
+						<div>特能名</div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+
+					<ul class="otherAbilityList">
 						<?php
+						require_once "getAbilityList.php";
+						$data = getAbilityList(1);
+
 						for ($i = 0; $i < count($data); $i++) {
 							$d = $data[$i];
-							if ($d['category'] === '6' || $d['category'] === '7') {
-								echo '<li idx="' . $d['id'] . '"><a name="ability" default="' . $d['name'] . '" headerId="' . $d['id'] . '" href="javascript:commonModule.openAbilityDetail(' . $displayIdx . ', ' . $d['id'] . ');">' . $d['name'] . '</a></li>';
-								$displayIdx++;
-							}
-						}
+							if ($d['category'] === '6' || $d['category'] === '7') { ?>
 
-						?>
+						<li idx="<?= $d['id'] ?>">
+							<div></div>
+							<div class="abName" data-defname="<?= $d['name'] ?>" onclick="commonModule.changeGAbility(<?= $d['id'] ?>, this);"><?= $d['name'] ?></div>
+							<div></div>
+							<div></div>
+							<div></div>
+						</li>
+						<?php } ?>
+						<?php } ?>
 					</ul>
 
 				</div>

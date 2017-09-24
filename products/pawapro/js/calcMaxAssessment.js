@@ -265,7 +265,7 @@ var calcMaxAssessmentModule = (function() {
 			//サブポジキャッチャー
 			if(!commonModule.isCatcher() && charaData.getAbilityList(1, 6) !== null) {
 				charaData.setSubPosition(1, 0, {id:"1", name:"捕手", color:"0"});
-				$('#tab2 .subPositionList a').eq(0).addClass('selectedSubPosition');
+				$('#tab2 .displaySubPosition > ul > li').eq(0).addClass('catcher').html('捕手');
 			}
 
 

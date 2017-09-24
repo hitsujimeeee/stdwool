@@ -1,14 +1,10 @@
 /*jslint browser: true*/
-/*global $, alert, IndividModule, ga, abilityCount */
+/*global $, alert, IndividModule, ga, abilityCount, html2canvas */
 /*jslint shadow:true*/
 
 var abilityData = null;
 
 $(function() {
-
-	//ローカルストレージから査定値を表示しないフラグを取得
-//	var chk = localStorage.getItem('nonAssessment');
-//	$('#nonAssessment').prop('checked', chk !== null ? JSON.parse(chk) : false);
 
 	$('#ui-tab').tabs();
 	$("#abilitySlider").labeledslider({value:0, min: 0, max: 5, range:"min", change:commonModule.setAbilityPointValue});
@@ -20,16 +16,8 @@ $(function() {
 		commonModule.ConfirmRemodal();
 	});
 
-	$(document).on('cancellation', '#abilityModal', function () {
-		commonModule.CancelRemodal();
-	});
-
-	$(document).on('confirmation', '#subPositionModal', function () {
-		commonModule.ConfirmSubPositionModal();
-	});
-
-	$(document).on('cancellation', '#subPositionModal', function () {
-		commonModule.CancelSubPositionModal();
+	$(document).on('closing', '#abilityModal', function () {
+		commonModule.ConfirmRemodal();
 	});
 
 	//センス○×のラジオボタンにクリック処理を加える
@@ -40,6 +28,11 @@ $(function() {
 	$('#sendFile').on('change', function (e) {
 		commonModule.setPreviewImage(e);
 	});
+
+	$('.abTrickLevel, .SabTrickLevel').niceSelect();
+
+	$('.plusButtonArea > .buttonAct').click(commonModule.changeAbility);
+	$('.minusButtonArea > .buttonAct').click(commonModule.changeAbility);
 
 	//特能一覧取得
 	commonModule.getAsyncData(
@@ -60,7 +53,6 @@ $(function() {
 							IndividModule.updateChangeBallRank();
 						}
 						commonModule.refreshDisplayAbility(0);
-						commonModule.refreshDisplaySubPosition();
 						commonModule.calcExpPoint();
 						$('.shareLinkBody').html(window.location.href);
 					}
@@ -130,7 +122,7 @@ var charaData = (function() {
 				StrickLevel[i] = 0;
 			}
 
-			size = $('#tab1 a[name=subPosition]').length;
+			size = $('#tab1 li[name=subPosition]').length;
 			for (var i = 0; i < size; i++) {
 				subPosition[0][i] = null;
 				subPosition[1][i] = null;
@@ -170,15 +162,7 @@ var charaData = (function() {
 		},
 
 		syncroAbility: function (idx) {
-			if (abilityList[0][idx] !== null && abilityList[1][idx] === null) {
-				abilityList[1][idx] = abilityList[0][idx];
-			}
-		},
-
-		syncroSubPosition: function(idx) {
-			if (subPosition[0][idx] !== null && subPosition[1][idx] === null) {
-				subPosition[1][idx] = subPosition[0][idx];
-			}
+			abilityList[1][idx] = abilityList[0][idx];
 		},
 
 		clickSense: function () {
@@ -306,6 +290,19 @@ var charaData = (function() {
 				}
 			}
 
+			var list = $('.abilityButtonList > li');
+			for (var i = 0; i < list.length; i++) {
+				var obj = list.eq(i);
+				var id = Number(obj.attr('idx'));
+
+				if (data.trickLevel[id] && data.trickLevel[id] !== Number(obj.find('select.abTrickLevel').val())) {
+					obj.find('select.abTrickLevel').val(data.trickLevel[id]).niceSelect('update');
+
+				}
+				if (data.StrickLevel[id] && data.StrickLevel[id] !== Number(obj.find('select.SabTrickLevel').val())) {
+					obj.find('select.SabTrickLevel').val(data.StrickLevel[id]).niceSelect('update');
+				}
+			}
 
 			var abData = commonModule.getAsyncData('convertSaveAbility', JSON.stringify({ability:data.ability}));
 			for (var i = 0; i < abData[0].length; i++) {
@@ -316,6 +313,9 @@ var charaData = (function() {
 			}
 
 			subPosition = commonModule.getAsyncData('convertSaveSubPosition', JSON.stringify({subPosition:data.subPosition}));
+
+			commonModule.refreshDisplaySubPosition(0);
+			commonModule.refreshDisplaySubPosition(1);
 
 
 			$('#charaName').val(data.name);
@@ -354,15 +354,9 @@ var charaData = (function() {
 
 
 var commonModule = (function() {
-	var modalMode = 0,
-		tabType = 0,
-		checkVal = 0,
-		selectAbility = 0,
-		selectedDisplayIndex = 0,
-		scrollHeight = 0,
+	var tabType = 0,
 		abTypeClass = ['selectedAbility', 'selectedSAbility', 'selectedBAbility', 'selectedPAbility', 'selectedHAbility', 'selectedGAbility'],
-		subposTypeClass = ['catcher', 'infield', 'outfield', 'pitcher'],
-		abilityGroupList = null;
+		subposTypeClass = ['catcher', 'infield', 'outfield', 'pitcher'];
 
 	return {
 
@@ -376,154 +370,9 @@ var commonModule = (function() {
 
 		//モーダルウインドウを開く
 		openModalWindow: function (type) {
-			modalMode = 0;
 			tabType = type;
-			this.switchModalScreen(0);
-
 			commonModule.refreshAbilityList();
 			$.remodal.lookup[$('[data-remodal-id=modal]').data('remodal')].open();
-		},
-
-
-		//特能詳細画面を開く
-		openAbilityDetail: function (displayIndex, id, mode) {
-			scrollHeight = $('.remodal-wrapper').scrollTop();
-			id = Number(id);
-			if(abilityData === null) {
-				return;
-			}
-			var data = abilityData.filter(function(e){
-				return e.id === id;
-			})[0].list;
-			var str = '';
-
-			//特能一覧作成
-			data.forEach(function (element) {
-				str += '<li><label><input type="radio" name="abilityGroup" value="' + element.id + '" abType="' + element.type + '"><span>' + element.name + '</span></label></li>';
-			});
-			abilityGroupList = data;
-			$('#abilityDetailList').html(str);
-
-
-			//現在のキャラ状態を取得し、画面に反映
-			var checkAbility = charaData.getAbilityList(tabType, id);
-			if (checkAbility) {
-				checkVal = checkAbility.id;
-				$("input[name=abilityGroup]").val([checkAbility.id]);
-				$("input[name=abilityGroup]:checked").closest("label").addClass(abTypeClass[checkAbility.type]);
-			} else {
-				checkVal = null;
-			}
-
-			var trickSliderDisplay = false,
-				StrickSliderDisplay = false;
-			for (var i = 0; i < data.length; i++) {
-				switch(Number(data[i].type)) {
-					case 0:
-					case 4:
-						trickSliderDisplay = true;
-						break;
-					case 1:
-						StrickSliderDisplay = true;
-						break;
-				}
-			}
-			$('#abilityTrickSliderDiv').removeClass('hiddenDisplay');
-			if (!trickSliderDisplay) {
-				$('#abilityTrickSliderDiv').addClass('hiddenDisplay');
-			}
-			$('#abilityStrickSliderDiv').removeClass('hiddenDisplay');
-			if (!StrickSliderDisplay) {
-				$('#abilityStrickSliderDiv').addClass('hiddenDisplay');
-			}
-			$('.abilityPointTable').removeClass('hiddenDisplay');
-			if (!trickSliderDisplay && !StrickSliderDisplay) {
-				$('.abilityPointTable').addClass('hiddenDisplay');
-			}
-
-
-			$("#abilitySlider").labeledslider("value", charaData.getTrickLevel(id));
-			$("#SabilitySlider").labeledslider("value", charaData.getSTrickLevel(id));
-
-
-			//表示切替
-			this.switchModalScreen(1);
-			modalMode = typeof(mode) === 'undefined' ? 1 : mode;
-			selectAbility = id;
-			selectedDisplayIndex = displayIndex;
-
-
-			//ラジオボタンにクリック処理を加える
-			$("input[name=abilityGroup]").click(function(){
-				$("input[name=abilityGroup]").closest("label").removeClass(abTypeClass.join(' '));
-				if($(this).val() == checkVal) {
-					$(this).prop('checked', false);
-					checkVal = null;
-				} else {
-					checkVal = $(this).val();
-					$(this).closest("label").addClass(abTypeClass[Number($(this).attr('abType'))]);
-				}
-				commonModule.setAbilityPointValue();
-			});
-
-
-		},
-
-		openAbilityDetailDirect: function (id) {
-			if(abilityData === null) {
-				return;
-			}
-			commonModule.openAbilityDetail(-1, Number(id), 2);
-			$.remodal.lookup[$('[data-remodal-id=modal]').data('remodal')].open();
-		},
-
-
-		setAbilityPointValue: function () {
-			var point = [0, 0, 0, 0, 0];
-			var index = $('input[name=abilityGroup]').index($('input[name=abilityGroup][value='+checkVal+']'));
-			var trickMagList = [1, 0.7, 0.5, 0.4, 0.3, 0.2];
-			if (index !== -1) {
-				var id = abilityGroupList[index].id;
-				while(id) {
-					var ability = getAbility(abilityGroupList, id);
-					var type = Number(ability.type);
-					if (type === 2 || type === 3 ) {
-						break;
-					}
-				   switch (type) {
-						case 0:
-						case 4:
-						   var mag = (1 - 0.1 * charaData.getSense())* trickMagList[Number($("#abilitySlider").labeledslider("value"))];
-							for (var i = 0; i < ability.point.length; i++) {
-								point[i] += parseInt(ability.point[i] * mag, 10);
-							}
-							break;
-						case 1:
-						   var mag = (1 - 0.1 * charaData.getSense()) * trickMagList[Number($("#SabilitySlider").labeledslider("value"))];
-						   for (var i = 0; i < ability.point.length; i++) {
-							   point[i] += parseInt(ability.point[i] * mag, 10);
-						   }
-							break;
-					}
-					id = ability.lower;
-				}
-			}
-			var total = 0;
-			for (var i = 0; i < point.length; i++) {
-				$('.abilityPointTable tr td').eq(i).html(point[i]);
-				total += point[i];
-			}
-			$('.abilityPointTable tr td').eq(5).html(total);
-
-			function getAbility(list, id) {
-				for(var i = 0; i < list.length; i++) {
-					if(list[i].id === id){
-						return list[i];
-					}
-				}
-				return null;
-			}
-
 		},
 
 		getAsyncData: function (method, data, callBackSuccess, callBackError) {
@@ -547,163 +396,15 @@ var commonModule = (function() {
 			return JSON.parse(temp);
 		},
 
-		getAsyncDataValue: function (method, data) {
-			return $.ajax({
-				type: "POST",
-				url: method + '.php',
-				data: data,
-				async: false
-			}).responseText;
-		},
-
 		ConfirmRemodal: function () {
-			switch(modalMode) {
-				case 0:
-
-					commonModule.refreshDisplayAbility();
-					$.remodal.lookup[$('[data-remodal-id=modal]').data('remodal')].close();
-					break;
-				case 1:
-				case 2:
-					var chekedObj = $("input[name=abilityGroup]:checked");
-					var val = chekedObj.val();
-					var idx = $("input[name=abilityGroup]").index($("input[name=abilityGroup]:checked"));
-					var textObj = $('#abSelectList > ul > li').eq(selectedDisplayIndex).find('a');
-					$('#abSelectList > ul > li').eq(selectedDisplayIndex).removeClass(abTypeClass.join(' '));
-					if (val) {
-						charaData.setAbilityList(tabType, selectAbility, {id:val, name:chekedObj.find('+ span').text(), type:Number(chekedObj.attr('abType'))});
-						if(abilityGroupList[idx].pair) {
-							charaData.setAbilityList(tabType, abilityGroupList[idx].pair, null);
-							if (tabType === 0 && charaData.getAbilityList(1, abilityGroupList[idx].pair)) {
-								charaData.setAbilityList(1, abilityGroupList[idx].pair, null);
-							}
-						}
-					} else {
-						charaData.setAbilityList(tabType, selectAbility, null);
-					}
-					if (tabType === 0) {
-						charaData.syncroAbility(selectAbility);
-					}
-
-
-					charaData.setTrickLevel(selectAbility, $("#abilitySlider").labeledslider("value"));
-					charaData.setSTrickLevel(selectAbility, $("#SabilitySlider").labeledslider("value"));
-
-					commonModule.refreshAbilityList();
-
-
-					$("input[name=abilityGroup]").prop('checked', false);
-
-					if (modalMode === 2) {
-						this.refreshDisplayAbility();
-						$.remodal.lookup[$('[data-remodal-id=modal]').data('remodal')].close();
-					} else {
-						this.switchModalScreen(0);
-						$('.remodal-wrapper').scrollTop(scrollHeight);
-					}
-					modalMode = 0;
-					break;
-
+			commonModule.refreshDisplayAbility();
+			$.remodal.lookup[$('[data-remodal-id=modal]').data('remodal')].close();
+			var list = $('.abilityButtonList > li');
+			for (var i = 0; i < list.length; i++) {
+				var obj = list.eq(i);
+				charaData.setTrickLevel(Number(obj.attr('idx')), Number(obj.find('select.abTrickLevel').val()));
+				charaData.setSTrickLevel(Number(obj.attr('idx')), Number(obj.find('select.SabTrickLevel').val()));
 			}
-		},
-
-		CancelRemodal: function () {
-			switch(modalMode) {
-				case 0:
-					commonModule.refreshDisplayAbility();
-					$.remodal.lookup[$('[data-remodal-id=modal]').data('remodal')].close();
-					break;
-				case 1:
-					this.switchModalScreen(0);
-					modalMode = 0;
-					$('.remodal-wrapper').scrollTop(scrollHeight);
-					$("input[name=abilityGroup]").prop('checked', false);
-					break;
-				case 2:
-					$.remodal.lookup[$('[data-remodal-id=modal]').data('remodal')].close();
-					break;
-			}
-		},
-
-		ConfirmSubPositionModal: function () {
-			var selectedIndex = $('input[name=subPositionGroup]').index($("input[name=subPositionGroup]:checked"));
-			var textObj = $('#tab' + (tabType + 1) +' .displaySubPosition > ul > li').eq(selectAbility).find('a');
-			$('#tab' + (tabType + 1) +' .displaySubPosition > ul > li').eq(selectAbility).find('a').removeClass(subposTypeClass.join(' '));
-			if (selectedIndex !== -1) {
-				charaData.setSubPosition(tabType, selectAbility, abilityGroupList[selectedIndex]);
-				$('#tab' + (tabType + 1) +' .displaySubPosition > ul > li').eq(selectAbility).find('a').addClass(subposTypeClass[abilityGroupList[selectedIndex].color]);
-				textObj.html(abilityGroupList[selectedIndex].name);
-				if (tabType === 0 && charaData.getSubPosition(1, selectAbility) === null) {
-					charaData.syncroSubPosition(selectAbility);
-					$('#tab2 .displaySubPosition > ul > li').eq(selectAbility).find('a').removeClass(subposTypeClass.join(' ')).addClass(subposTypeClass[abilityGroupList[selectedIndex].color]).html(abilityGroupList[selectedIndex].name);
-				}
-			} else {
-				charaData.setSubPosition(tabType, selectAbility, null);
-				textObj.html(textObj.attr('default'));
-				if (tabType === 1) {
-					charaData.setSubPosition(0, selectAbility, null);
-					$('#tab1 .displaySubPosition > ul > li').eq(selectAbility).find('a').removeClass(subposTypeClass.join(' ')).html(textObj.attr('default'));
-				}
-			}
-
-			$.remodal.lookup[$('[data-remodal-id=subPositionModal]').data('remodal')].close();
-
-		},
-
-		CancelSubPositionModal: function () {
-			$.remodal.lookup[$('[data-remodal-id=subPositionModal]').data('remodal')].close();
-
-		},
-
-		//特能ウインドウの状態を切り替える
-		//0:全特能表示
-		//1:特能詳細表示
-		switchModalScreen: function (type) {
-			var array = ['hiddenDisplay', 'visibleDisplay'];
-			$('#abilityList').removeClass(array[type]).addClass(array[(type + 1) % 2]);
-			$('#abilityDetail').removeClass(array[(type + 1) % 2]).addClass(array[type]);
-		},
-
-
-		openSubPositionDetail : function (type, idx, id) {
-			var data = this.getAsyncData('getSubPositionDetail', JSON.stringify({'data': id}));
-			var str = '';
-
-			abilityGroupList = data;
-
-			//特能一覧作成
-			data.forEach(function (element) {
-				str += '<li><label><input type="radio" name="subPositionGroup" value="' + element.id + '"><span>' + element.name + '</span></label></li>';
-			});
-
-			$('#subPositionDetailList').html(str);
-
-			//現在のキャラ状態を画面に反映
-			var nowSubPos = charaData.getSubPosition(tabType, idx);
-			if (nowSubPos) {
-				checkVal = nowSubPos.id;
-				$("input[name=subPositionGroup]").val([checkVal]);
-				$("input[name=subPositionGroup]:checked").closest("label").addClass(subposTypeClass[abilityGroupList[0].color]);
-			} else {
-				checkVal = null;
-			}
-
-			//ラジオボタンにクリック処理を加える
-			$("input[name=subPositionGroup]").click(function(){
-				$("input[name=subPositionGroup]").closest("label").removeClass(subposTypeClass.join(' '));
-				if($(this).val() == checkVal) {
-					$(this).prop('checked', false);
-					checkVal = null;
-				} else {
-					checkVal = $(this).val();
-					$(this).closest("label").addClass(subposTypeClass[abilityGroupList[0].color]);
-				}
-			});
-
-
-			selectAbility = idx;
-			tabType = type;
-			$.remodal.lookup[$('[data-remodal-id=subPositionModal]').data('remodal')].open();
 		},
 
 		refreshDisplayAbility: function (idx) {
@@ -723,9 +424,9 @@ var commonModule = (function() {
 					if (ability) {
 						var changeTypeStr = '';
 						if(idx === 1) {
-							changeTypeStr = charaData.getAbilityList(0, id) === null ? '<span>new</span>' : (ability.id === charaData.getAbilityList(0, id).id ? '' : '<span><i class="fa fa-level-up changeIcon" aria-hidden="true"></i><i class="fa fa-level-up changeIcon" aria-hidden="true"></i></span>');
+							changeTypeStr = charaData.getAbilityList(0, id) === null ? '<span class="changeTypeStr">new</span>' : (ability.id === charaData.getAbilityList(0, id).id ? '' : '<span class="changeTypeStr"><i class="fa fa-level-up changeIcon" aria-hidden="true"></i><i class="fa fa-level-up changeIcon" aria-hidden="true"></i></span>');
 						}
-						str += '<li class="' + abTypeClass[Number(ability.type)] + '"><a onclick="javascript:commonModule.openAbilityDetailDirect(\'' + id +'\')">' + ability.name + changeTypeStr + '</a></li>';
+						str += '<li class="' + abTypeClass[Number(ability.type)] + '"><span class="displayName">' + ability.name + changeTypeStr + '</span></li>';
 						count++;
 					}
 
@@ -738,44 +439,43 @@ var commonModule = (function() {
 
 		},
 
-		refreshAbilityList: function () {
-			var chekedObj = $("input[name=abilityGroup]:checked");
-			var val = chekedObj.val();
-			var textObjArray = $('#abSelectList > ul > li');
-			var remClass = abTypeClass.join(' ');
-			for (var i = 0; i < textObjArray.length; i++) {
-				var obj = textObjArray.eq(i);
-				var aObj = obj.find('a');
-				var ability = charaData.getAbilityList(tabType, Number(aObj.attr('headerId')));
-				obj.removeClass(remClass);
-				if (ability) {
-					obj.addClass(abTypeClass[ability.type]);
-					aObj.html(ability.name);
-				} else {
-					aObj.html(aObj.attr('defaultName'));
-				}
+		refreshAbilityList: function() {
+			var list = $('.abilityButtonList > li:not(.abSelectHeader)');
 
-				//コツ持ち時にマーク付け
-				var idx = Number(obj.attr('idx'));
-				if(charaData.getTrickLevel(idx) !== 0 || charaData.getSTrickLevel(idx)) {
-					obj.addClass('hasTrick');
+			for (var i = 0; i < list.length; i++) {
+				var obj = list.eq(i);
+				var id = Number(obj.attr('idx'));
+
+				commonModule.updateAbilityDisplay(commonModule.getTabType(), id, obj);
+
+			}
+
+			list = $('.otherAbilityList li');
+
+			for (var i = 0; i < list.length; i++) {
+				var obj = list.eq(i);
+				var id = Number(obj.attr('idx'));
+				obj.find('button').removeClass('GAColor');
+				var ab = charaData.getAbilityList(commonModule.getTabType(), id);
+				if (ab !== null) {
+					obj.find('button').html(ab.name).addClass('GAColor');
 				} else {
-					obj.removeClass('hasTrick');
+					obj.find('button').html(obj.find('button').data('defname'));
 				}
 			}
 		},
 
-		refreshDisplaySubPosition: function () {
-			var list = charaData.getSubPosition(tabType);
+		refreshDisplaySubPosition: function (tab) {
+			var list = charaData.getSubPosition(tab);
 
 			for (var i = 0; i < list.length; i++) {
-				$('#tab' + (tabType + 1) +' .displaySubPosition > ul > li').eq(i).find('a').removeClass(subposTypeClass.join(' '));
-				var textObj = $('#tab' + (tabType + 1) +' .displaySubPosition > ul > li').eq(i).find('a');
+				var obj = $('#tab' + (tab + 1) +' .displaySubPosition > ul > li').eq(i);
+				obj.removeClass(subposTypeClass.join(' '));
 				if (list[i] !== null) {
-					$('#tab' + (tabType + 1) +' .displaySubPosition > ul > li').eq(i).find('a').addClass(subposTypeClass[list[i].color]);
-					textObj.html(list[i].name);
+					obj.addClass(subposTypeClass[list[i].color]);
+					obj.html(list[i].name);
 				} else {
-					textObj.html(textObj.attr('default'));
+					obj.html(obj.attr('default'));
 				}
 			}
 
@@ -1152,7 +852,7 @@ var commonModule = (function() {
 						setTimeout($.unblockUI, 3000);
 						break;
 				}
-			}).fail(function( res ) {
+			}).fail(function() {
 				alert('エラーが発生しました。');
 			});
 			return false;
@@ -1191,7 +891,7 @@ var commonModule = (function() {
 				return false;
 			}
 
-			reader.onload = (function(file) {
+			reader.onload = (function() {
 				return function(e) {
 					preview.attr('src', e.target.result);
 				};
@@ -1234,16 +934,194 @@ var commonModule = (function() {
 				charaData.setAbilityList(1, i, abData[0][i]);
 			}
 
-			var ability = charaData.getAbilityList(0).map(function (el) {
-				return el ? el.id : null;
-			});
 			if(commonModule.getTabType() !== 2) {
 				commonModule.refreshDisplayAbility(commonModule.getTabType());
 			}
 			$.remodal.lookup[$('[data-remodal-id=optionModal]').data('remodal')].close();
+		},
 
-		}
+		changeAbility: function(e) {
 
+			var obj = $(e.currentTarget);
+			var id = Number(obj.parents('li').attr('idx'));
+			var upDown = obj.find('div').hasClass('plusButton') ? 1 : 0;
+
+
+			var tabType = commonModule.getTabType();
+			var abGr = abilityData.filter(function(e){
+				return e.id === id;
+			})[0].list;
+
+			var nowAb = charaData.getAbilityList(tabType, id);
+			var ab = null;
+
+			if (nowAb === null) {
+				switch(upDown) {
+					case 0:
+						ab = abGr.filter(function(elt){
+							return ((elt.type === 2 || elt.type === 3) && elt.upper === null);
+						})[0];
+						break;
+					case 1:
+						ab = abGr.filter(function(elt){
+							return ((elt.type === 0 || elt.type === 1 || elt.type === 4) && elt.lower === null);
+						})[0];
+						break;
+				}
+			} else {
+				nowAb = abGr.filter(function(elt){
+					return elt.id === nowAb.id;
+				})[0];
+				var target = upDown === 0 ? nowAb.lower : nowAb.upper;
+				if (target !== null) {
+					ab = abGr.filter(function(elt){
+						return elt.id === target;
+					})[0];
+				}
+			}
+
+			if (ab) {
+				charaData.setAbilityList(tabType, id, {id:ab.id, name: ab.name, type: ab.type});
+
+				if (upDown === 1 && tabType === 0) {
+					charaData.syncroAbility(id);
+				}
+
+				//相反関係の特能を打ち消す
+				if (ab.pair !== null) {
+					charaData.setAbilityList(tabType, Number(ab.pair), null);
+					var liobj = $('.abilityButtonList > li');
+					for (var i = 0; i < liobj.length; i++) {
+						if (Number(liobj.eq(i).attr('idx')) === Number(ab.pair)) {
+							commonModule.updateAbilityDisplay(tabType, Number(ab.pair), liobj.eq(i));
+							break;
+						}
+					}
+				}
+			} else {
+				charaData.setAbilityList(tabType, id, null);
+			}
+
+			commonModule.updateAbilityDisplay(tabType, id, $(obj).parents('li'));
+
+		},
+
+		changeGAbility: function(id, obj) {
+			var abGr = abilityData.filter(function(e){
+				return e.id === id;
+			})[0].list;
+
+			$(obj).removeClass('GAbColor');
+
+			var nowAb = charaData.getAbilityList(tabType, id);
+			if (nowAb === null) {
+				var ab = abGr[0];
+				charaData.setAbilityList(tabType, id, {id:ab.id, name: ab.name, type: ab.type});
+				$(obj).html(ab.name).addClass('GAbColor');
+			} else {
+				var abIdx = abGr.map(function(elt){
+					return elt.id;
+				}).indexOf(nowAb.id);
+				if (abIdx + 1 >= abGr.length) {
+					charaData.setAbilityList(tabType, id, null);
+					$(obj).html($(obj).data('defname'));
+				} else {
+					var ab = abGr[abIdx+1];
+					charaData.setAbilityList(tabType, id, {id:ab.id, name: ab.name, type: ab.type});
+					$(obj).html(ab.name).addClass('GAbColor');
+				}
+			}
+		},
+
+		updateAbilityDisplay: function(tabType, id, targetLi){
+			var nowAb = charaData.getAbilityList(tabType, id);
+			var abGr = abilityData.filter(function(e){
+				return e.id === id;
+			})[0].list;
+			var abColors = ['abColor', 'SAbColor', 'BAbColor', 'PAbColor', 'HAbColor'];
+			var namePlate = targetLi.find('.abName');
+			namePlate.removeClass(abColors.join(' '));
+			if (nowAb !== null) {
+
+				var ab = abGr.filter(function(elt){
+					return elt.id === nowAb.id;
+				})[0];
+				namePlate.html(ab.name).addClass(abColors[ab.type]);
+
+				if (ab.type === 2 || ab.type === 3 || ab.upper !== null) {
+					targetLi.find('div:nth-child(1) .pmButton, div:nth-child(1) .buttonAct').css('visibility', 'visible');
+				} else {
+					targetLi.find('div:nth-child(1) .pmButton, div:nth-child(1) .buttonAct').css('visibility', 'hidden');
+				}
+
+				if (ab.type === 0 || ab.type === 1 || ab.type === 4 || ab.lower !== null) {
+					targetLi.find('div:nth-child(3) .pmButton, div:nth-child(3) .buttonAct').css('visibility', 'visible');
+				} else {
+					targetLi.find('div:nth-child(3) .pmButton, div:nth-child(3) .buttonAct').css('visibility', 'hidden');
+				}
+			} else {
+				namePlate.html(namePlate.data('defname'));
+				var hasLower = abGr.filter(function(elt){
+					return elt.type === 2 || elt.type === 3;
+				}).length > 0;
+				var hasUpper = abGr.filter(function(elt){
+					return elt.type === 0 || elt.type === 1 || elt.type === 4;
+				}).length > 0;
+
+				if (hasUpper) {
+					targetLi.find('div:nth-child(1) .pmButton, div:nth-child(1) .buttonAct').css('visibility', 'visible');
+				} else {
+					targetLi.find('div:nth-child(1) .pmButton, div:nth-child(1) .buttonAct').css('visibility', 'hidden');
+				}
+
+				if (hasLower) {
+					targetLi.find('div:nth-child(3) .pmButton, div:nth-child(3) .buttonAct').css('visibility', 'visible');
+				} else {
+					targetLi.find('div:nth-child(3) .pmButton, div:nth-child(3) .buttonAct').css('visibility', 'hidden');
+				}
+			}
+		},
+
+		changeSubPosition: function(tabType, idx, id) {
+			var data = this.getAsyncData('getSubPositionDetail', JSON.stringify({'data': id}));
+			var now = charaData.getSubPosition(tabType, idx);
+
+			if (now === null) {
+				now = data[0];
+			} else {
+				for (var i = 0; i < data.length; i++) {
+					if (Number(data[i].id) === Number(now.id)) {
+						if (i === data.length -1) {
+							now = null;
+						} else {
+							now = data[i+1];
+						}
+						break;
+					}
+				}
+			}
+			charaData.setSubPosition(tabType, idx, now);
+
+			var obj = $('#tab' + (tabType + 1) +' .displaySubPosition > ul > li').eq(idx);
+			obj.removeClass(subposTypeClass.join(' '));
+			if (now !== null) {
+				obj.addClass(subposTypeClass[now.color]);
+				obj.html(now.name);
+			} else {
+				obj.html(obj.attr('default'));
+			}
+		},
+
+//		screenShot: function() {
+//			var elm = document.querySelector('#charaDataDisplay');
+//			html2canvas(elm, {onrendered: function(canvas){
+//				var imgData = canvas.toDataURL('image/jpeg');
+//				var now = new Date();
+//				var fileName = 'pawaSimu' + ('0000' + now.getFullYear()).slice(-4) + ('00' + (now.getMonth()+1)).slice(-2) + ('0000' + now.getDate()).slice(-2) +
+//					('00' + now.getHours()).slice(-2) + ('00' + now.getMinutes()).slice(-2) + ('00' + now.getSeconds()).slice(-2);
+//				$('<a href="#" download="' + fileName + '"></a>').attr('href', imgData)[0].click();
+//			}});
+//		}
 	};
 
 })();

@@ -14,7 +14,6 @@ $(function() {
 			commonModule.refreshDisplayAbility(idx);
 			IndividModule.updateBaseAbilityRank();
 			IndividModule.updateChangeBallRank();
-			commonModule.refreshDisplaySubPosition();
 		}
 	});
 

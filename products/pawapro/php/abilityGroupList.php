@@ -58,7 +58,7 @@ try{
 				'assessment'=>$row['ASSESSMENT'],
 				'upper'=>$row['UPPER'],
 				'lower'=>$row['LOWER'],
-				'type'=>$row['TYPE'],
+				'type'=>(int)$row['TYPE'],
 				'pair'=>$row['PAIR']
 			);
 		}

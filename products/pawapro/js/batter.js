@@ -12,7 +12,6 @@ $(function () {
 		if (idx === 0 || idx === 1) {
 			commonModule.refreshDisplayAbility(idx);
 			IndividModule.updateBaseAbilityRank();
-			commonModule.refreshDisplaySubPosition();
 		}
 	});
 
