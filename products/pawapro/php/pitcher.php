@@ -436,26 +436,8 @@
 									<div class="pmButton minusButton"></div>
 								</a>
 							</div>
-							<div>
-								<select class="abTrickLevel"<?= !$d['abTrick'] ? ' disabled' : ''?>>
-									<option value="0">0</option>
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
-									<option value="5">5</option>
-								</select>
-							</div>
-							<div>
-								<select class="SabTrickLevel"<?= !$d['SabTrick'] ? ' disabled' : ''?>>
-									<option value="0">0</option>
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
-									<option value="5">5</option>
-								</select>
-							</div>
+							<div><button class="abTrickLevel"<?= !$d['abTrick'] ? ' disabled' : ''?>>0</button></div>
+							<div><button class="SabTrickLevel"<?= !$d['SabTrick'] ? ' disabled' : ''?>>0</button></div>
 						</li>
 						<?php } ?>
 						<?php } ?>
@@ -497,26 +479,8 @@
 									<div class="pmButton minusButton"></div>
 								</a>
 							</div>
-							<div>
-								<select class="abTrickLevel"<?= !$d['abTrick'] ? ' disabled' : ''?>>
-									<option value="0">0</option>
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
-									<option value="5">5</option>
-								</select>
-							</div>
-							<div>
-								<select class="SabTrickLevel"<?= !$d['SabTrick'] ? ' disabled' : ''?>>
-									<option value="0">0</option>
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
-									<option value="5">5</option>
-								</select>
-							</div>
+							<div><button class="abTrickLevel"<?= !$d['abTrick'] ? ' disabled' : ''?>>0</button></div>
+							<div><button class="SabTrickLevel"<?= !$d['SabTrick'] ? ' disabled' : ''?>>0</button></div>
 						</li>
 						<?php } ?>
 						<?php } ?>
@@ -557,62 +521,21 @@
 				</div>
 			</div>
 
-
-			<div id="abilityDetail" class="hiddenDisplay">
-				<div id="detailContent">
-					<ul id="abilityDetailList" class="block-grid block-grid-1-2-3 abilityDetailList abilityButtonList"></ul>
-				</div>
-				<div class="abilityPointTableDiv">
-					<table class="modern abilityPointTable">
-						<tr>
-							<th>筋力</th>
-							<th>敏捷</th>
-							<th>技術</th>
-							<th>変化</th>
-							<th>精神</th>
-							<th>合計</th>
-						</tr>
-						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-					</table>
-				</div>
-				<div class="boxContainer TrickDiv" id="abilityTrickSliderDiv">
-					<div class="box trickTitle">特能コツLv</div>
-					<div class="box trickBar">
-						<div id="abilitySlider" class="slider abilitySlider"></div>
-					</div>
-				</div>
-				<div class="boxContainer TrickDiv" id="abilityStrickSliderDiv">
-					<div class="box trickTitle">金特コツLv</div>
-					<div class="box trickBar">
-						<div id="SabilitySlider" class="slider SabilitySlider"></div>
-					</div>
-				</div>
-			</div>
 			<div class="modalButton">
-				<button data-remodal-action="confirm" class="remodal-confirm">OK</button>
-				<button data-remodal-action="cancel" class="remodal-cancel">Cancel</button>
+				<button data-remodal-action="confirm" class="remodal-confirm">Close</button>
 			</div>
 		</div>
 
-		<!--サブポジ用モーダルウインドウ-->
-		<div id="subPositionModal" class="remodal" data-remodal-id="subPositionModal" data-remodal-options="hashTracking:false, closeOnOutsideClick:false, closeOnCancel:false, closeOnConfirm:false, closeOnEscape:false">
-			<button data-remodal-action="close" class="remodal-close"></button>
-			<div class="">
-				<ul id="subPositionDetailList" class="block-grid block-grid-1-2-3 subPositionDetailList">
-				</ul>
-			</div>
-			<div class="modalButton">
-				<button data-remodal-action="confirm" class="remodal-confirm">OK</button>
-				<button data-remodal-action="cancel" class="remodal-cancel">Cancel</button>
-			</div>
+		<div id="trickDropdown">
+			<div class="trickLevelVal">0</div>
+			<div class="trickLevelVal">1</div>
+			<div class="trickLevelVal">2</div>
+			<div class="trickLevelVal">3</div>
+			<div class="trickLevelVal">4</div>
+			<div class="trickLevelVal">5</div>
 		</div>
+
+		<input type="hidden" id="abilityTotalCount" value="<?php include('../php/getAbilityCount.php'); ?>" />
 	</main>
 
 	<?php include('./optionMenu.php'); ?>

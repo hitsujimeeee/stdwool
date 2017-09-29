@@ -7,13 +7,10 @@
 	$description = 'パワプロアプリの育成シミュレーター(野手版)です。目標能力までに必要な経験点を計算できます。査定計算機能や、余った経験点から査定が最大になるように能力を振ってくれる査定最大化機能もあります。';
 	require_once './headInclude.php';
 	?>
-	<link rel="stylesheet" href="../css/lib/nice-select.css">
 	<link rel="stylesheet" href="../css/batter.css?ver20170924">
-	<script src="../js/plugin/jquery.nice-select.min.js"></script>
 	<script src="../js/batter.js?ver20170924"></script>
 	<script src="../js/calcMaxAssessment.js?ver20170924"></script>
 	<script src="../js/commonModule.js?ver20170924"></script>
-	<script>var abilityCount = <?php include('../php/getAbilityCount.php'); ?>;</script>
 </head>
 
 <body>
@@ -394,26 +391,8 @@
 									<div class="pmButton minusButton"></div>
 								</a>
 							</div>
-							<div>
-								<select class="abTrickLevel"<?= !$d['abTrick'] ? ' disabled' : ''?>>
-									<option value="0">0</option>
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
-									<option value="5">5</option>
-								</select>
-							</div>
-							<div>
-								<select class="SabTrickLevel"<?= !$d['SabTrick'] ? ' disabled' : ''?>>
-									<option value="0">0</option>
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
-									<option value="5">5</option>
-								</select>
-							</div>
+							<div><button class="abTrickLevel"<?= !$d['abTrick'] ? ' disabled' : ''?>>0</button></div>
+							<div><button class="SabTrickLevel"<?= !$d['SabTrick'] ? ' disabled' : ''?>>0</button></div>
 						</li>
 					<?php } ?>
 					<?php } ?>
@@ -452,26 +431,8 @@
 									<div class="pmButton minusButton"></div>
 								</a>
 							</div>
-							<div>
-								<select class="abTrickLevel"<?= !$d['abTrick'] ? ' disabled' : ''?>>
-									<option value="0">0</option>
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
-									<option value="5">5</option>
-								</select>
-							</div>
-							<div>
-								<select class="SabTrickLevel"<?= !$d['SabTrick'] ? ' disabled' : ''?>>
-									<option value="0">0</option>
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
-									<option value="5">5</option>
-								</select>
-							</div>
+							<div><button class="abTrickLevel"<?= !$d['abTrick'] ? ' disabled' : ''?>>0</button></div>
+							<div><button class="SabTrickLevel"<?= !$d['SabTrick'] ? ' disabled' : ''?>>0</button></div>
 						</li>
 						<?php } ?>
 						<?php } ?>
@@ -516,6 +477,16 @@
 			</div>
 		</div>
 
+		<div id="trickDropdown">
+			<div class="trickLevelVal">0</div>
+			<div class="trickLevelVal">1</div>
+			<div class="trickLevelVal">2</div>
+			<div class="trickLevelVal">3</div>
+			<div class="trickLevelVal">4</div>
+			<div class="trickLevelVal">5</div>
+		</div>
+
+		<input type="hidden" id="abilityTotalCount" value="<?php include('../php/getAbilityCount.php'); ?>" />
 	</main>
 
 	<?php include('./optionMenu.php'); ?>

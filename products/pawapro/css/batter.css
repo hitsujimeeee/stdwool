@@ -280,6 +280,7 @@ td.changeBallTrickBar {
 {
 	min-width: 40px;
 	width: 40px;
+	position: relative;
 }
 
 .abName {
@@ -679,7 +680,7 @@ div.modalButton {
 }
 
 @media screen and (max-width: 480px) {
-	#abSelectList {
+	#abilityList {
 		padding: 0;
 	}
 
@@ -689,7 +690,7 @@ div.modalButton {
 	}
 }
 
-#abSelectList {
+#abilityList {
 	max-width: 420px;
 }
 
@@ -807,4 +808,79 @@ div#abilityModal div.groupHeader{
 
 .baseLimitBreakArea > div {
 	margin: 1em 0.5em;
+}
+
+.abTrickLevel, .SabTrickLevel {
+	width: 40px;
+	height: 30px;
+	border-radius: 5px;
+}
+
+.abTrickLevel:after, .SabTrickLevel:after {
+	content: '▼';
+	font-size: 40%;
+	position: absolute;
+	top: 35%;
+	color: #555;
+}
+
+.abTrickLevel:disabled {
+	background-color: #99ced6;
+}
+
+.SabTrickLevel:disabled {
+	background-color: #dbd8ab;
+}
+
+#trickDropdown {
+	display: none;
+	flex-direction: column;
+	width: 50px;
+	height: 200px;
+	box-shadow: 2px 2px 8px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	position: absolute;
+	z-index: 999;
+	-webkit-animation: fadeIn 0.3s ease 0s 1 forwards;
+	animation: fadeIn 0.3s ease 0s 1 forwards;
+	opacity: 0;
+}
+
+.normalAbility {
+	background-color: #a8feff;
+}
+
+.normalAbility > div:hover,
+.normalAbility > div:active {
+	background-color: #5cebff;
+}
+
+.specialAbility {
+	background-color: #ffb;
+}
+
+.specialAbility > div:hover,
+.specialAbility > div:active {
+	background-color: #faea00;
+}
+
+#trickDropdown div {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-bottom: 1px solid #ccc;
+	cursor: pointer;
+}
+
+@-webkit-keyframes fadeIn {
+	0% {opacity: 0;}
+	100% {opacity: 1;}
+}
+
+@keyframes fadeIn {
+	0% {opacity: 0;}
+	100% {opacity: 1;}
 }
