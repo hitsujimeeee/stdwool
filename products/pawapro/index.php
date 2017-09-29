@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:site" content="@hitsujiPawapro" />
+	<meta name="og:url" content="http://studiowool.webcrow.jp/products/pawapro/" />
+	<meta name="og:title" content="パワプロアプリ育成シミュレーター" />
+	<meta name="og:description" content="査定最大化、経験点計算、査定計算やその他多数のツールを公開しています。" />
+	<meta name="og:image" content="http://studiowool.webcrow.jp/products/pawapro/img/thumbnail.jpg" />
 	<?php
 	$title = 'パワプロアプリ育成シミュレーター';
 	$description = 'パワプロアプリの育成シミュレーターです。査定最大化、経験点計算、査定計算、課金額予想、上限開放予想などを行うツールを置いてます。';
