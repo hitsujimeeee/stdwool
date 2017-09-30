@@ -7,13 +7,11 @@
 	$description = 'パワプロアプリの育成シミュレーター(投手版)です。目標能力までに必要な経験点を計算できます。査定計算機能や、余った経験点から査定が最大になるように能力を振ってくれる査定最大化機能もあります。';
 	require_once './headInclude.php';
 	?>
-	<link rel="stylesheet" href="../css/lib/nice-select.css">
-	<link rel="stylesheet" href="../css/batter.css?ver20170924">
+	<link rel="stylesheet" href="../css/batter.css?ver20170930">
 	<link rel="stylesheet" href="../css/pitcher.css?ver20170924">
-	<script src="../js/plugin/jquery.nice-select.min.js"></script>
-	<script src="../js/pitcher.js?ver20170924"></script>
+	<script src="../js/pitcher.js?ver20170930"></script>
 	<script src="../js/calcMaxAssessmentPitcher.js?ver20170924"></script>
-	<script src="../js/commonModule.js?ver20170924"></script>
+	<script src="../js/commonModule.js?ver20170930"></script>
 	<script>var abilityCount = <?php include('../php/getAbilityCount.php'); ?>;</script>
 </head>
 

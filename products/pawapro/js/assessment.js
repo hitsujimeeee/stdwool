@@ -1,192 +1,156 @@
-/*jshint jquery: true */
-/*global abilityList */
-/*jslint shadow:true*/
+/*jshint jquery: true, browser: true, shadow: true */
+/*global baseAbilityList, charaData, commonModule, rankData  */
+
+var abilityData = null;
 
 $(function() {
-	$('#ui-tab').tabs();
 
-	$(document).on('confirmation', '#abilityDetail', function () {
-		module.ConfirmRemodal();
+	$(document).on('confirmation', '#abilityModal', function () {
+		assessment.ConfirmRemodal();
 	});
 
-	charaData.init(abilityList);
-	$('.basePointInput').on('change', module.changeBaseAbility);
-	module.calcAssessmentPoint();
+	$(document).on('closing', '#abilityModal', function () {
+		assessment.ConfirmRemodal();
+	});
+
+	$('.plusButtonArea > .buttonAct').click(commonModule.changeAbility);
+	$('.minusButtonArea > .buttonAct').click(commonModule.changeAbility);
+	$('.basePointInput').on('change', assessment.changeBaseAbility);
+
+	commonModule.setTabType(0);
+	//特能一覧取得
+	commonModule.getAsyncData(
+		'abilityGroupList',
+		JSON.stringify({pageType:0}),
+		function(data) {
+			abilityData = JSON.parse(data);
+			charaData.init();
+			assessment.calcAssessmentPoint();
+		}
+	);
 
 });
 
-var charaData = (function() {
-	var abilityList = [];	//{id:'', name:'', type:''}
-	return {
+var assessment = {
+	abTypeClass: ['selectedAbility', 'selectedSAbility', 'selectedBAbility', 'selectedPAbility', 'selectedHAbility', 'selectedGAbility'],
 
-		//配列初期化
-		init: function() {
-			var size = $('#abilityButtonList li');
+	ConfirmRemodal: function() {
 
-			for (var i = 0; i < size; i++) {
-				abilityList[i] = null;
+		var abilityList = charaData.getAbilityList(0);
+		var str = '<ul class="abilityDisplay">';
+		var count = 0;
+
+		for (var i = 0; i < abilityData.length; i++) {
+			var id = abilityData[i].id;
+
+			if (abilityList[id] !== null) {
+				var ability = abilityList[id];
+				if (ability) {
+					str += '<li class="' + assessment.abTypeClass[Number(ability.type)] + '"><span class="displayName">' + ability.name + '</span></li>';
+					count++;
+				}
+
 			}
-
-		},
-
-		getAbilityList: function(idx) {
-			return typeof(idx) === "undefined" ? abilityList : abilityList[idx];
-		},
-
-		setAbilityList: function(idx, val) {
-			abilityList[idx] = val;
 		}
-	};
-})();
+		str += '</ul>';
 
+		$(' .displayAbility').html(str);
+		$(' .abilityCount').html(count + '個');
+		assessment.calcAssessmentPoint();
+		$.remodal.lookup[$('[data-remodal-id=modal]').data('remodal')].close();
 
-var module = (function() {
-	var selectAbility,
-		selectedDisplayIndex,
-		checkVal = 0,
-		abTypeClass = ['selectedAbility', 'selectedSAbility', 'selectedBAbility', 'selectedPAbility', 'selectedHAbility', 'selectedGAbility'];
+	},
 
-	return {
-		openAbilityDetail: function (displayIndex, id) {
-			var list = [],
-				str = '';
-			list = abilityList.filter(function(elt) {
-				return Number(elt.headerId) === id;
-			});
+	calcAssessmentPoint: function () {
 
+		var basePoint = $('.basePointInput').map(function(idx, elt){
+			return baseAbilityList[idx][parseInt(Number($(elt).val() || 0)-1, 10)] || 0;
+		}).get();
 
+		basePoint = basePoint.reduce(function(pre, cur){
+			return pre + cur;
+		});
+		basePoint =  basePoint + 7.84 * Math.round(basePoint/47.04) + 11.27;
 
-			for (var i = 0; i < list.length; i++) {
-				if(list[i].type === 0 ||list[i].type === 1 || list[i].type === 4 || list[i].type === 5) {
-					str += '<li><label><input type="radio" name="abilityGroup" value="' + list[i].id + '" abType="' + list[i].type + '"><span>' + list[i].name + '</label></li>';
-				}
+		var list = charaData.getAbilityList(0);
+
+		var getAbility = function(abList, id) {
+			return abList.filter(function(elt){
+				return elt.id === id;
+			})[0];
+		};
+		var searchAbGr = function(elt) {
+			return elt.id === i;
+		};
+		var abilityPoint= 0;
+
+		for (var i = 0; i < list.length; i++) {
+			if(!list[i]) {
+				continue;
+			}
+			var abGr = abilityData.filter(searchAbGr)[0];
+			var ab = getAbility(abGr.list, list[i].id);
+			while(ab) {
+				abilityPoint += Number(ab.assessment);
+				ab = getAbility(abGr.list, ab.lower);
 			}
 
-			$('#abilityDetailList').html(str);
+		}
 
-			//現在のキャラ状態を取得し、画面に反映
-			var checkAbility = charaData.getAbilityList(displayIndex);
-			if (checkAbility) {
-				checkVal = checkAbility.id;
-				$("input[name=abilityGroup]").val([checkAbility.id]);
-				$("input[name=abilityGroup]:checked").closest("label").addClass(abTypeClass[checkAbility.type]);
-			} else {
-				checkVal = null;
-			}
+		var total = parseInt((basePoint + abilityPoint) / 14, 10) * 14;
+		var rankStr = '';
+		var rankNum = '';
+		var gauge = 0;
 
-			//表示切替
-			selectAbility = id;
-			selectedDisplayIndex = displayIndex;
-
-			//ラジオボタンにクリック処理を加える
-			$("input[name=abilityGroup]").click(function(){
-				$("input[name=abilityGroup]").closest("label").removeClass(abTypeClass.join(' '));
-				if($(this).val() == checkVal) {
-					$(this).prop('checked', false);
-					checkVal = null;
-				} else {
-					checkVal = $(this).val();
-					$(this).closest("label").addClass(abTypeClass[Number($(this).attr('abType'))]);
-				}
-				module.ConfirmRemodal();
-				$.remodal.lookup[$('[data-remodal-id=modal]').data('remodal')].close();
-			});
-
-			$.remodal.lookup[$('[data-remodal-id=modal]').data('remodal')].open();
-
-		},
-
-		ConfirmRemodal: function() {
-
-			var obj = $('.abilityButtonList li').eq(selectedDisplayIndex);
-			obj.removeClass(abTypeClass.join(' '));
-			if(checkVal) {
-				var ability = abilityList.filter(function(elt) {
-					return elt.id === checkVal;
-				});
-
-				if(ability.length > 0) {
-					ability = ability[0];
-					charaData.setAbilityList(selectedDisplayIndex, {id:checkVal, name:ability.name, type:ability.type});
-					obj.addClass(abTypeClass[Number(ability.type)]);
-					obj.find('a').html(ability.name);
-				}
-			} else {
-				charaData.setAbilityList(selectedDisplayIndex, null);
-				obj.find('a').html(obj.find('a').attr('default'));
-			}
-			module.calcAssessmentPoint();
-		},
-
-		calcAssessmentPoint: function () {
-			var basePoint = 0,
-				obj = $('.basePointInput');
-
-			for (var i = 0; i < obj.length; i++) {
-				if(obj.eq(i).val()) {
-					basePoint += baseAbilityList[i][Number(obj.eq(i).val())-1];
-				}
-			}
-
-			basePoint = basePoint + 7.84 * Math.round(basePoint/47.04) + 11.27;
-
-			var list = charaData.getAbilityList().filter(function (elt) {
-				return elt;
-			});
-			var abilityPoint= 0;
-			if (list.length >= 0) {
-				for (var i = 0; i < list.length; i++) {
-					var ability = module.getAbility(abilityList, list[i].id);
-
-					while(ability){
-						abilityPoint += Number(ability.assessment);
-						ability = module.getAbility(abilityList, ability.lower);
+		for (var i = 0; i < rankData.length; i++) {
+			if (total >= rankData[i].pointFrom && total < rankData[i].pointTo) {
+				rankStr = rankData[i].rankStr;
+				if (rankStr.charAt(0) === 'G') {
+					gauge = parseInt((rankData[i].pointTo - total)/14, 10);
+					gauge = 10 - gauge;
+					if (gauge < 0) {
+						gauge = 0;
 					}
-				}
-			}
-
-			var total = parseInt((basePoint + abilityPoint) / 14, 10) * 14;
-				rankStr = '';
-
-			for (var i = 0; i < rankData.length; i++) {
-				if (total >= rankData[i].pointFrom && total < rankData[i].pointTo) {
-					rankStr = rankData[i].rankStr;
-				}
-			}
-
-			$('#assessmentDisplay').html(rankStr + '(査定値:' + total + '  / 実査定値:' + (Math.round((basePoint + abilityPoint) * 100) / 100) + ')');
-
-
-		},
-
-		getAbility: function (abilityList, id) {
-			for (var i = 0; i < abilityList.length; i++) {
-				if(abilityList[i].id === id) {
-					return abilityList[i];
-				}
-			}
-			return null;
-		},
-
-		changeBaseAbility: function () {
-			var array = $('.basePointInput');
-			for (var i = 0; i < array.length; i++) {
-				var value = parseInt(array.eq(i).val(), 10);
-				if (value) {
-					if (value > Number(array.eq(i).attr('max'))) {
-						value = Number(array.eq(i).attr('max'));
-					} else if (value < Number(array.eq(i).attr('min'))) {
-						value = Number(array.eq(i).attr('min'));
-					}
-					array.eq(i).val(value);
 				} else {
-					array.eq(i).val('');
+					gauge = parseInt((total - rankData[i].pointFrom)/14, 10);
 				}
+				break;
 			}
-			module.calcAssessmentPoint();
-		},
+		}
+		if(rankStr.charAt(0) === 'S' && rankStr.charAt(1) === 'S' && rankStr.length >= 3) {
+			rankNum = rankStr.charAt(2);
+			rankStr = 'SS';
+		} else if(rankStr.charAt(0) === 'S' && rankStr.length >= 2 && isFinite(rankStr.charAt(1))) {
+			rankNum = rankStr.charAt(1);
+			rankStr = 'S';
+		}
+
+		$('.meterGauge').css('width', (gauge*10)+'%');
+
+		$('#displayRank').html('<img src="../img/rank' + rankStr + '.png">');
+		$('#displayRankNum').html(rankNum);
+		$('#displayShowAssessment').html(total);
+		$('#displayRealAssessment').html(Math.round((basePoint + abilityPoint) * 100) / 100);
+
+	},
+
+	changeBaseAbility: function () {
+		var array = $('.basePointInput');
+		for (var i = 0; i < array.length; i++) {
+			var value = parseInt(array.eq(i).val(), 10);
+			if (value) {
+				if (value > Number(array.eq(i).attr('max'))) {
+					value = Number(array.eq(i).attr('max'));
+				} else if (value < Number(array.eq(i).attr('min'))) {
+					value = Number(array.eq(i).attr('min'));
+				}
+				array.eq(i).val(value);
+			} else {
+				array.eq(i).val('');
+			}
+		}
+		assessment.calcAssessmentPoint();
+	},
 
 
-
-	};
-})();
+};

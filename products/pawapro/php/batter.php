@@ -7,10 +7,10 @@
 	$description = 'パワプロアプリの育成シミュレーター(野手版)です。目標能力までに必要な経験点を計算できます。査定計算機能や、余った経験点から査定が最大になるように能力を振ってくれる査定最大化機能もあります。';
 	require_once './headInclude.php';
 	?>
-	<link rel="stylesheet" href="../css/batter.css?ver20170924">
-	<script src="../js/batter.js?ver20170924"></script>
+	<link rel="stylesheet" href="../css/batter.css?ver20170930">
+	<script src="../js/batter.js?ver20170930"></script>
 	<script src="../js/calcMaxAssessment.js?ver20170924"></script>
-	<script src="../js/commonModule.js?ver20170924"></script>
+	<script src="../js/commonModule.js?ver20170930"></script>
 </head>
 
 <body>
@@ -308,7 +308,12 @@
 						<p>【基礎能力】<span id="baseAbilityCharaData"></span></p>
 						<p>【特殊能力】</p>
 						<div><ul id="abilityCharaData"></ul></div>
-						<div class="assessmentArea"><div>【査定】<span id="assessmentPointCharaData"></span></div><div class="meterFrame"><div class="meterGauge"></div></div></div>
+						<div class="assessmentArea">
+							<div>【査定】<span id="assessmentPointCharaData"></span></div>
+							<div class="meterFrame">
+								<div class="meterGauge"></div>
+							</div>
+						</div>
 					</div>
 
 					<p>---------------------</p>

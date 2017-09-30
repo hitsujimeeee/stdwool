@@ -3,6 +3,8 @@
 
 $(function() {
 
+	commonModule.init();
+
 	$('.changeBallInput').on('change', IndividModule.updateChangeBallRank);
 	$('.tabMenu').click(function() {
 		var idx = $('.tabMenu').index(this);

@@ -6,117 +6,7 @@ var abilityData = null;
 
 $(function() {
 
-	$('#ui-tab').tabs();
-	$(".baseTrickSlider").labeledslider({value:0, min: 0, max: 5, range:"min"});
-	$(".changeBallTrickSlider").labeledslider({value:0, min: 0, max: 5, range:"min"});
 
-	$(document).on('confirmation', '#abilityModal', function () {
-		commonModule.ConfirmRemodal();
-	});
-
-	$(document).on('closing', '#abilityModal', function () {
-		commonModule.ConfirmRemodal();
-	});
-
-	//センス○×のラジオボタンにクリック処理を加える
-	$("input[name=senseGroup]").click(charaData.clickSense);
-
-	$('.basePointInput').on('change', IndividModule.updateBaseAbilityRank);
-
-	$('#sendFile').on('change', function (e) {
-		commonModule.setPreviewImage(e);
-	});
-
-	$('.abTrickLevel').click(commonModule.openTrickLevelDropdown);
-	$('.SabTrickLevel').click(commonModule.openTrickLevelDropdown);
-
-	$('body').click(function() {
-		$('#trickDropdown').css('display', 'none');
-		commonModule.selAbility = null;
-	});
-
-	$('.plusButtonArea > .buttonAct').click(commonModule.changeAbility);
-	$('.minusButtonArea > .buttonAct').click(commonModule.changeAbility);
-
-	$('.trickLevelVal').click(function(e){
-		var val = $('.trickLevelVal').index($(e.currentTarget));
-		var id = Number($('.abilityButtonList li').eq(commonModule.selAbility).attr('idx'));
-
-		if (commonModule.selTrickType === 0) {
-			charaData.setTrickLevel(id, val);
-		}else {
-			charaData.setSTrickLevel(id, val);
-		}
-		$('.' + (commonModule.selTrickType === 0 ? 'abTrickLevel' : 'SabTrickLevel')).eq(commonModule.selAbility).html(val);
-		$('#trickDropdown').css('display', 'none');
-		commonModule.selAbility = null;
-		e.stopPropagation();
-		return false;
-	});
-
-	//特能一覧取得
-	commonModule.getAsyncData(
-		'abilityGroupList',
-		JSON.stringify({pageType:IndividModule.getMakingType()}),
-		function(data) {
-			abilityData = JSON.parse(data);
-			var param = commonModule.GetQueryString();
-			if(param.userId && param.charaId) {
-				var data = {'userId':Number(param.userId), 'charaId':param.charaId};
-				commonModule.getAsyncData('getCharacter', JSON.stringify(data), function (res) {
-					if (res.data) {
-						$('#characterId').val(res.charaId);
-						$('#charaImg').attr('src', res.imgURL);
-						charaData.setSaveData(res.data);
-						IndividModule.updateBaseAbilityRank();
-						if(typeof IndividModule.updateChangeBallRank !== 'undefined') {
-							IndividModule.updateChangeBallRank();
-						}
-						commonModule.refreshDisplayAbility(0);
-						commonModule.calcExpPoint();
-						$('.shareLinkBody').html(window.location.href);
-					}
-
-				});
-			} else {
-				IndividModule.updateBaseAbilityRank();
-			}
-
-
-		},
-		function() {
-			alert("エラーが発生しました。ページを再読み込みしてください");
-		}
-	);
-
-	charaData.init();
-
-	commonModule.setTabType(0);
-//	$('.pointInput').eq(0).val(0);
-//	$('.pointInput').eq(1).val(0);
-//	$('.pointInput').eq(2).val(0);
-//	$('.pointInput').eq(3).val(0);
-//	$('.pointInput').eq(4).val(0);
-
-	$('.pointInput').on('change', function () {
-		var objs = $('.pointInput'),
-			total = 0;
-		for (var i = 0; i < objs.length; i++) {
-			var value = parseInt(objs.eq(i).val(), 10);
-			if (value) {
-				if (value > Number(objs.eq(i).attr('max'))) {
-					value = Number(objs.eq(i).attr('max'));
-				} else if (value < Number(objs.eq(i).attr('min'))) {
-					value = Number(objs.eq(i).attr('min'));
-				}
-				objs.eq(i).val(value);
-				total += value;
-			} else {
-				objs.eq(i).val('0');
-			}
-		}
-		$('.ownPointTotal').html(total);
-	});
 
 });
 
@@ -370,6 +260,121 @@ var commonModule = {
 	subposTypeClass: ['catcher', 'infield', 'outfield', 'pitcher'],
 	selAbility: null,
 	selTrickType: 0,
+
+	init: function() {
+
+		$('#ui-tab').tabs();
+		$(".baseTrickSlider").labeledslider({value:0, min: 0, max: 5, range:"min"});
+		$(".changeBallTrickSlider").labeledslider({value:0, min: 0, max: 5, range:"min"});
+
+		$(document).on('confirmation', '#abilityModal', function () {
+			commonModule.ConfirmRemodal();
+		});
+
+		$(document).on('closing', '#abilityModal', function () {
+			commonModule.ConfirmRemodal();
+		});
+
+		//センス○×のラジオボタンにクリック処理を加える
+		$("input[name=senseGroup]").click(charaData.clickSense);
+
+		$('.basePointInput').on('change', IndividModule.updateBaseAbilityRank);
+
+		$('#sendFile').on('change', function (e) {
+			commonModule.setPreviewImage(e);
+		});
+
+		$('.abTrickLevel').click(commonModule.openTrickLevelDropdown);
+		$('.SabTrickLevel').click(commonModule.openTrickLevelDropdown);
+
+		$('body').click(function() {
+			$('#trickDropdown').css('display', 'none');
+			commonModule.selAbility = null;
+		});
+
+		$('.plusButtonArea > .buttonAct').click(commonModule.changeAbility);
+		$('.minusButtonArea > .buttonAct').click(commonModule.changeAbility);
+
+		$('.trickLevelVal').click(function(e){
+			var val = $('.trickLevelVal').index($(e.currentTarget));
+			var id = Number($('.abilityButtonList li').eq(commonModule.selAbility).attr('idx'));
+
+			if (commonModule.selTrickType === 0) {
+				charaData.setTrickLevel(id, val);
+			}else {
+				charaData.setSTrickLevel(id, val);
+			}
+			$('.' + (commonModule.selTrickType === 0 ? 'abTrickLevel' : 'SabTrickLevel')).eq(commonModule.selAbility).html(val);
+			$('#trickDropdown').css('display', 'none');
+			commonModule.selAbility = null;
+			e.stopPropagation();
+			return false;
+		});
+
+		//特能一覧取得
+		commonModule.getAsyncData(
+			'abilityGroupList',
+			JSON.stringify({pageType:IndividModule.getMakingType()}),
+			function(data) {
+				abilityData = JSON.parse(data);
+				var param = commonModule.GetQueryString();
+				if(param.userId && param.charaId) {
+					var data = {'userId':Number(param.userId), 'charaId':param.charaId};
+					commonModule.getAsyncData('getCharacter', JSON.stringify(data), function (res) {
+						if (res.data) {
+							$('#characterId').val(res.charaId);
+							$('#charaImg').attr('src', res.imgURL);
+							charaData.setSaveData(res.data);
+							IndividModule.updateBaseAbilityRank();
+							if(typeof IndividModule.updateChangeBallRank !== 'undefined') {
+								IndividModule.updateChangeBallRank();
+							}
+							commonModule.refreshDisplayAbility(0);
+							commonModule.calcExpPoint();
+							$('.shareLinkBody').html(window.location.href);
+						}
+
+					});
+				} else {
+					IndividModule.updateBaseAbilityRank();
+				}
+
+
+			},
+			function() {
+				alert("エラーが発生しました。ページを再読み込みしてください");
+			}
+		);
+
+		charaData.init();
+
+		commonModule.setTabType(0);
+		//	$('.pointInput').eq(0).val(0);
+		//	$('.pointInput').eq(1).val(0);
+		//	$('.pointInput').eq(2).val(0);
+		//	$('.pointInput').eq(3).val(0);
+		//	$('.pointInput').eq(4).val(0);
+
+		$('.pointInput').on('change', function () {
+			var objs = $('.pointInput'),
+				total = 0;
+			for (var i = 0; i < objs.length; i++) {
+				var value = parseInt(objs.eq(i).val(), 10);
+				if (value) {
+					if (value > Number(objs.eq(i).attr('max'))) {
+						value = Number(objs.eq(i).attr('max'));
+					} else if (value < Number(objs.eq(i).attr('min'))) {
+						value = Number(objs.eq(i).attr('min'));
+					}
+					objs.eq(i).val(value);
+					total += value;
+				} else {
+					objs.eq(i).val('0');
+				}
+			}
+			$('.ownPointTotal').html(total);
+		});
+	},
 
 	setTabType: function (type) {
 		commonModule.tabType = type;

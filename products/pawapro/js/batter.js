@@ -3,6 +3,8 @@
 
 $(function () {
 
+	commonModule.init();
+
 	$('.tabMenu').click(function () {
 		var idx = $('.tabMenu').index(this);
 		if(commonModule.getTabType() === idx) {

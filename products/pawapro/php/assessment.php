@@ -11,8 +11,9 @@ $dbh = DB::connect();
 	$description = 'パワプロアプリの査定計算ツールです。選手能力を入れると査定値(実査定値、表示査定値)を計算します。';
 	require_once './headInclude.php';
 	?>
-	<link rel="stylesheet" href="../css/assessment.css">
-	<script src="../js/assessment.js"></script>
+	<link rel="stylesheet" href="../css/assessment.css?ver20170930">
+	<script src="../js/commonModule.js?ver20170930"></script>
+	<script src="../js/assessment.js?ver20170930"></script>
 	<script>
 		var baseAbilityList = <?php
 			$str = '';
@@ -29,36 +30,6 @@ $dbh = DB::connect();
 					$innerList[] = (double)$row['ASSESSMENT'];
 				}
 				$list[] = $innerList;
-			}
-			echo json_encode($list);
-			?>,
-
-			abilityList = <?php
-			$sql = 'SELECT
-						H.ID HEADER_ID,
-						D.ID,
-						D.NAME,
-						D.LOWER,
-						D.ASSESSMENT,
-						H.PAIR,
-						D.TYPE
-					FROM ABILITY_HEADER H
-					INNER JOIN ABILITY_DETAIL D
-					ON H.ID = D.HEADER_ID
-					WHERE CATEGORY IN (\'0\', \'1\', \'2\', \'5\', \'7\')
-					ORDER BY H.CATEGORY, H.SORT_ORDER, FIELD(D.TYPE, 3, 2, 4, 0, 1, 5),
-					(LOWER IS NULL) DESC';
-			$list = array();
-			foreach ($dbh->query($sql) as $row) {
-				$list[] = array(
-					'headerId'=>$row['HEADER_ID'],
-					'id'=>$row['ID'],
-					'name'=>$row['NAME'],
-					'lower'=>$row['LOWER'],
-					'assessment'=>$row['ASSESSMENT'],
-					'pair'=>(int)$row['PAIR'],
-					'type'=>(int)$row['TYPE'],
-				);
 			}
 			echo json_encode($list);
 			?>,
@@ -91,7 +62,7 @@ $dbh = DB::connect();
 			<h2><i class="fa fa-calculator"></i>査定計算機</h2>
 		</header>
 		<section class="basePointSection">
-			<p>■基礎能力</p>
+			<p><i class="fa fa-cube"></i>基礎能力</p>
 			<table class="basePoint modern">
 				<tr>
 					<th>弾道</th>
@@ -115,7 +86,7 @@ $dbh = DB::connect();
 				</tr>
 				<tr>
 					<th>守備</th>
-					<td><input type="number" class="basePointInput" min="1" max="100" step="1"></td>
+					<td><input type="number" class="basePointInput" min="1" max="102" step="1"></td>
 				</tr>
 				<tr>
 					<th>捕球</th>
@@ -126,60 +97,110 @@ $dbh = DB::connect();
 
 		</section>
 
-		<section class="basePointSection">
-			<p>■特殊能力</p>
-			<div class="groupHeader"><img class="iconGraph" src="../img/icon/bat.png">特能</div>
-			<hr class="abHr">
-			<ul class="block-grid block-grid-1-2-3 abilityButtonList">
-				<?php
-				require_once "getAbilityList.php";
-				$data = getAbilityList(0);
-				$displayIdx = 0;
 
-				for ($i = 0; $i < count($data); $i++) {
-					$d = $data[$i];
-					if ($d['category'] === '0' || $d['category'] === '1' || $d['category'] === '2') {
-						echo '<li idx="' . $d['id'] . '"><a name="ability" default="' . $d['name'] . '" headerId="' . $d['id'] . '" href="javascript:module.openAbilityDetail(' . $displayIdx . ', ' . $d['id'] . ');">' . $d['name'] . '</a></li>';
-						$displayIdx++;
-					}
-				}
-
-				?>
-			</ul>
-
-			<div class="groupHeader"><i class="fa fa-user iconGraph" aria-hidden="true"></i>その他特能</div>
-			<hr class="abHr">
-
-			<ul class="block-grid block-grid-1-2-3 abilityButtonList">
-
-				<?php
-				for ($i = 0; $i < count($data); $i++) {
-					$d = $data[$i];
-					if ($d['category'] === '5' || $d['category'] === '7') {
-						echo '<li idx="' . $d['id'] . '"><a name="ability" default="' . $d['name'] . '" headerId="' . $d['id'] . '" href="javascript:module.openAbilityDetail(' . $displayIdx . ', ' . $d['id'] . ');">' . $d['name'] . '</a></li>';
-						$displayIdx++;
-					}
-				}
-
-				?>
-			</ul>
+		<section class="abilitySection">
+			<p><i class="fa fa-cube"></i>特殊能力<button onclick="commonModule.openModalWindow(0);" class="addAbility">追加</button><span class="abilityCount">0個</span></p>
+			<div class="displayAbility"></div>
 		</section>
+
 
 		<section>
-			<p>■査定</p>
-			<div id="assessmentDisplay"></div>
+			<p><i class="fa fa-cube"></i>査定</p>
+			<div id="assessmentDisplay">
+				<div class="displayRankArea">
+					<div>ランク：</div>
+					<div class="rankImgArea">
+						<div id="displayRank"></div>
+						<div id="displayRankNum">2</div>
+					</div>
+					<div class="meterFrame">
+						<div class="meterGauge"></div>
+					</div>
+				</div>
+				<div>表示査定：<span id="displayShowAssessment">0</span></div>
+				<div>実査定：<span id="displayRealAssessment"></span></div>
+
+			</div>
 		</section>
 
+		<input type="hidden" id="abilityTotalCount" value="<?php include('../php/getAbilityCount.php'); ?>" />
 	</main>
 
-	<div id="abilityDetail" class="remodal" data-remodal-id="modal" data-remodal-options="hashTracking:false">
-		<button class="remodal-close" data-remodal-action="cancel"></button>
-		<div id="detailContent">
-			<ul id="abilityDetailList" class="block-grid block-grid-1-2 abilityDetailList abilityButtonList"></ul>
+	<div id="abilityModal" class="remodal" data-remodal-id="modal" data-remodal-options="hashTracking:false, closeOnCancel:false, closeOnConfirm:false, closeOnEscape:false">
+		<button class="remodal-close" onclick="assessment.ConfirmRemodal()"></button>
+		<div id="abilityList">
+			<div id="abSelectList" class="container-fluid">
+
+				<div class="groupHeader"><img class="iconGraph" src="../img/icon/bat.png">特能</div>
+				<hr class="abHr">
+				<div class="abSelectHeader">
+					<div></div>
+					<div>特能名</div>
+					<div></div>
+				</div>
+
+				<ul class="abilityButtonList">
+					<?php
+					require_once "getAbilityList.php";
+					$data = getAbilityList(0);
+
+					for ($i = 0; $i < count($data); $i++) {
+						$d = $data[$i];
+						if ($d['category'] === '0') { ?>
+
+					<li idx="<?= $d['id'] ?>">
+						<div class="plusButtonArea">
+							<a class="buttonAct">
+								<div class="pmButton plusButton"></div>
+							</a>
+						</div>
+						<div class="abName" data-defname="<?= $d['name'] ?>"><?= $d['name'] ?></div>
+						<div class="minusButtonArea">
+							<a class="buttonAct">
+								<div class="pmButton minusButton"></div>
+							</a>
+						</div>
+					</li>
+					<?php } ?>
+					<?php } ?>
+				</ul>
+
+				<div class="groupHeader"><i class="fa fa-user iconGraph" aria-hidden="true"></i>その他特能</div>
+				<hr class="abHr">
+
+				<div class="abSelectHeader">
+					<div></div>
+					<div>特能名</div>
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
+
+				<ul class="otherAbilityList">
+					<?php
+					require_once "getAbilityList.php";
+					$data = getAbilityList(0);
+
+					for ($i = 0; $i < count($data); $i++) {
+						$d = $data[$i];
+						if ($d['category'] === '5' || $d['category'] === '7') { ?>
+
+					<li idx="<?= $d['id'] ?>">
+						<div></div>
+						<div class="abName" data-defname="<?= $d['name'] ?>" onclick="commonModule.changeGAbility(<?= $d['id'] ?>, this);"><?= $d['name'] ?></div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</li>
+					<?php } ?>
+					<?php } ?>
+				</ul>
+
+			</div>
 		</div>
+
 		<div class="modalButton">
-			<button data-remodal-action="confirm" class="remodal-confirm">OK</button>
-			<button data-remodal-action="cancel" class="remodal-cancel">Cancel</button>
+			<button data-remodal-action="confirm" class="remodal-confirm">Close</button>
 		</div>
 	</div>
 
