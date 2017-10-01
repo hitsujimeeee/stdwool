@@ -4,9 +4,6 @@ require_once 'global.php';
 function getSubPositionList ($pageType, $tabType) {
 
 	$data = array();
-//	$url = debug_backtrace()[0]['file'];
-//	$url = substr($url, strrpos($url, '\\')+1);
-//	$pageType = $url === 'batter.php' ? 0 : 1;	//batter.php or pitcher.php
 	try{
 		$dbh = DB::connect();
 

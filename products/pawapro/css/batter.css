@@ -683,6 +683,7 @@ div.modalButton {
 
 #abilityList {
 	max-width: 420px;
+	margin: auto;
 }
 
 #charaDataDisplay {

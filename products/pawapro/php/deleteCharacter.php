@@ -9,7 +9,6 @@ $name = $post['name'];
 $password = $post['password'];
 $charaId = $post['charaId'];
 
-$data = null;
 $result = null;
 
 try{

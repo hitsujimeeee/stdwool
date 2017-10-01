@@ -8,7 +8,8 @@
 	require_once './headInclude.php';
 	?>
 	<link rel="stylesheet" href="../css/characters.css">
-	<script src="../js/characters.js"></script>
+	<script src="../js/commonModule.js?ver20171001"></script>
+	<script src="../js/characters.js?ver20171001"></script>
 </head>
 
 <body>

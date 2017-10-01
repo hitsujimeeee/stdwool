@@ -4,11 +4,11 @@ $json = file_get_contents('php://input');
 $post = json_decode($json, true);
 $pageType = $post['pageType'];
 $data = array();
-$category_str = $pageType === 0 ? '\'0\', \'1\', \'2\', \'3\', \'5\', \'7\', \'9\'' : '\'4\', \'6\', \'7\', \'8\'';
+$category_str = $pageType === 0 ? '\'0\', \'5\', \'7\', \'9\'' : '\'4\', \'6\', \'7\', \'8\'';
 try{
 	$dbh = DB::connect();
 
-	$sql = 'SELECT ID, NAME, CATEGORY, PAIR
+	$sql = 'SELECT ID, PAIR
 		FROM ABILITY_HEADER
 		WHERE CATEGORY IN (' . $category_str . ')
 		ORDER BY CATEGORY, SORT_ORDER
@@ -19,9 +19,7 @@ try{
 	while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
 		$data[] = array(
 			'id'=>(int)$row['ID'],
-			'name'=>$row['NAME'],
-			'category'=>(int)$row['CATEGORY'],
-			'pair'=>(int)$row['PAIR']
+			'pair'=>$row['PAIR'] === null ? null : (int)$row['PAIR']
 		);
 	}
 	$abilityGroupList = array();
@@ -38,8 +36,7 @@ try{
 			D.UPPER,
 			D.LOWER,
 			D.ASSESSMENT,
-			D.TYPE,
-			H.PAIR
+			D.TYPE
 			FROM ABILITY_HEADER H
 			INNER JOIN ABILITY_DETAIL D
 			ON H.ID = D.HEADER_ID
@@ -58,11 +55,10 @@ try{
 				'assessment'=>$row['ASSESSMENT'],
 				'upper'=>$row['UPPER'],
 				'lower'=>$row['LOWER'],
-				'type'=>(int)$row['TYPE'],
-				'pair'=>$row['PAIR']
+				'type'=>(int)$row['TYPE']
 			);
 		}
-		array_push($abilityGroupList, array('id'=>$d['id'],'list'=>$abilityList));
+		array_push($abilityGroupList, array('id'=>$d['id'], 'list'=>$abilityList, 'pair'=>$d['pair']));
 	}
 
 }catch (PDOException $e){

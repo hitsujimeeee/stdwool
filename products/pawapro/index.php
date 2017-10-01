@@ -15,20 +15,7 @@
 	<link rel="stylesheet" href="./css/lib/swiper.min.css"/>
 	<link rel="stylesheet" href="./css/index.css?ver20170917">
 	<script src="./js/plugin/swiper.jquery.min.js"></script>
-	<script type="text/javascript">
-		$(function(){
-			var mySwiper = new Swiper('.swiper-container', {
-				direction: 'horizontal',
-				pagination: '.swiper-pagination',
-				paginationClickable: true,
-				nextButton: '.swiper-button-next',
-				prevButton: '.swiper-button-prev',
-				loop: true,
-				speed: 500,
-				autoplay: 5000
-			});
-		});
-	</script>
+	<script src="./js/index.js?ver20171001"></script>
 </head>
 <body>
 	<?php include('./php/header.php'); ?>

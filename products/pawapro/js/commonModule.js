@@ -4,13 +4,6 @@
 
 var abilityData = null;
 
-$(function() {
-
-
-
-});
-
-
 //選手データ格納クラス
 var charaData = (function() {
 	var abilityList = [[], []],	//{id:'', name:'', type:''}
@@ -369,7 +362,7 @@ var commonModule = {
 					objs.eq(i).val(value);
 					total += value;
 				} else {
-					objs.eq(i).val('0');
+					objs.eq(i).val('');
 				}
 			}
 			$('.ownPointTotal').html(total);
@@ -751,7 +744,7 @@ var commonModule = {
 
 	getRankString: function (val) {
 		var rank = ['G', 'G', 'F', 'F', 'E', 'D', 'C', 'B', 'A', 'S', 'S'];
-		return val === 100 ? 'S' : rank[parseInt(val/10)];
+		return rank[parseInt(val/10)];
 	},
 
 	saveCharaData: function(type) {
@@ -960,7 +953,9 @@ var commonModule = {
 		var tabType = commonModule.getTabType();
 		var abGr = abilityData.filter(function(e){
 			return e.id === id;
-		})[0].list;
+		})[0];
+		var pair = abGr.pair;
+		abGr = abGr.list;
 
 		var nowAb = charaData.getAbilityList(tabType, id);
 		var ab = null;
@@ -998,12 +993,12 @@ var commonModule = {
 			}
 
 			//相反関係の特能を打ち消す
-			if (ab.pair !== null) {
-				charaData.setAbilityList(tabType, Number(ab.pair), null);
+			if (pair !== null) {
+				charaData.setAbilityList(tabType, Number(pair), null);
 				var liobj = $('.abilityButtonList > li');
 				for (var i = 0; i < liobj.length; i++) {
-					if (Number(liobj.eq(i).attr('idx')) === Number(ab.pair)) {
-						commonModule.updateAbilityDisplay(tabType, Number(ab.pair), liobj.eq(i));
+					if (Number(liobj.eq(i).attr('idx')) === Number(pair)) {
+						commonModule.updateAbilityDisplay(tabType, Number(pair), liobj.eq(i));
 						break;
 					}
 				}

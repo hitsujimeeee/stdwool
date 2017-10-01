@@ -40,16 +40,4 @@ $dbh = null;
 header('Content-Type: application/json');
 echo json_encode($data);
 
-
-//IDを引数に特能情報を取得
-function getAbility($data, $id) {
-	foreach($data as $row) {
-		if ($row['id'] == $id) {
-			return $row;
-		}
-	}
-	return null;
-}
-
-
 ?>

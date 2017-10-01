@@ -2,10 +2,3 @@
 $(function() {
 	$('#ui-tab').tabs();
 });
-
-var module = (function() {
-
-	return {
-
-	};
-})();
