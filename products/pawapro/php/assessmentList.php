@@ -17,6 +17,14 @@
 			});
 		}
 
+		function execBase(t) {
+			$.get({
+				url:'./logic/outputBaseAssessmentList.php?type=' + t,
+			}).done(function(res){
+				console.log(res);
+			});
+		}
+
 		function screenShot() {
 			var canvas = document.getElementById("canvas");
 			var ctx = canvas.getContext("2d");
@@ -168,6 +176,11 @@
 				<button>投手金特表出力</button>
 				<input type="hidden" name="type" value="1">
 				<input type="hidden" name="spFlag" value="1">
+			</form>
+
+			<form action="./logic/outputBaseAssessmentList.php" method="get">
+				<button>野手基礎査定表出力</button>
+				<input type="hidden" name="type" value="0">
 			</form>
 
 			<div id="mytable">
