@@ -177,6 +177,10 @@
 						<div class="menuIcon"><a href="./php/hirameki.php"><img src="./img/menu009.png" class="mainImage"></a></div>
 						<div class="menuTitle"><a href="./php/hirameki.php">ひらめきシミュレーター</a></div>
 					</li>
+					<li>
+						<div class="menuIcon"><a href="./php/scoreBonus.php"><img src="./img/menu014.png" class="mainImage"></a></div>
+						<div class="menuTitle"><a href="./php/scoreBonus.php">スコアボーナスチェッカー</a></div>
+					</li>
 				</ul>
 			</div>
 
