@@ -88,10 +88,23 @@ svg {
 	font: 10px sans-serif;
 }
 
-.axis path,
-.axis line {
-	fill: none;
+.axis path {
+	fill: Aquamarine;
+	opacity: 0.1;
 	stroke: #000;
-	stroke-width: 2;
+	stroke-width: 1;
 	shape-rendering: crispEdges;
 }
+
+.axis line {
+	stroke: #000;
+	stroke-width: 1;
+	shape-rendering: crispEdges;
+}
+
+.line {
+	fill: none;
+	stroke: #ff50f1;
+	stroke-width: 1.5px;
+}
+

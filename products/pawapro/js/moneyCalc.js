@@ -1,5 +1,5 @@
 /*jslint browser: true, jquery: true, shadow:true */
-/* global MersenneTwister, d3, ga */
+/* global d3, ga */
 
 
 $(function(){
@@ -7,6 +7,9 @@ $(function(){
 	$('.sRate').eq(1).val(3);
 	$('.sRate').eq(2).val(20.95);
 	$('.sRate').eq(3).val(75.55);
+//	$('#pCount').eq(0).val(3);
+//	$('#allCount').eq(0).val(100);
+//	$('#pRate').eq(0).val(31.04);
 });
 
 
@@ -56,13 +59,8 @@ var moneyCalc = {
 		];
 		var SIMU_MAX_COUNT = simFlag ? 10000 : 1;
 		var simuCount = SIMU_MAX_COUNT;
-		var totalTryCount = 0;
-		var maxCount = 0;
-		var minCount = Number.MAX_SAFE_INTEGER;
 		var sampling = [];
-		var totalCards = [0, 0, 0, 0];
-		var botaiGetTotalCount = 0;
-		var mt = new MersenneTwister();
+		var botaiSampling = [];
 		var chraGetRate = pCount === 0 ? 1 / allCount : pRate/pCount;
 
 		ownStatus = (ownStatus === 0 ? null : ownStatus - 1);
@@ -74,8 +72,6 @@ var moneyCalc = {
 			var srG = null;
 			var prtoSR = 0;
 			var prG = null;
-			var botaiGetCount = 0;
-			totalCards = [0, 0, 0, 0];
 
 
 			while(true) {
@@ -83,9 +79,9 @@ var moneyCalc = {
 
 				//ガチャを10連分引く
 				for (var i = 0; i < 10; i++) {
-					var p = mt.next();
+					var p = Math.random();
 					var totalp = 0;
-					for (var j = 0; j < sRates.length; j++) {
+					for (var j = sRates.length - 1; j >= 0; j--) {
 
 						//レアリティ判定
 						if (p < totalp + sRates[j]) {
@@ -93,20 +89,18 @@ var moneyCalc = {
 							if (i < confCount && confRarelity + 1 < j) {
 								rarelity = confRarelity + 1;
 							}
-							var pn = mt.next();
+							var pn = Math.random();
 
 							//対象キャラが当たるか
 							if (i < confCount && confType === 1) {
 								// 1/ピックアップキャラ数の確率
 								if(pn < 1 / pCount) {
 									cards[rarelity]++;
-									totalCards[rarelity]++;
 								}
 							} else {
 								// pickup率/ピックアップキャラ数の確率
 								if(pn < chraGetRate) {
 									cards[rarelity]++;
-									totalCards[rarelity]++;
 								}
 							}
 
@@ -123,7 +117,7 @@ var moneyCalc = {
 				if (limitOpen === null && cards[target] > 0)  {
 					cards[target]--;
 					limitOpen = 0;
-					botaiGetCount = tryCount;
+					botaiSampling[botaiSampling.length] = tryCount;
 				}
 
 				if (limitOpen !== null) {
@@ -147,7 +141,7 @@ var moneyCalc = {
 									}
 
 
-									var lp = mt.next();
+									var lp = Math.random();
 									if (lp < 0.3) {
 										prG++;
 									}
@@ -167,14 +161,14 @@ var moneyCalc = {
 											srG = 0;
 										}
 									}
-									var lp = mt.next();
+									var lp = Math.random();
 									if (lp < 0.3) {
 										srG += 2;
 									} else {
 										srG++;
 									}
 									if (srG >= 5) {
-										lp = mt.next();
+										lp = Math.random();
 										if (lp < 0.3) {
 											limitOpen += 2;
 										} else {
@@ -200,13 +194,13 @@ var moneyCalc = {
 										}
 									}
 
-									var lp = mt.next();
+									var lp = Math.random();
 									if (lp < 0.3) {
 										srG++;
 									}
 									cards[2]--;
 									if (srG >= 5) {
-										lp = mt.next();
+										lp = Math.random();
 										if (lp < 0.3) {
 											limitOpen += 2;
 										} else {
@@ -232,13 +226,13 @@ var moneyCalc = {
 									}
 
 
-									var lp = mt.next();
+									var lp = Math.random();
 									if (lp < 0.3) {
 										prG++;
 									}
 									cards[3]--;
 									if (prG >= 5) {
-										lp = mt.next();
+										lp = Math.random();
 										if (lp < 0.3) {
 											limitOpen += 2;
 										} else {
@@ -269,7 +263,7 @@ var moneyCalc = {
 							if (mixFlag && i === 2 && cards[i] === 1) {
 								break;
 							}
-							var lp = mt.next();
+							var lp = Math.random();
 							if (lp < perList[target][i]) {
 								limitOpen++;
 							}
@@ -282,36 +276,81 @@ var moneyCalc = {
 				}
 
 			}
-
 			simuCount--;
-			totalTryCount += tryCount;
-			botaiGetTotalCount += botaiGetCount;
-			if (tryCount > maxCount) {
-				maxCount = tryCount;
-			}
-			if (tryCount < minCount) {
-				minCount = tryCount;
-			}
-
 			sampling[sampling.length] = tryCount;
-
 		}
 
-		//平均
-		var average = totalTryCount/SIMU_MAX_COUNT;
 
-		//中央値
+		var compS = moneyCalc.makeStatistic(sampling, SIMU_MAX_COUNT, 'skyblue');
+		var botaiS = ownStatus === null ? moneyCalc.makeStatistic(botaiSampling, SIMU_MAX_COUNT, 'orange') : null;
+
+		var disp = $('#displayArea');
+		var str = '';
+
+		str += '<h4>▼シミュレーション結果</h4>';
+		str += '<div class="mainText">';
+		if (simFlag) {
+			str += '平均して' + Math.round(compS.average) + '回のガチャで目標を達成しました(金額:&yen' + moneyCalc.separate(Math.round(compS.average / 30 * 9800)) + ')<br>';
+			str += '中央値は' + compS.center + '回です(金額:&yen' + moneyCalc.separate(Math.round(compS.center / 30 * 9800)) + ')<br>';
+			str += '最頻値は' + compS.frequency + '回です(金額:&yen' + moneyCalc.separate(Math.round(compS.frequency / 30 * 9800)) + ')<br>';
+			str += '最小回数は' + compS.min + '回です(金額:&yen' + moneyCalc.separate(Math.round(compS.min / 30 * 9800)) + ')<br>';
+			str += '最大回数は' + compS.max + '回です(金額:&yen' + moneyCalc.separate(Math.round(compS.max / 30 * 9800)) + ')<br>';
+			str += '標準偏差は' + Math.round(compS.hensa) + '回です<br><br>';
+			if(botaiS) {
+				str += '母体確保の平均は' + Math.round(botaiS.average) + '回です(金額:&yen' + moneyCalc.separate(Math.round(botaiS.average / 30 * 9800)) + ')<br>';
+				str += '母体確保の中央値は' + botaiS.center + '回です(金額:&yen' + moneyCalc.separate(Math.round(botaiS.center / 30 * 9800)) + ')<br>';
+			}
+		} else {
+			str += compS.total + '回目のガチャで目標を達成しました。(金額:\\' + moneyCalc.separate(Math.round(compS.total / 30 * 9800)) + ')<br>';
+			if(botaiS) {
+				str += botaiS.total + '回目のガチャで母体を確保しました。<br>';
+			}
+		}
+		str += '</div>';
+
+		disp.html(str);
+
+
+		if (simFlag) {
+			moneyCalc.displayGraph(compS.plot, compS.max, compS.countList[compS.frequency], compS, '#compChartArea');
+//			if(botaiS) {
+//				moneyCalc.displayGraph(botaiS.plot, botaiS.max, botaiS.countList[botaiS.frequency], botaiS, '#botaiChartArea');
+//			}
+			d3.select('#chartArea').select("svg").remove();
+		} else {
+			d3.select('#chartArea').select("svg").remove();
+		}
+
+		$.unblockUI();
+
+	},
+
+	makeStatistic: function(sampling, MAX_COUNT, plotColor){
+
 		sampling.sort(function(x, y){
 			return parseInt(x, 10) > parseInt(y, 10) ? 1 : -1;
 		});
-		var centerValue = (sampling[parseInt(SIMU_MAX_COUNT/2, 10)]+sampling[parseInt(SIMU_MAX_COUNT/2, 10)-1])/2;
+
+		//合計
+		var total = sampling.reduce(function(pre, cur){
+			return pre + cur;
+		});
+		//平均
+		var average = total/MAX_COUNT;
+
+		//中央値
+		var centerValue = (sampling[parseInt(MAX_COUNT/2, 10)]+sampling[parseInt(MAX_COUNT/2, 10)-1])/2;
+
+		//最大最小
+		var max = sampling[sampling.length-1];
+		var min = sampling[0];
 
 		//標準偏差
 		var bunsan = 0;
 		for (var i = 0; i < sampling.length; i++) {
 			bunsan += Math.pow(sampling[i] - average, 2);
 		}
-		var hensa = Math.sqrt(bunsan/SIMU_MAX_COUNT);
+		var hensa = Math.sqrt(bunsan/MAX_COUNT);
 
 		//出現頻度のリスト作成
 		var samplingCountList = [];
@@ -323,15 +362,6 @@ var moneyCalc = {
 			samplingCountList[idx]++;
 		}
 
-
-
-		var max = sampling[sampling.length-1];
-
-		//undefinedを0に変換
-		samplingCountList = samplingCountList.map(function(elt){
-			return !elt ? 0 : elt;
-		});
-
 		//最頻値
 		var frequency = null;
 		for (var key in samplingCountList) {
@@ -340,76 +370,67 @@ var moneyCalc = {
 			}
 		}
 
-		var disp = $('#displayArea');
-		var str = '';
 
-
-
-		str += '<h4>▼シミュレーション結果</h4>';
-		str += '<div class="mainText">';
-		if (simFlag) {
-			str += '平均して' + Math.round(average) + '回のガチャで目標を達成しました(金額:&yen' + moneyCalc.separate(Math.round(average / 30 * 9800)) + ')<br>';
-			str += '中央値は' + centerValue + '回です(金額:&yen' + moneyCalc.separate(Math.round(centerValue / 30 * 9800)) + ')<br>';
-			str += '最頻値は' + frequency + '回です(金額:&yen' + moneyCalc.separate(Math.round(frequency / 30 * 9800)) + ')<br>';
-			str += '最小回数は' + minCount + '回です(金額:&yen' + moneyCalc.separate(Math.round(minCount / 30 * 9800)) + ')<br>';
-			str += '最大回数は' + maxCount + '回です(金額:&yen' + moneyCalc.separate(Math.round(maxCount / 30 * 9800)) + ')<br>';
-			str += '標準偏差は' + Math.round(hensa) + '回です<br>';
-		} else {
-			str += totalTryCount + '回目のガチャで目標を達成しました。(金額:\\' + moneyCalc.separate(Math.round(totalTryCount / 30 * 9800)) + ')<br>';
-			str += botaiGetTotalCount + '回目のガチャで母体を確保しました。<br>';
-			str += '対象キャラはPSR' + totalCards[0] + '枚、SR' + totalCards[1] + '枚、PR' + totalCards[2] + '枚、R' + totalCards[3] + '枚出現しました。<br>';
-
-		}
-		str += '</div>';
-
-		disp.html(str);
-
-
-		var data = [];
+		var plot = [{'回数':0, '出現数':0, '色': plotColor}];
+		var ruiseki = [{'回数':0, '累積比率':0}];
+		var ruisekiTotal = 0;
 
 		for (var key in samplingCountList) {
-			data.push({
+			ruisekiTotal += samplingCountList[key];
+			ruiseki.push({'回数':parseInt(key, 10), '累積比率':ruisekiTotal*100/MAX_COUNT});
+			plot.push({
 				'回数':parseInt(key, 10),
-				'出現数':samplingCountList[key]
+				'出現数':samplingCountList[key],
+				'色': plotColor
 			});
 		}
 
-		if (simFlag) {
-			moneyCalc.displayGraph(data, max, samplingCountList[frequency], average, centerValue);
-		} else {
-			d3.select('#chartArea').select("svg").remove();
-		}
 
-		$.unblockUI();
+		return {
+			total: total,
+			average: average,
+			center: centerValue,
+			max: max,
+			min: min,
+			hensa: hensa,
+			frequency: frequency,
+			countList: samplingCountList,
+			ruiseki: ruiseki,
+			plot: plot
+		};
 
 	},
 
-	displayGraph: function(data, xMax, yMax, average, centerValue) {
+	displayGraph: function(data, xMax, yMax, statistics, targetArea) {
 
 		// 軸の分も表示されるように、マージンを作っておく。
-		var margin = {top: 20, right: 20, bottom: 60, left: 40},
+		var margin = {top: 20, right: 40, bottom: 60, left: 40},
 			width =  Math.min(640, parseInt(window.innerWidth*0.8, 10)) - margin.left - margin.right,
 			height = width*2/3 - margin.top - margin.bottom;
 
-		d3.select('#chartArea').select("svg").remove();
+		d3.select(targetArea).select("svg").remove();
 
 		// transfromでマージンの分だけ位置をずらしている。
-		var svg = d3.select('#chartArea')
+		var svg = d3.select(targetArea)
 		.append("svg")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
 		.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+
+		//スケール設定
 		var xScale = d3.scale.linear()
 		.domain([0,xMax])
 		.range([0,width]);
 
-		var yScale = d3.scale.linear()
+		var yLeftScale = d3.scale.linear()
 		.domain([0,Math.round(yMax*1.1)])
 		.range([height,0]);
 
-		var colorCategoryScale = d3.scale.category10();
+		var yRightScale = d3.scale.linear()
+		.domain([0,100])
+		.range([height,0]);
 
 		// 軸を設定する。
 		var xAxis = d3.svg.axis()
@@ -418,40 +439,81 @@ var moneyCalc = {
 		.tickSize(6, -height) // 棒の長さと方向。
 		.tickFormat(function(d){ return d; }); // 数字に年をつけている。
 
-		var yAxis = d3.svg.axis()
+		var yLeftAxis = d3.svg.axis()
 		.ticks(5) // 軸のチックの数。
-		.scale(yScale)
+		.scale(yLeftScale)
 		.orient("left")
 		.tickSize(6, -width);
 
+		var yRightAxis = d3.svg.axis()
+		.ticks(5) // 軸のチックの数。
+		.scale(yRightScale)
+		.orient("right")
+		.tickSize(6, -width)
+		.tickFormat(function(d){ return d+'%'; });
 
 
+
+		//累積比率の描画
+		var ruisekiLine = d3.svg.line()
+			.x(function(d) { return xScale(d["回数"]); })
+			.y(function(d) { return yRightScale(d["累積比率"]); })
+			.interpolate("cardinal"); // 線の形を決める。
+		svg.append("path")
+			.datum(statistics.ruiseki)
+			.attr("class", "line")
+			.attr("d", ruisekiLine);
+
+
+
+		//散布図描画
 		svg.selectAll("circle")
 			.data(data)
 			.enter()
 			.append("circle")
 			.attr("r",2)
-			.attr("fill", function(d){ return colorCategoryScale(d["増減"]); })
+			.attr("fill", function(d){ return d["色"]; })
 			.attr("cx", function(d){ return xScale(d["回数"]); })
-			.attr("cy", function(d){ return yScale(d["出現数"]); });
+			.attr("cy", function(d){ return yLeftScale(d["出現数"]); });
 
-		// gの中でyAxisをcallして、y軸を作る。
+
+
+		//出現頻度軸描画
 		svg.append("g")
 			.attr("class", "y axis")
-			.call(yAxis)
+			.call(yLeftAxis)
 			.append("text")
 			.attr("y", -10)
 			.attr("x",10)
 			.style("text-anchor", "end")
 			.text("出現頻度");
 
+
+		// 累積比率の軸描画
+		svg.append("g")
+			.attr("class", "y axis")
+			.attr('transform', 'translate(' + width + ' ,0)')
+			.call(yRightAxis)
+			.append("text")
+			.attr("y", -10)
+			.attr("x",10)
+			.style("text-anchor", "end")
+			.text("累積比率");
+
+
+		//x軸描画
 		svg.append("g")
 			.attr("class", "x axis")
 			.attr("transform", "translate(0," + height + ")")
-			.call(xAxis);
+			.call(xAxis)
+			.append("text")
+			.text("ガチャ回数")
+			.attr("x", width-50)
+			.attr("y", 30);
 
 
-		var carray = [[width*(centerValue/xMax), 0], [width*(centerValue/xMax), height]];
+		//中央値描画
+		var carray = [[width*(statistics.center/xMax), 0], [width*(statistics.center/xMax), height]];
 		var line = d3.svg.line()
 			.x(function(d){return d[0];})
 			.y(function(d){return d[1];});
@@ -464,12 +526,14 @@ var moneyCalc = {
 		});
 
 		svg.append("text").attr({
-			x:  width*(centerValue/xMax)+10,
-			y: 20,
-			fill:'#f00'
+			x:  width*(statistics.center/xMax)+10,
+			y: 45,
+			fill:'#f00',
+			'font-size': '0.8em'
 		}).text("中央値");
 
-		carray = [[width*(average/xMax), 0], [width*(average/xMax), height]];
+		//平均値描画
+		carray = [[width*(statistics.average/xMax), 0], [width*(statistics.average/xMax), height]];
 		line = d3.svg.line()
 		.x(function(d){return d[0];})
 		.y(function(d){return d[1];});
@@ -482,17 +546,12 @@ var moneyCalc = {
 		});
 
 		svg.append("text").attr({
-			x:  width*(average/xMax)+10,
-			y: 40,
-			fill:'green'
+			x:  width*(statistics.average/xMax)+10,
+			y: 60,
+			fill:'green',
+			'font-size': '0.8em'
 		}).text("平均値");
 
-
-		d3.select(".x.axis")
-			.append("text")
-			.text("ガチャ回数")
-			.attr("x", width-50)
-			.attr("y", 30);
 	},
 
 	separate: function(n){

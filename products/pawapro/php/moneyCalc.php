@@ -7,10 +7,9 @@
 		$description = 'パワプロアプリの課金額計算ツールです。ガチャで選手をMAX開放するのに幾ら必要かを計算します。';
 		require_once './headInclude.php';
 	?>
-	<link rel="stylesheet" href="../css/moneyCalc.css">
+	<link rel="stylesheet" href="../css/moneyCalc.css?ver20171104">
 	<script src="http://d3js.org/d3.v3.min.js"></script>
-	<script src="../js/plugin/mt.js"></script>
-	<script src="../js/moneyCalc.js"></script>
+	<script src="../js/moneyCalc.js?ver20171104"></script>
 </head>
 
 <body>
@@ -170,7 +169,8 @@
 
 
 		<div id="displayArea"></div>
-		<div id="chartArea"></div>
+		<div id="compChartArea"></div>
+		<div id="botaiChartArea"></div>
 
 
 	</main>
