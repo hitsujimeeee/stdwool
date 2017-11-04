@@ -10,6 +10,7 @@ if(basename(realpath("./")) === 'pawapro') {
 <meta name="description" content="<?php echo $description ?>">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
 <title><?php echo $title ?></title>
+<link rel="shortcut icon" href="<?php echo $urlPadding ?>img/icon.ico" type="image/vnd.microsoft.icon">
 <link rel="stylesheet" href="<?php echo $urlPadding ?>css/lib/jquery-ui.min.css?ver20171016">
 <link rel="stylesheet" href="<?php echo $urlPadding ?>css/lib/jquery.ui.labeledslider.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
