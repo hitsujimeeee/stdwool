@@ -53,6 +53,7 @@ function getAssessmentList($dbh, $type, $spFlag) {
 				'headerId'=>$row['HEADER_ID'],
 				'name'=>$row['NAME'],
 				'point'=>$point,
+				'underPoint'=>[0, 0, 0, 0, 0],
 				'assessment'=>$assessment,
 				'totalAssessment'=>(double)$row['ASSESSMENT'],
 				'upper'=>$row['UPPER'],
@@ -77,6 +78,7 @@ function getAssessmentList($dbh, $type, $spFlag) {
 					'headerId'=>$row['HEADER_ID'],
 					'name'=>$row['NAME'],
 					'point'=>$point,
+					'underPoint'=>[0, 0, 0, 0, 0],
 					'assessment'=>$assessment,
 					'totalAssessment'=>(double)$row['ASSESSMENT'],
 					'upper'=>$row['UPPER'],
@@ -140,6 +142,7 @@ function getAssessmentList($dbh, $type, $spFlag) {
 					'headerId'=>$row['HEADER_ID'],
 					'name'=>$row['NAME'],
 					'point'=>$point,
+					'underPoint'=>[0, 0, 0, 0, 0],
 					'assessment'=>$assessment,
 					'totalAssessment'=>(double)$row['ASSESSMENT'],
 					'upper'=>$row['UPPER'],
@@ -187,17 +190,17 @@ function getAssessmentList($dbh, $type, $spFlag) {
 				$ability = getAbility($list, $list[$i]['lower']);
 				while($ability) {
 					for ($j = 0; $j < count($ability['point']); $j++) {
-						$list[$i]['point'][$j] += $ability['point'][$j];
+						$list[$i]['underPoint'][$j] += $ability['point'][$j];
 					}
 					$ability = getAbility($list, $ability['lower']);
 				}
 				$list[$i]['eff'] = array(
-					getEff($list[$i]['totalAssessment'], $list[$i]['point'], 1),
-					getEff($list[$i]['totalAssessment'], $list[$i]['point'], 0.7),
-					getEff($list[$i]['totalAssessment'], $list[$i]['point'], 0.5),
-					getEff($list[$i]['totalAssessment'], $list[$i]['point'], 0.4),
-					getEff($list[$i]['totalAssessment'], $list[$i]['point'], 0.3),
-					getEff($list[$i]['totalAssessment'], $list[$i]['point'], 0.2)
+					getEffSability($list[$i]['totalAssessment'], $list[$i]['point'], $list[$i]['underPoint'], 1),
+					getEffSability($list[$i]['totalAssessment'], $list[$i]['point'], $list[$i]['underPoint'], 0.7),
+					getEffSability($list[$i]['totalAssessment'], $list[$i]['point'], $list[$i]['underPoint'], 0.5),
+					getEffSability($list[$i]['totalAssessment'], $list[$i]['point'], $list[$i]['underPoint'], 0.4),
+					getEffSability($list[$i]['totalAssessment'], $list[$i]['point'], $list[$i]['underPoint'], 0.3),
+					getEffSability($list[$i]['totalAssessment'], $list[$i]['point'], $list[$i]['underPoint'], 0.2)
 				);
 			}
 		}
@@ -254,6 +257,14 @@ function getAbility($list, $id) {
 
 function getEff($ass, $point, $mag) {
 	$total = getTotalValue($point, $mag);
+	if ($total) {
+		return $ass/$total;
+	}
+	return 99999999;
+}
+
+function getEffSability($ass, $point, $underPoint, $mag) {
+	$total = getTotalValue($point, $mag) + getTotalValue($underPoint, 1);
 	if ($total) {
 		return $ass/$total;
 	}
