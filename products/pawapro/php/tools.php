@@ -27,6 +27,9 @@
 			<section class="mainSection">
 				<p class="item">・<a href="../data/vampGauge.zip">ヴァンプ高校 ブラッドゲージ管理ツール</a></p>
 			</section>
+			<section class="mainSection">
+				<p class="item">・<a href="./blankCountSimulate.php">査定調査お助けくん</a></p>
+			</section>
 		</main>
 
 		<?php include('./optionMenu.php'); ?>
