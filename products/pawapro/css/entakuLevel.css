@@ -1,0 +1,33 @@
+.eveCharaTable tr {
+    height: 38px;
+}
+
+
+.eveCharaTable tr > th:nth-child(1) {
+    width: 40px;
+}
+
+.charaType {
+    height: 38px;
+    width: 100px;
+}
+
+.noneDisp {
+    display: none;
+}
+
+.secHeader {
+    margin-left: 1em;
+}
+
+.secMain {
+    margin-left: 2em;
+}
+
+section {
+    margin-bottom: 1em;
+}
+
+.redColor {
+    color: #f00;
+}

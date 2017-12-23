@@ -181,7 +181,11 @@
 						<div class="menuIcon"><a href="./php/scoreBonus.php"><img src="./img/menu014.png" class="mainImage"></a></div>
 						<div class="menuTitle"><a href="./php/scoreBonus.php">スコアボーナスチェッカー</a></div>
 					</li>
-					<li>
+                    <li>
+                        <div class="menuIcon"><a href="./php/entakuLevel.php"><i class="fa fa-trophy fa-fw" aria-hidden="true"></i></a></div>
+                        <div class="menuTitle"><a href="./php/entakuLevel.php">円卓高校練習レベル計算機</a></div>
+                    </li>
+                    <li>
 						<div class="menuIcon"><a href="./php/tools.php"><i class="fa fa-wrench fa-fw" aria-hidden="true"></i></a></div>
 						<div class="menuTitle"><a href="./php/tools.php">その他ツール</a></div>
 					</li>
