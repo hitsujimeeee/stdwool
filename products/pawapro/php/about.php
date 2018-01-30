@@ -133,11 +133,9 @@ $dbh = DB::connect();
 					<dd>パワプロ関連のちょっと気になる確率の話、計算による効率化の話などを徒然と書いてます。</dd>
 					<dt><a onclick="ga('send', 'event', 'link', 'click', 'mspwpr2.wixsite.com/mspwpr');" href="http://mspwpr2.wixsite.com/mspwpr" target="_blank">細かすぎて伝わらない 査定理論 (とその他いろいろ) の部屋</a>(ms@査定算出ツール公開中さん<a onclick="ga('send', 'event', 'link', 'click', 'twitter.com/mspwpr');" href="https://twitter.com/mspwpr" target="_blank">@mspwpr</a>)</dt>
 					<dd>査定理論を細かく解説しています。当サイトの査定計算にはこちらの計算式を使わせていただいています。</dd>
-					<dt><a onclick="ga('send', 'event', 'link', 'click', 'pawamatome.web.fc2.com');" href="http://pawamatome.web.fc2.com/" target="_blank">野手版　実査定計算ツール</a>(センス▼@パワプロさん<a onclick="ga('send', 'event', 'link', 'click', 'twitter.com/pawa_xx');" href="https://twitter.com/pawa_xx" target="_blank">@pawa_xx</a>)(更新停止中)</dt>
-					<dd>実査定の計算ツールを公開しています</dd>
-					<dt><a onclick="ga('send', 'event', 'link', 'click', 'ancal.moo.jp/pwpr/index.php');" href="http://ancal.moo.jp/pwpr/index.php" target="_blank">PWPRアプリSRレーティング</a>(更新停止中)</dt>
-					<dd>SRイベキャラを１対１レーティングでみんなで客観的に評価できるサイトです。</dd>
-				</dl>
+                    <dt><a onclick="ga('send', 'event', 'link', 'click', 'lemonedpawapro.online/');" href="http://livedoor-blog.lemonedpawapro.online/" target="_blank">レモネード＠パワプロアプリblog</a>(レモネードさん<a onclick="ga('send', 'event', 'link', 'click', 'twitter.com/mspwpr');" href="https://twitter.com/lemonedpawapro" target="_blank">@lemonedpawapro</a>)</dt>
+                    <dd>円卓サクセスに関しての考察や立ち回り・データ等が公開されています。エンタクルスを効率よく回したい方必見です。</dd>
+                </dl>
 			</div>
 		</section>
 	</main>
