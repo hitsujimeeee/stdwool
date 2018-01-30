@@ -177,10 +177,15 @@ var entakuLevel = {
             levelList[0]++;
         }
 
-        //クネミアチェック
+        //グィネヴィアチェック
         if ($('#checkKunemia').prop('checked')) {
             levelList[2]++;
             levelList[5]++;
+        }
+
+        //ランスロットチェック
+        if ($('#checkLancelot').prop('checked')) {
+            levelList[8]++;
         }
 
         entakuLevel.output(levelList);

@@ -14,7 +14,7 @@
     require_once './headInclude.php';
     ?>
     <link rel="stylesheet" href="../css/entakuLevel.css?ver20171230">
-    <script src="../js/entakuLevel.js?ver20171230"></script>
+    <script src="../js/entakuLevel.js?ver20180105"></script>
 </head>
 
 <body>
@@ -75,6 +75,7 @@
                 <div><input type="checkbox" id="checkArthur" class="spChara">阿麻</div>
                 <div><input type="checkbox" id="checkMordred" class="spChara">望戸</div>
                 <div><input type="checkbox" id="checkKunemia" class="spChara">久根</div>
+                <div><input type="checkbox" id="checkLancelot" class="spChara">ランス</div>
                 <div>※高校固有キャラによる練習Lvアップは、エンタクルス解放時</div>
             </div>
         </section>
