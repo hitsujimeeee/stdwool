@@ -24,11 +24,13 @@ var epicMemo = {
 	setEpic: function() {
 		epicMemo.closeRemodal();
 		var idx = $('.epicItem').index(this);
-		var name = $('.epicItem').eq(idx).html();
+		var name = $('.epicListName').eq(idx).html();
+		var turn = $('.epicTurn').eq(idx).html();
+		var personnel = $('.epicPersonnel').eq(idx).html();
 		var type = $('.epicItem').eq(idx).data('epictype');
-		$('.epicButton').eq(epicMemo.selectedIndex).html(name).
-			removeClass(epicMemo.classList.join(' ')).
-			addClass('buttonType' + type);
+		$('.epicButtonName').eq(epicMemo.selectedIndex).html(name);
+		$('.epicButtonDetail').eq(epicMemo.selectedIndex).html(turn + '/' + personnel);
+		$('.epicButton').eq(epicMemo.selectedIndex).removeClass(epicMemo.classList.join(' ')).addClass('buttonType' + type);
 
 		epicMemo.save();
 	},
@@ -40,7 +42,12 @@ var epicMemo = {
 
 		var str = '<tr>' +
 			'<th>' + $('.epicTable tr').length + '</th>' +
-			'<td><button class="epicButton"></button></td>' +
+			'<td>' +
+				'<div class="epicButton">' +
+					'<div class="epicButtonName"></div>' +
+					'<div class="epicButtonDetail"></div>' +
+				'</div>' +
+			'</td>' +
 			'</tr>';
 
 		$('.epicTable').append(str);
@@ -65,12 +72,16 @@ var epicMemo = {
 
 	removeItem: function() {
 		epicMemo.closeRemodal();
-		$('.epicButton').eq(epicMemo.selectedIndex).html('').removeClass(epicMemo.classList.join(' '));
+		$('.epicButton').eq(epicMemo.selectedIndex).removeClass(epicMemo.classList.join(' '));
+		$('.epicButtonName').eq(epicMemo.selectedIndex).html('');
+		$('.epicButtonDetail').eq(epicMemo.selectedIndex).html('');
 		epicMemo.save();
 	},
 
 	reset: function() {
-		$('.epicButton').html('').removeClass(epicMemo.classList.join(' '));
+		$('.epicButton').removeClass(epicMemo.classList.join(' '));
+		$('.epicButtonName').html('');
+		$('.epicButtonDetail').html('');
 
 		var restRowCount = $('.epicTable tr').length - 1 - 10;
 
@@ -104,18 +115,21 @@ var epicMemo = {
 
 				var cType;
 				for (var j = 0; j < items.length; j++) {
-					if (items.eq(j).html() === savedata.list[i]) {
+					if ($('.epicListName').eq(j).html() === savedata.list[i]) {
 						cType = items.eq(j).data('epictype');
+						$('.epicButton').eq(i).addClass(epicMemo.classList[cType]);
+						$('.epicButtonDetail').eq(i).html($('.epicTurn').eq(j).html() + '/' + $('.epicPersonnel').eq(j).html());
+						break;
 					}
 				}
-				$('.epicButton').eq(i).html(savedata.list[i]).addClass(epicMemo.classList[cType]);
+				$('.epicButtonName').eq(i).html(savedata.list[i]);
 			}
 		}
 	},
 
 	save: function() {
 		var rowCount = $('.epicTable tr').length - 1;
-		var list = $('.epicButton').get().map(function(elt){
+		var list = $('.epicButtonName').get().map(function(elt){
 			return $(elt).html();
 		});
 		var savedata = {

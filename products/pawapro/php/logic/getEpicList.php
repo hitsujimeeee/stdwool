@@ -6,19 +6,13 @@ function getEpicList () {
 	try{
 		$dbh = DB::connect();
 
-		$sql = 'SELECT ID, NAME, EPIC_TYPE
+		$sql = 'SELECT ID, NAME, EPIC_TYPE, TURN, PERSONNEL
 			FROM EPIC_LIST
 	';
 		// SQL の実行
 		$sth = $dbh->query($sql);
 
-		while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
-			$data[] = array(
-				'ID'=>$row['ID'],
-				'NAME'=>$row['NAME'],
-				'EPIC_TYPE'=>$row['EPIC_TYPE']
-			);
-		}
+		$data = $sth->fetchAll();
 	}catch (PDOException $e){
 		print('Error:'.$e->getMessage());
 		die();

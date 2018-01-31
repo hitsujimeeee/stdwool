@@ -7,8 +7,8 @@
 		$description = '円卓高校高校で達成済みのエピックをメモするツールです。自動保存機能や次に発生する可能性のあるエピック一覧機能があります。';
 		require_once './headInclude.php';
 		?>
-		<link rel="stylesheet" href="../css/epicMemo.css">
-		<script src="../js/epicMemo.js"></script>
+		<link rel="stylesheet" href="../css/epicMemo.css?ver20180131">
+		<script src="../js/epicMemo.js?ver20180131"></script>
 	</head>
 
 	<body>
@@ -28,48 +28,26 @@
 				<table class="modern epicTable">
 					<tr>
 						<th>No</th>
-						<th class="epicNameArea">エピック</th>
+						<th class="epicNameArea">
+							<div class="epicTableHeaderRight">
+								<div>エピック</div>
+								<div>ﾀｰﾝ/<br>人数</div>
+							</div>
+						</th>
 					</tr>
-					<tr>
-						<th>1</th>
-						<td><button class="epicButton"></button></td>
-					</tr>
-					<tr>
-						<th>2</th>
-						<td><button class="epicButton"></button></td>
-					</tr>
-					<tr>
-						<th>3</th>
-						<td><button class="epicButton"></button></td>
-					</tr>
-					<tr>
-						<th>4</th>
-						<td><button class="epicButton"></button></td>
-					</tr>
-					<tr>
-						<th>5</th>
-						<td><button class="epicButton"></button></td>
-					</tr>
-					<tr>
-						<th>6</th>
-						<td><button class="epicButton"></button></td>
-					</tr>
-					<tr>
-						<th>7</th>
-						<td><button class="epicButton"></button></td>
-					</tr>
-					<tr>
-						<th>8</th>
-						<td><button class="epicButton"></button></td>
-					</tr>
-					<tr>
-						<th>9</th>
-						<td><button class="epicButton"></button></td>
-					</tr>
-					<tr>
-						<th>10</th>
-						<td><button class="epicButton"></button></td>
-					</tr>
+					<?php
+					for ($i = 1; $i <= 10; $i++) { ?>
+						<tr>
+							<th><?= $i ?></th>
+							<td>
+								<div class="epicButton">
+									<div class="epicButtonName"></div>
+									<div class="epicButtonDetail"></div>
+								</div>
+							</td>
+						</tr>
+					<?php } ?>
+
 				</table>
 			</section>
 
@@ -81,37 +59,55 @@
 			<div id="modalWindow" class="remodal" data-remodal-id="modal" data-remodal-options="hashTracking:false, closeOnCancel:false, closeOnConfirm:false, closeOnEscape:false">
 				<button class="remodal-close" onclick="epicMemo.closeRemodal()"></button>
 				<section>
-					<div class="epicTypeTitle"><i class="fa fa-trophy"></i>聖杯ルートエピック</div>
+					<div class="epicTypeTitle">
+						<div><i class="fa fa-trophy"></i>聖杯ルートエピック</div>
+						<div>ﾀｰﾝ/人数</div>
+					</div>
 					<hr class="abHr">
 					<?= makeEpicList($epicList, 0) ?>
 				</section>
 
 				<section>
-					<div class="epicTypeTitle"><img src="../img/icon/pawn.gif" class="iconImg">聖遺物エピック</div>
+					<div class="epicTypeTitle">
+						<div><img src="../img/icon/pawn.gif" class="iconImg">聖遺物エピック</div>
+						<div>ﾀｰﾝ/人数</div>
+					</div>
 					<hr class="abHr">
 					<?= makeEpicList($epicList, 1) ?>
 				</section>
 
 				<section>
-					<div class="epicTypeTitle"><img src="../img/icon/treasure.gif" class="iconImg">お宝探しエピック</div>
+					<div class="epicTypeTitle">
+						<div><img src="../img/icon/treasure.gif" class="iconImg">お宝探しエピック</div>
+						<div>ﾀｰﾝ/人数</div>
+					</div>
 					<hr class="abHr">
 					<?= makeEpicList($epicList, 2) ?>
 				</section>
 
 				<section>
-					<div class="epicTypeTitle"><img src="../img/icon/broom.gif" class="iconImg">清掃エピック</div>
+					<div class="epicTypeTitle">
+						<div><img src="../img/icon/broom.gif" class="iconImg">清掃エピック</div>
+						<div>ﾀｰﾝ/人数</div>
+					</div>
 					<hr class="abHr">
 					<?= makeEpicList($epicList, 3) ?>
 				</section>
 
 				<section>
-					<div class="epicTypeTitle"><img src="../img/icon/muscle.png" class="iconImg">レーニングエピック</div>
+					<div class="epicTypeTitle">
+						<div><img src="../img/icon/muscle.png" class="iconImg">レーニングエピック</div>
+						<div>ﾀｰﾝ/人数</div>
+					</div>
 					<hr class="abHr">
 					<?= makeEpicList($epicList, 4) ?>
 				</section>
 
 				<section>
-					<div class="epicTypeTitle"><i class="fa fa-flash"></i><i class="fa fa-flash"></i>その他エピック</div>
+					<div class="epicTypeTitle">
+						<div><i class="fa fa-flash"></i><i class="fa fa-flash"></i>その他エピック</div>
+						<div>ﾀｰﾝ/人数</div>
+					</div>
 					<hr class="abHr">
 					<?= makeEpicList($epicList, 5) ?>
 				</section>
@@ -138,7 +134,10 @@ function makeEpicList($list, $type) {
 
 	foreach($list as $row) {
 		if((int)$row['EPIC_TYPE'] === $type) {
-			$str .= '<li><a class="epicItem" data-epictype="' . $row['EPIC_TYPE'] . '">' . $row['NAME'] . '</a>';
+			$str .= '<li class="epicItem" data-epictype="' . $row['EPIC_TYPE'] . '">'.
+				'<div class="epicListName">' . $row['NAME'] . '</div>' .
+				'<div class="epicListDetail"><span class="epicTurn">' . $row['TURN'] . '</span>/<span class="epicPersonnel">' . $row['PERSONNEL']. '</span></div>' .
+				'</li>';
 		}
 	}
 

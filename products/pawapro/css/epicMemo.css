@@ -27,6 +27,9 @@
 .epicButton {
     width: 100%;
     height: 40px;
+	background-color: #eee;
+	display: flex;
+	align-items: center;
 }
 
 .epicList {
@@ -38,6 +41,7 @@
     border-radius: 5px;
     padding: 0.4em 0;
     margin-bottom: 0.25em;
+	display: flex;
 }
 
 .epicItem {
@@ -53,13 +57,32 @@
 	user-select: none;
 }
 
-.epicItem:hover {
-	text-decoration: none;
-	color: #000;
+.epicButtonName, .epicListName, .epicTableHeaderRight > div:nth-child(1) {
+	flex: 1;
+	text-align: left;
+	padding-left: 0.5em;
 }
 
-.epicTypeTitle {
+.epicButtonDetail, .epicListDetail, .epicTableHeaderRight > div:nth-child(2) {
+	width: 4em;
+	text-align: right;
+	padding-right: 0.5em;
+}
+
+.epicTypeTitle > div:nth-child(1) {
+	flex: 1;
+	text-align: left;
+}
+
+.epicTypeTitle > div:nth-child(2) {
+	width: 4em;
+	text-align: right;
+}
+
+.epicTypeTitle, .epicTableHeaderRight {
     text-align: left;
+	display: flex;
+	align-items: center;
 }
 
 .listType0 li, .buttonType0 {
