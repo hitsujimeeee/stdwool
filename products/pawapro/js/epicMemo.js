@@ -4,6 +4,7 @@ $(function () {
 
 	$('.epicButton').on('click', epicMemo.openRemodal);
 	$('.epicItem').on('click', epicMemo.setEpic);
+	$('#commentArea').on('change', epicMemo.save);
 	epicMemo.load();
 });
 
@@ -125,6 +126,9 @@ var epicMemo = {
 				$('.epicButtonName').eq(i).html(savedata.list[i]);
 			}
 		}
+		if (savedata.comment) {
+			$('#commentArea').val(savedata.comment);
+		}
 	},
 
 	save: function() {
@@ -132,12 +136,49 @@ var epicMemo = {
 		var list = $('.epicButtonName').get().map(function(elt){
 			return $(elt).html();
 		});
+		var comment = $('#commentArea').val();
 		var savedata = {
 			rowCount:rowCount,
-			list: list
+			list: list,
+			comment: comment
 		};
 
 		localStorage.setItem('epicMemo', JSON.stringify(savedata));
+	},
+
+	outputCPText: function() {
+		var str = '<ul class="cpTextList">';
+		var idx = 1;
+		$('.epicButtonName').get().forEach(function(elt){
+			if ($(elt).html()) {
+				str += '<li>' + idx + '. ' + $(elt).html() + '</li>';
+				idx++;
+			}
+		});
+		str += '</ul>';
+
+		if ($('#commentArea').val()) {
+			str += '<div>メモ：</div>';
+			str += '<div style="margin-left:0.5em;">' + epicMemo.escape_html($('#commentArea').val()) + '</div>';
+		}
+		$('.cpTextArea').css('display', 'block').html(str);
+		$('html, body').animate({scrollTop:$('.cpTextArea').offset().top});
+	},
+
+	escape_html: function(string) {
+		if(typeof string !== 'string') {
+			return string;
+		}
+		return string.replace(/[&'`"<>]/g, function(match) {
+			return {
+				'&': '&amp;',
+				"'": '&#x27;',
+				'`': '&#x60;',
+				'"': '&quot;',
+				'<': '&lt;',
+				'>': '&gt;',
+			}[match];
+		}).replace(/\r?\n/g, '<br>');
 	}
 
 };

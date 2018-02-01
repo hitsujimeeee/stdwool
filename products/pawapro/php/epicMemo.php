@@ -7,8 +7,8 @@
 		$description = '円卓高校高校で達成済みのエピックをメモするツールです。自動保存機能や次に発生する可能性のあるエピック一覧機能があります。';
 		require_once './headInclude.php';
 		?>
-		<link rel="stylesheet" href="../css/epicMemo.css?ver20180131">
-		<script src="../js/epicMemo.js?ver20180131"></script>
+		<link rel="stylesheet" href="../css/epicMemo.css?ver20180201">
+		<script src="../js/epicMemo.js?ver20180201"></script>
 	</head>
 
 	<body>
@@ -50,6 +50,17 @@
 
 				</table>
 			</section>
+			<section>
+				<header class="sectionHeader"><i class="fa fa-edit"></i>メモ欄</header>
+				<div class="commentDiv"><textarea id="commentArea" maxlength="200"></textarea></div>
+			</section>
+
+			<section>
+				<header class="sectionHeader"><i class="fa fa-camera"></i>スクショorコピペ用テキスト</header>
+				<div class="cpButtonArea"><button onclick="epicMemo.outputCPText()">テキストとして出力する</button></div>
+				<div class="cpTextArea"></div>
+			</section>
+
 
 			<?php
 				require_once './logic/getEpicList.php';
